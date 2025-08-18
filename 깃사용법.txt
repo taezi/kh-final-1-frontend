@@ -1,3 +1,6 @@
+참고사이트
+https://hackmd.io/@oW_dDxdsRoSpl0M64Tfg2g/ByfwpNJ-K
+
 git config --global user.email "당신의이메일@example.com"
 git config --global user.name "당신의이름"
 (맨처음에 한번만하면됨)
