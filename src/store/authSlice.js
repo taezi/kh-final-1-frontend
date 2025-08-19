@@ -1,35 +1,34 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { authAPI } from "../service/authAPI";
 
-
 // 로그인
 export const loginUser = createAsyncThunk(
-  'auth/login',
-  async({userid, password}, {rejectWithValue}) => {
+  "login",
+  async ({ userid, password }, { rejectWithValue }) => {
     try {
-      const response = await authAPI.post('auth/login', {userid, password});
+      const response = await authAPI.post("login", { userid, password });
+      alert("로그인 성공");
+      console.log(response.data);
       return response.data;
-  
-      
     } catch (error) {
-      return rejectWithValue(error.response?.data || ' 로그인 실패');
+      return rejectWithValue(error.response?.data || " 로그인 실패");
     }
   }
 );
 
 // 회원가입
 export const registerUser = createAsyncThunk(
-  'auth/registerUser',
+  "registerUser",
   async ({ userid, username, password }, { rejectWithValue }) => {
     try {
-      const response = await authAPI.post('/auth/register', {
+      const response = await authAPI.post("register", {
         userid,
         username,
-        password
+        password,
       });
       return response.data; // 성공 메시지 or 등록된 user 정보
     } catch (err) {
-      return rejectWithValue(err.response?.data || '회원가입 실패');
+      return rejectWithValue(err.response?.data || "회원가입 실패");
     }
   }
 );
@@ -43,10 +42,10 @@ const initialState = {
 };
 
 const authSlice = createSlice({
-  name: 'auth',
-  initialState, 
+  name: "auth",
+  initialState,
   reducers: {
-    logout : (state) => {
+    logout: (state) => {
       state.user = null;
       state.accessToken = null;
       state.refreshToken = null;
@@ -54,7 +53,7 @@ const authSlice = createSlice({
     },
   },
 
-    extraReducers: (builder) => {
+  extraReducers: (builder) => {
     // 로그인
     builder
       .addCase(loginUser.pending, (state) => {
@@ -90,4 +89,3 @@ const authSlice = createSlice({
 
 export const { logout } = authSlice.actions;
 export default authSlice.reducer;
-
