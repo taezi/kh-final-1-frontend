@@ -1,22 +1,20 @@
 import { useRef } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../store/authSlice";
+import useAuthStore from "../store/authStore";
 
-export default function LoginPage(params) {
+export default function LoginPage() {
   const userid = useRef(null);
   const password = useRef(null);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // Zustand 훅에서 loginUser 액션 함수를 가져옵니다.
+  const { loginUser } = useAuthStore();
 
   const handleLogin = async () => {
     try {
-      await dispatch(
-        loginUser({
-          userid: userid.current.value,
-          password: password.current.value,
-        })
-      ).unwrap();
+      await loginUser({
+        userid: userid.current.value,
+        password: password.current.value,
+      });
       navigate("/");
     } catch (error) {
       console.error("로그인 실패:", error);

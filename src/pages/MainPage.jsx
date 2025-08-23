@@ -1,16 +1,14 @@
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../store/authSlice";
-import { persistor } from "../store/store";
+import useAuthStore from "../store/authStore";
 
-export default function MainPage(params) {
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+export default function MainPage() {
+  // Zustand 훅을 사용하여 상태와 액션 함수를 가져옵니다.
+  // 이 방식은 Redux의 useSelector와 useDispatch를 대체합니다.
+  const { user, logout } = useAuthStore();
 
   const handleLogout = async () => {
     if (user) {
-      await persistor.purge();
-      dispatch(logout());
+      logout(); // Zustand 액션 함수 호출
       alert("로그아웃 성공");
     } else {
       alert("현재 로그인된 상태가 아닙니다.");
