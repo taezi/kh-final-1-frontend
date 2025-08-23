@@ -20,6 +20,7 @@ const useAuthStore = create(
           try {
             const response = await authAPI.post("login", { userid, password });
             const { user, accessToken, refreshToken } = response.data;
+            console.log(user);
             alert("로그인 성공");
             set({
               loading: false,

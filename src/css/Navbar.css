@@ -1,0 +1,285 @@
+/* Header Component Styles - No Tailwind */
+
+.header-container {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    sans-serif;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: background-color, height;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  height: 70px;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.header-container.expanded {
+  height: 120px;
+  background-color: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
+  height: 100%;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+/* Logo Styles */
+.logo-section {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #3b82f6;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.logo:hover {
+  opacity: 0.8;
+}
+
+.logo-suffix {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #6b7280;
+  margin-left: 0.25rem;
+}
+
+/* Navigation Styles */
+.nav-menu {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-item {
+  position: relative;
+  padding: 16px 24px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.header-container.expanded .nav-item {
+  color: #1f2937;
+}
+
+.nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-container.expanded .nav-item:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+/* Dropdown Styles */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  min-width: 220px;
+  border: 1px solid #e5e7eb;
+}
+
+.nav-item:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(8px);
+}
+
+.dropdown-item {
+  padding: 12px 20px;
+  color: #1f2937;
+  border-bottom: 1px solid #f3f4f6;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-weight: 400;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+  border-radius: 0 0 12px 12px;
+}
+
+.dropdown-item:first-child {
+  border-radius: 12px 12px 0 0;
+}
+
+.dropdown-item:hover {
+  background-color: #dbeafe;
+  color: #3b82f6;
+  padding-left: 24px;
+}
+
+/* Right Section */
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Weather Info Styles */
+.weather-info {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  font-size: 0.875rem;
+}
+
+.header-container.expanded .weather-info {
+  color: #6b7280;
+}
+
+.weather-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Action Icons */
+.action-icons {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+
+.icon-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-container.expanded .icon-btn {
+  color: #6b7280;
+}
+
+.header-container.expanded .icon-btn:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Login Button */
+.login-btn {
+  padding: 12px 24px;
+  background: #3b82f6;
+  color: white;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 2px solid #3b82f6;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.login-btn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.header-container.expanded .login-btn {
+  background: transparent;
+  color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.header-container.expanded .login-btn:hover {
+  background: #3b82f6;
+  color: white;
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-container.expanded .mobile-menu-btn {
+  color: #6b7280;
+}
+
+.header-container.expanded .mobile-menu-btn:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.mobile-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .nav-menu {
+    display: flex;
+  }
+
+  .action-icons {
+    display: flex;
+  }
+
+  .mobile-menu-btn {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .weather-info {
+    display: flex;
+  }
+}
