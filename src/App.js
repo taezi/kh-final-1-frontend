@@ -6,6 +6,10 @@ import SignupPage from "./pages/SignupPage";
 import Navbar from "./components/Navbar";
 import FindIdPage from "./pages/FindIdPage";
 import FindPwdPage from "./pages/FindPwdPage";
+import PrivateRoute from "./components/PrivateRoute";
+import AdminPage from "./pages/AdminPage";
+import EditorPage from "./pages/EditorPage";
+import MypagePage from "./pages/MypagePage";
 function App() {
   return (
     <BrowserRouter>
@@ -17,6 +21,12 @@ function App() {
           <Route path="/" element={<MainPage></MainPage>} />
           <Route path="/findid" element={<FindIdPage></FindIdPage>} />
           <Route path="/findpwd" element={<FindPwdPage></FindPwdPage>} />
+
+          <Route element={<PrivateRoute />}>
+            <Route path="/admin" element={<AdminPage></AdminPage>} />
+            <Route path="/mypage" element={<MypagePage></MypagePage>} />
+            <Route path="/editor" element={<EditorPage></EditorPage>} />
+          </Route>
 
           <Route path="*" element={<h1>404 Not Found</h1>} />
         </Routes>

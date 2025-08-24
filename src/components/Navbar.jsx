@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { Search, Heart, Globe, Menu, MapPin } from "lucide-react";
+import {
+  Search,
+  Heart,
+  Globe,
+  Menu,
+  MapPin,
+  UserStar,
+  UserCheck,
+  UserCog,
+} from "lucide-react";
 import "../css/Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../store/authStore";
@@ -139,30 +148,49 @@ export default function Navbar({ className = "" }) {
               <span>31.6°C</span>
             </div>
 
-            {/* Action Icons */}
-            <div className="action-icons">
-              <button
-                className="icon-btn"
-                onClick={() => console.log("Toggle favorites")}
-                data-testid="button-favorites"
-              >
-                <Heart className="icon" />
-              </button>
-
-              <button
-                className="icon-btn"
-                onClick={() => console.log("Change language")}
-                data-testid="button-language"
-              >
-                <Globe className="icon" />
-              </button>
-            </div>
-
             {/* Login Button */}
             {isLoggedIn ? (
-              <button onClick={handleLogout} className="login-btn">
-                로그아웃
-              </button>
+              <>
+                <div>
+                  <span className="welcome-message">
+                    {user.username}님 환영합니다.
+                  </span>
+                  {user.role === "admin" ? (
+                    <>
+                      <button
+                        className="icon-btn"
+                        onClick={() => navigate("/admin")}
+                      >
+                        <UserStar className="icon" />
+                        관리자 페이지
+                      </button>
+                    </>
+                  ) : user.role === "editor" ? (
+                    <>
+                      <button
+                        className="icon-btn"
+                        onClick={() => navigate("/editor")}
+                      >
+                        <UserCheck className="icon" />
+                        에디터 페이지
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        className="icon-btn"
+                        onClick={() => navigate("/mypage")}
+                      >
+                        <UserCog className="icon" />
+                        마이페이지
+                      </button>
+                    </>
+                  )}
+                </div>
+                <button onClick={handleLogout} className="login-btn">
+                  로그아웃
+                </button>
+              </>
             ) : (
               <Link to="/login" className="login-btn">
                 로그인

@@ -39,11 +39,13 @@ export default function LoginPage() {
             <br />
             <button onClick={handleLogin}>로그인</button>
             <br />
-            <button>카카오 로그인</button>
-            <button>네이버 로그인</button>
+            <button>카카오로 시작하기</button>
+            <button>네이버로 시작하기</button>
             <div className="account-actions">
               <Link to="/signup">회원가입</Link>
+              <br></br>
               <Link to="/findid">아이디찾기</Link>
+              <br></br>
               <Link to="/findpwd">비밀번호찾기</Link>
             </div>
           </div>

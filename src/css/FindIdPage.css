@@ -24,11 +24,3 @@
 .top-blank {
   height: 300px;
 }
-      <>
-      <div className="top-blank"></div>
-      <div className="container">
-        <div className="left-container"></div>
-        <div className="main-container"></div>
-        <div className="right-container"></div>
-      </div>
-      </>

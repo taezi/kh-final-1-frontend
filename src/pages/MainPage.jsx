@@ -16,7 +16,9 @@ export default function MainPage() {
 
       <div className="container">
         <div className="left-container"></div>
-        <div className="main-container"></div>
+        <div className="main-container">
+          <h2>메인페이지</h2>
+        </div>
         <div className="right-container"></div>
       </div>
     </div>
