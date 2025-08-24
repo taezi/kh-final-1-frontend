@@ -1,0 +1,26 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+.container {
+  height: 2000px;
+  border: 1px solid black;
+  display: flex;
+  flex-flow: row nowrap;
+}
+.left-container,
+.main-container,
+.right-container {
+  box-sizing: border-box;
+}
+.main-container {
+  width: 60%;
+}
+.left-container,
+.right-container {
+  width: 20%;
+  background-color: black;
+}
+.main-carousel {
+  font-size: 0px;
+}
