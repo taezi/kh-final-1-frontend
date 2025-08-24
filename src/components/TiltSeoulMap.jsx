@@ -1,14 +1,15 @@
+// src/components/TiltSeoulMap.jsx
 import React, { useLayoutEffect, useState } from "react";
 
 /** 절대좌표 + 회전보정 충돌해소(OBB 근사) + 강 안전선 */
 const stageRatio = 60; // 컨테이너 높이 = width * 0.60
-const RIVER_Y = 68; // 강 y(%)
-const SAFE = 5; // 강과 최소 간격(%)
-const SPACING = 2.2; // ★ 블럭 간 최소 간격(폭 기준 %)
+const RIVER_Y = 64; // ★ 강 y(%): 살짝 위로 올려 아래 공간 확보
+const SAFE = 6; // 강과 최소 간격(%)
+const SPACING = 2.2; // 블럭 간 최소 간격(폭 기준 %)
 const MAX_ITER = 280;
-const BOUNDS = { padX: 3.5, top: 8, bottom: 6 };
+const BOUNDS = { padX: 3.5, top: 8, bottom: 8 }; // ★ 하단 여백 완화
 
-/* 초기 배치 (피그마 클러스터) — 겹치던 곳들 조정 */
+/* 초기 배치 */
 const BASE = [
   // ── 강 위쪽
   { id: "mapo", label: "마포", side: "N", x: 10, y: 33, w: 12, h: 9, rot: -9 },
@@ -137,13 +138,13 @@ const BASE = [
   },
   { id: "gundae", label: "건대", side: "N", x: 66, y: 44, w: 10, h: 9, rot: 8 },
 
-  // ── 강 아래쪽 (겹치던 곳들: 강남/가로수/관악 조정)
+  // ── 강 아래쪽(재분산)
   {
     id: "gs-yc-gp",
     label: "강서 양천 김포",
     side: "S",
     x: 14,
-    y: 79,
+    y: 78,
     w: 18,
     h: 10,
     rot: -8,
@@ -153,28 +154,47 @@ const BASE = [
     label: "영등포",
     side: "S",
     x: 30,
-    y: 78,
+    y: 77,
     w: 12,
     h: 10,
     rot: -6,
   },
-  { id: "guro", label: "구로", side: "S", x: 18, y: 89, w: 11, h: 10, rot: 4 },
+  {
+    id: "guro",
+    label: "구로",
+    side: "S",
+    x: 16.5,
+    y: 86,
+    w: 11,
+    h: 10,
+    rot: 3,
+  },
   {
     id: "gwanakL",
     label: "관악",
     side: "S",
-    x: 25,
-    y: 89,
+    x: 26.8,
+    y: 84,
     w: 11,
     h: 10,
-    rot: -7,
-  }, // ← 왼쪽 관악
+    rot: -8,
+  },
+  {
+    id: "gwanakC",
+    label: "관악",
+    side: "S",
+    x: 36.8,
+    y: 83,
+    w: 11,
+    h: 10,
+    rot: -6,
+  },
   {
     id: "seocho",
     label: "서초",
     side: "S",
     x: 43,
-    y: 74,
+    y: 73,
     w: 12,
     h: 10,
     rot: 10,
@@ -184,7 +204,7 @@ const BASE = [
     label: "강남역",
     side: "S",
     x: 47,
-    y: 86,
+    y: 90,
     w: 12,
     h: 10,
     rot: 8,
@@ -194,27 +214,27 @@ const BASE = [
     label: "가로수길",
     side: "S",
     x: 57,
-    y: 85,
+    y: 86,
     w: 12,
     h: 10,
     rot: 12,
-  }, // → 오른쪽/아래
+  },
   {
     id: "gangnam",
     label: "강남구",
     side: "S",
     x: 60,
-    y: 73,
+    y: 74,
     w: 18,
     h: 11,
     rot: -8,
-  }, // ↑ 약간 위/각도 완화
+  },
   {
     id: "songpa",
     label: "송파",
     side: "S",
     x: 73,
-    y: 77,
+    y: 76,
     w: 12,
     h: 10,
     rot: 8,
@@ -224,26 +244,17 @@ const BASE = [
     label: "강동 하남",
     side: "S",
     x: 89,
-    y: 80,
+    y: 79,
     w: 14,
     h: 11,
     rot: -10,
   },
-  {
-    id: "gwanakC",
-    label: "관악",
-    side: "S",
-    x: 36,
-    y: 86,
-    w: 11,
-    h: 10,
-    rot: -6,
-  }, // → 중앙 관악
 ];
 
-const RIVER_PATH = "M 0 68 C 22 64, 49 70, 74 66 S 98 64, 100 68";
 const ratio = stageRatio / 100;
-const toWU_Y = (y) => y * ratio;
+const RIVER_PATH = "M 0 64 C 22 60, 49 66, 74 62 S 98 60, 100 64";
+
+const toWU_Y = (y) => y * ratio; // y(% of height) → 폭기준단위
 const fromWU_Y = (y) => y / ratio;
 
 function halfExtentsWU(w, h, rotDeg) {
