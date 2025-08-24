@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../store/authStore";
 import "../css/LoginPage.css";
+import Layout from "../components/Layout";
 
 export default function LoginPage() {
   const userid = useRef(null);
@@ -25,33 +26,25 @@ export default function LoginPage() {
   };
 
   return (
-    <div>
-      <div className="top-blank"></div>
-
-      <div className="container">
-        <div className="left-container"></div>
-        <div className="main-container">
-          <h3>로그인페이지</h3>
-          <div>
-            <input type="text" ref={userid} placeholder="아이디" />
-            <br></br>
-            <input type="password" ref={password} placeholder="비밀번호" />
-            <br />
-            <button onClick={handleLogin}>로그인</button>
-            <br />
-            <button>카카오로 시작하기</button>
-            <button>네이버로 시작하기</button>
-            <div className="account-actions">
-              <Link to="/signup">회원가입</Link>
-              <br></br>
-              <Link to="/findid">아이디찾기</Link>
-              <br></br>
-              <Link to="/findpwd">비밀번호찾기</Link>
-            </div>
-          </div>
+    <Layout>
+      <h3>로그인페이지</h3>
+      <div>
+        <input type="text" ref={userid} placeholder="아이디" />
+        <br />
+        <input type="password" ref={password} placeholder="비밀번호" />
+        <br />
+        <button onClick={handleLogin}>로그인</button>
+        <br />
+        <button>카카오로 시작하기</button>
+        <button>네이버로 시작하기</button>
+        <div className="account-actions">
+          <Link to="/signup">회원가입</Link>
+          <br />
+          <Link to="/findid">아이디찾기</Link>
+          <br />
+          <Link to="/findpwd">비밀번호찾기</Link>
         </div>
-        <div className="right-container"></div>
       </div>
-    </div>
+    </Layout>
   );
 }

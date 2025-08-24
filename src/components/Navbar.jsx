@@ -44,6 +44,10 @@ export default function Navbar({ className = "" }) {
   const handleDropdownItemClick = (category, type) => {
     console.log(`Navigate to: ${category}${type ? ` - ${type}` : ""}`);
     // TODO: 여기에 라우팅 로직을 추가하세요
+    if (category === "recommendations" && type === "ai") {
+      navigate("/dateai");
+    }
+    handleMouseLeave();
   };
 
   return (
