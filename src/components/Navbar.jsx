@@ -53,6 +53,12 @@ export default function Navbar({ className = "" }) {
     if (category === "places" && type === "culture") {
       navigate("/culture");
     }
+    if (category === "places" && type === "restaurants") {
+      navigate("/restaurants");
+    }
+    if (category === "places" && type === "cafes") {
+      navigate("/cafes");
+    }
 
     handleMouseLeave();
   };
@@ -105,14 +111,16 @@ export default function Navbar({ className = "" }) {
                 </div>
                 <div
                   className="dropdown-item"
-                  onClick={() => handleDropdownItemClick("restaurants")}
+                  onClick={() =>
+                    handleDropdownItemClick("places", "restaurants")
+                  }
                   data-testid="dropdown-restaurants"
                 >
                   맛집
                 </div>
                 <div
                   className="dropdown-item"
-                  onClick={() => handleDropdownItemClick("cafes")}
+                  onClick={() => handleDropdownItemClick("places", "cafes")}
                   data-testid="dropdown-cafes"
                 >
                   까페
