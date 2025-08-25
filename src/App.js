@@ -25,13 +25,13 @@ function App() {
           <Route path="/findid" element={<FindIdPage></FindIdPage>} />
           <Route path="/findpwd" element={<FindPwdPage></FindPwdPage>} />
           <Route path="/culture" element={<CulturePage></CulturePage>} />
+          <Route path="/editor" element={<EditorPage></EditorPage>} />
 
           {/* 보호된 라우트는 PrivateRoute 컴포넌트로 감쌉니다 */}
 
           <Route element={<PrivateRoute />}>
             <Route path="/admin" element={<AdminPage></AdminPage>} />
             <Route path="/mypage" element={<MypagePage></MypagePage>} />
-            <Route path="/editor" element={<EditorPage></EditorPage>} />
             <Route path="/dateai" element={<DateaiPage></DateaiPage>} />
           </Route>
 

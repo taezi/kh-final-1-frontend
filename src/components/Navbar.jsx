@@ -47,6 +47,9 @@ export default function Navbar({ className = "" }) {
     if (category === "recommendations" && type === "ai") {
       navigate("/dateai");
     }
+    if (category === "recommendations" && type === "editor") {
+      navigate("/editor");
+    }
     if (category === "places" && type === "culture") {
       navigate("/culture");
     }
