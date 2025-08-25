@@ -47,6 +47,10 @@ export default function Navbar({ className = "" }) {
     if (category === "recommendations" && type === "ai") {
       navigate("/dateai");
     }
+    if (category === "places" && type === "culture") {
+      navigate("/culture");
+    }
+
     handleMouseLeave();
   };
 
@@ -91,7 +95,7 @@ export default function Navbar({ className = "" }) {
               <div className="dropdown-menu">
                 <div
                   className="dropdown-item"
-                  onClick={() => handleDropdownItemClick("culture")}
+                  onClick={() => handleDropdownItemClick("places", "culture")}
                   data-testid="dropdown-culture"
                 >
                   문화/행사
