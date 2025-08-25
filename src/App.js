@@ -11,6 +11,8 @@ import AdminPage from "./pages/AdminPage";
 import EditorPage from "./pages/EditorPage";
 import MypagePage from "./pages/MypagePage";
 import DateaiPage from "./pages/DateaiPage";
+import CulturePage from "./pages/CulturePage";
+
 function App() {
   return (
     <BrowserRouter>
@@ -22,6 +24,9 @@ function App() {
           <Route path="/" element={<MainPage></MainPage>} />
           <Route path="/findid" element={<FindIdPage></FindIdPage>} />
           <Route path="/findpwd" element={<FindPwdPage></FindPwdPage>} />
+          <Route path="/culture" element={<CulturePage></CulturePage>} />
+
+          {/* 보호된 라우트는 PrivateRoute 컴포넌트로 감쌉니다 */}
 
           <Route element={<PrivateRoute />}>
             <Route path="/admin" element={<AdminPage></AdminPage>} />
