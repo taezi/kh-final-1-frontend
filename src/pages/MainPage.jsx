@@ -1,51 +1,26 @@
-import { useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useAuthStore from "../store/authStore";
-import "../css/LoginPage.css";
-import Layout from "../components/Layout";
+import "../css/MainPage.css";
+import mainImage from "../img/main.png";
 
-export default function LoginPage() {
-  const userid = useRef(null);
-  const password = useRef(null);
-  const navigate = useNavigate();
-  const { loginUser } = useAuthStore();
-
-  const handleLogin = async () => {
-    try {
-      await loginUser({
-        userid: userid.current.value,
-        password: password.current.value,
-      });
-      navigate("/");
-    } catch (error) {
-      console.error("로그인 실패:", error);
-      alert("로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.");
-    }
-  };
+export default function MainPage() {
+  // Zustand 훅을 사용하여 상태와 액션 함수를 가져옵니다.
+  // 이 방식은 Redux의 useSelector와 useDispatch를 대체합니다.
+  const { user, logout } = useAuthStore();
 
   return (
-    <Layout>
-      <div className="login-container">
-        <div className="login-box">
-          <h2>로그인</h2>
-          <input type="text" ref={userid} placeholder="아이디" />
-          <input type="password" ref={password} placeholder="비밀번호" />
-          <button className="login-button" onClick={handleLogin}>
-            로그인
-          </button>
-          <div className="social-login-container">
-            <button className="kakao-button">카카오로 로그인</button>
-            <button className="naver-button">네이버로 로그인</button>
-          </div>
-          <div className="account-actions">
-            <Link to="/signup">회원가입</Link>
-            <span className="divider">|</span>
-            <Link to="/findid">아이디 찾기</Link>
-            <span className="divider">|</span>
-            <Link to="/findpwd">비밀번호 찾기</Link>
-          </div>
-        </div>
+    <div>
+      <div className="main-carousel">
+        <img src={mainImage} alt="메인 페이지 배경 이미지" />
       </div>
-    </Layout>
+
+      <div className="container">
+        <div className="left-container"></div>
+        <div className="main-container">
+          <h2>메인페이지</h2>
+        </div>
+        <div className="right-container"></div>
+      </div>
+    </div>
   );
 }
