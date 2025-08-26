@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  Search,
-  Heart,
-  Globe,
-  Menu,
   MapPin,
   UserStar,
   UserCheck,
   UserCog,
+  Cloud,
+  CloudRain,
+  Sun,
+  Snowflake,
+  CloudSun,
 } from "lucide-react";
 import "../css/Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -20,6 +21,56 @@ export default function Navbar({ className = "" }) {
 
   const { user, logout } = useAuthStore();
   const isLoggedIn = !!user;
+
+  const [weather, setWeather] = useState({ temp: null, sky: null, pty: null });
+
+  useEffect(() => {
+    const fetchWeather = async () => {
+      try {
+        const res = await fetch("http://localhost:9999/api/weather/now"); // 스프링 서버
+        const data = await res.json();
+
+        console.log(data);
+        // 기온(TMP), 하늘상태(SKY), 강수형태(PTY) 추출
+        const { temp, sky, pty } = data;
+
+        setWeather({ temp, sky, pty });
+      } catch (err) {
+        console.error("날씨 API 에러:", err);
+      }
+    };
+
+    fetchWeather();
+  }, []);
+
+  // 아이콘 매핑 함수
+  const getWeatherIcon = () => {
+    if (weather.pty && weather.pty !== "0") {
+      switch (weather.pty) {
+        case "1":
+          return <CloudRain className="weather-icon" />; // 비
+        case "2":
+          return <CloudRain className="weather-icon" />; // 비/눈
+        case "3":
+          return <Snowflake className="weather-icon" />; // 눈
+        case "4":
+          return <CloudRain className="weather-icon" />; // 소나기
+        default:
+          return <Cloud className="weather-icon" />;
+      }
+    } else {
+      switch (weather.sky) {
+        case "1":
+          return <Sun className="weather-icon" />; // 맑음
+        case "3":
+          return <CloudSun className="weather-icon" />; // 구름많음
+        case "4":
+          return <Cloud className="weather-icon" />; // 흐림
+        default:
+          return <Sun className="weather-icon" />;
+      }
+    }
+  };
 
   const handleLogout = async () => {
     if (user) {
@@ -163,8 +214,8 @@ export default function Navbar({ className = "" }) {
           <div className="right-section">
             {/* Weather Info */}
             <div className="weather-info" data-testid="weather-info">
-              <MapPin className="weather-icon" />
-              <span>31.6°C</span>
+              {getWeatherIcon()}
+              <span>{weather.temp ? `${weather.temp}°C` : "로딩중..."}</span>
             </div>
 
             {/* Login Button */}
