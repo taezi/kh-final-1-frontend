@@ -12,6 +12,7 @@ import EditorPage from "./pages/EditorPage";
 import MypagePage from "./pages/MypagePage";
 import DateaiPage from "./pages/DateaiPage";
 import CulturePage from "./pages/CulturePage";
+import EditorWritePage from './pages/EditorWritePage';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/findpwd" element={<FindPwdPage></FindPwdPage>} />
           <Route path="/culture" element={<CulturePage></CulturePage>} />
           <Route path="/editor" element={<EditorPage></EditorPage>} />
+          <Route path="/editorWrite" element={<EditorWritePage></EditorWritePage>} />
 
           {/* 보호된 라우트는 PrivateRoute 컴포넌트로 감쌉니다 */}
 
