@@ -14,8 +14,8 @@ import DateaiPage from "./pages/DateaiPage";
 import CulturePage from "./pages/CulturePage";
 import RestaurantPage from "./pages/RestaurantPage";
 import CafePage from "./pages/CafePage";
-import EditorWritePage from './pages/EditorWritePage';
-
+import EditorWritePage from "./pages/EditorWritePage";
+import EventsPage from "./pages/EventPage";
 
 function App() {
   return (
@@ -33,9 +33,13 @@ function App() {
             path="/restaurants"
             element={<RestaurantPage></RestaurantPage>}
           />
+          <Route path="/events" element={<EventsPage />} />
           <Route path="/cafes" element={<CafePage></CafePage>} />
           <Route path="/editor" element={<EditorPage></EditorPage>} />
-          <Route path="/editorWrite" element={<EditorWritePage></EditorWritePage>} />
+          <Route
+            path="/editorWrite"
+            element={<EditorWritePage></EditorWritePage>}
+          />
 
           {/* 보호된 라우트는 PrivateRoute 컴포넌트로 감쌉니다 */}
 
