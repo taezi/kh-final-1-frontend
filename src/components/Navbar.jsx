@@ -144,7 +144,7 @@ export default function Navbar({ className = "" }) {
                   }
                   data-testid="dropdown-editor-recommendations"
                 >
-                  에디터 추천 데이터코스
+                  에디터 추천 데이트코스
                 </div>
                 <div
                   className="dropdown-item"
@@ -153,7 +153,7 @@ export default function Navbar({ className = "" }) {
                   }
                   data-testid="dropdown-ai-recommendations"
                 >
-                  AI활용한 데이터 코스 추천
+                  AI활용한 데이트 코스 추천
                 </div>
               </div>
             </div>
