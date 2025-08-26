@@ -8,7 +8,6 @@ export default function LoginPage() {
   const userid = useRef(null);
   const password = useRef(null);
   const navigate = useNavigate();
-  // Zustand 훅에서 loginUser 액션 함수를 가져옵니다.
   const { loginUser } = useAuthStore();
 
   const handleLogin = async () => {
@@ -17,7 +16,6 @@ export default function LoginPage() {
         userid: userid.current.value,
         password: password.current.value,
       });
-
       navigate("/");
     } catch (error) {
       console.error("로그인 실패:", error);
@@ -27,22 +25,25 @@ export default function LoginPage() {
 
   return (
     <Layout>
-      <h3>로그인페이지</h3>
-      <div>
-        <input type="text" ref={userid} placeholder="아이디" />
-        <br />
-        <input type="password" ref={password} placeholder="비밀번호" />
-        <br />
-        <button onClick={handleLogin}>로그인</button>
-        <br />
-        <button>카카오로 시작하기</button>
-        <button>네이버로 시작하기</button>
-        <div className="account-actions">
-          <Link to="/signup">회원가입</Link>
-          <br />
-          <Link to="/findid">아이디찾기</Link>
-          <br />
-          <Link to="/findpwd">비밀번호찾기</Link>
+      <div className="login-container">
+        <div className="login-box">
+          <h2>로그인</h2>
+          <input type="text" ref={userid} placeholder="아이디" />
+          <input type="password" ref={password} placeholder="비밀번호" />
+          <button className="login-button" onClick={handleLogin}>
+            로그인
+          </button>
+          <div className="social-login-container">
+            <button className="kakao-button">카카오로 로그인</button>
+            <button className="naver-button">네이버로 로그인</button>
+          </div>
+          <div className="account-actions">
+            <Link to="/signup">회원가입</Link>
+            <span className="divider">|</span>
+            <Link to="/findid">아이디 찾기</Link>
+            <span className="divider">|</span>
+            <Link to="/findpwd">비밀번호 찾기</Link>
+          </div>
         </div>
       </div>
     </Layout>
