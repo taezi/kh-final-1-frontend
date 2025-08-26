@@ -19,19 +19,16 @@ editorAPI.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-
-
-//editorWritePage
+//게시글 작성 함수
 export const createPost = async(postData) =>{
-
-  console.log(postData)
-      // await 사용해서 Axios 요청
-    
+  console.log("전송 데이터:", postData) 
   try {
     const response = await editorAPI.post('/posts', postData);
-    console.log(response);
+    console.log("응답:", response);
     return response.data;
   } catch (error) {
+    console.error("글 작성 에러:", error);
     throw error;
   }
+
 };
