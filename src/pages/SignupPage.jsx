@@ -45,7 +45,7 @@ export default function SignupPage() {
         formData.email
       );
       console.log(response);
-      alert("회원가입성공");
+      alert("회원가입 성공");
 
       navigate("/login");
     } catch (error) {
@@ -56,77 +56,95 @@ export default function SignupPage() {
 
   return (
     <Layout>
-      <h3>회원가입 페이지</h3>
-      {/* 각 input에 name, value, onChange 속성 추가 */}
-      <input
-        type="text"
-        name="username"
-        value={formData.username}
-        onChange={handleInputChange}
-        placeholder="이름을 입력해주세요"
-        required
-        autoFocus
-      />
-      <br></br>
-      <input
-        type="text"
-        name="userid"
-        value={formData.userid}
-        onChange={handleInputChange}
-        placeholder="아이디를 입력해주세요"
-        required
-      />
-      <button>중복확인</button>
-      <br></br>
-      <input
-        type="password"
-        name="password"
-        value={formData.password}
-        onChange={handleInputChange}
-        placeholder="비밀번호를 입력해주세요"
-        required
-      />
-      <br></br>
-      <input
-        type="password"
-        name="repassword"
-        value={formData.repassword}
-        onChange={handleInputChange}
-        placeholder="비밀번호를 다시 입력해주세요"
-        required
-      />
-      <br></br>
-      <input
-        type="text"
-        name="email"
-        value={formData.email}
-        onChange={handleInputChange}
-        placeholder="이메일 주소를 입력해주세요"
-        required
-      />
-      <br></br>
-      <input
-        type="text"
-        name="nickname"
-        value={formData.nickname}
-        onChange={handleInputChange}
-        placeholder="별명을 입력해주세요"
-        required
-      />
-      <br></br>
-      <div>
-        <label htmlFor="chk_id">가입 필수 정보를 위임하는데 동의합니다.</label>
-        <input
-          type="checkbox"
-          className="signup-checkbox"
-          checked={isAgreed}
-          onChange={(e) => setIsAgreed(e.target.checked)}
-        />
+      <div className="signup-container">
+        <div className="signup-box">
+          <h3>회원가입</h3>
+          <input
+            className="signup-input"
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleInputChange}
+            placeholder="이름을 입력해주세요"
+            required
+            autoFocus
+          />
+          <div className="input-group">
+            <input
+              className="signup-input"
+              type="text"
+              name="userid"
+              value={formData.userid}
+              onChange={handleInputChange}
+              placeholder="아이디를 입력해주세요"
+              required
+            />
+            <button className="duplicate-check-button">중복확인</button>
+          </div>
+          <input
+            className="signup-input"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            placeholder="비밀번호를 입력해주세요"
+            required
+          />
+          <input
+            className="signup-input"
+            type="password"
+            name="repassword"
+            value={formData.repassword}
+            onChange={handleInputChange}
+            placeholder="비밀번호를 다시 입력해주세요"
+            required
+          />
+          <input
+            className="signup-input"
+            type="text"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            placeholder="이메일 주소를 입력해주세요"
+            required
+          />
+          <input
+            className="signup-input"
+            type="text"
+            name="nickname"
+            value={formData.nickname}
+            onChange={handleInputChange}
+            placeholder="별명을 입력해주세요"
+            required
+          />
+          <div className="agreement-section">
+            <input
+              type="checkbox"
+              className="signup-checkbox"
+              checked={isAgreed}
+              onChange={(e) => setIsAgreed(e.target.checked)}
+            />
+            <label htmlFor="chk_id">
+              가입 필수 정보를 위임하는데 동의합니다.
+            </label>
+          </div>
+          <button className="signup-button" onClick={handleRegister}>
+            회원가입
+          </button>
+          <div className="social-login-group">
+            <button className="social-login-button kakao-login-button">
+              카카오로 회원가입
+            </button>
+            <button className="social-login-button naver-login-button">
+              네이버로 회원가입
+            </button>
+          </div>
+          
+          <p className="login-link">
+            이미 계정이 있으신가요? <a href="/login">로그인</a>
+          </p>
+        </div>
       </div>
-      <button onClick={handleRegister}>회원가입</button>
-      <p>
-        이미 계정이 있으신가요? <a href="/login">로그인</a>
-      </p>
     </Layout>
   );
 }
