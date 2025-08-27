@@ -9,7 +9,10 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "@toast-ui/react-editor": "^3.2.3",
+    "ajv": "^6.12.6",
+    "ajv-keywords": "^3.5.2",
     "axios": "^1.11.0",
+    "dayjs": "^1.11.13",
     "immer": "^10.1.1",
     "lucide-react": "^0.541.0",
     "react": "^19.1.1",
@@ -28,6 +31,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:9999",
   "eslintConfig": {
     "extends": [
       "react-app",
