@@ -97,30 +97,7 @@
 }
 
 
-.social-login-button {
-    width: 100%; 
-    padding: 15px;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: opacity 0.3s;
-}
 
-.social-login-button:hover {
-    opacity: 0.8;
-}
-
-.kakao-login-button {
-    background-color: #FEE500;
-    color: #3C1E1E;
-}
-
-.naver-login-button {
-    background-color: #03C75A;
-    color: #fff;
-}
 
 
 .agreement-section {

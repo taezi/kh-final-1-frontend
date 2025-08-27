@@ -131,14 +131,7 @@ export default function SignupPage() {
           <button className="signup-button" onClick={handleRegister}>
             회원가입
           </button>
-          <div className="social-login-group">
-            <button className="social-login-button kakao-login-button">
-              카카오로 회원가입
-            </button>
-            <button className="social-login-button naver-login-button">
-              네이버로 회원가입
-            </button>
-          </div>
+          
           
           <p className="login-link">
             이미 계정이 있으신가요? <a href="/login">로그인</a>
