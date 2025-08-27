@@ -16,6 +16,8 @@ import RestaurantPage from "./pages/RestaurantPage";
 import CafePage from "./pages/CafePage";
 import EditorWritePage from "./pages/EditorWritePage";
 import EventsPage from "./pages/EventPage";
+import NoticePage from "./pages/NoticePage";
+import InquiryPage from "./pages/InquiryPage";
 
 function App() {
   return (
@@ -36,19 +38,19 @@ function App() {
           <Route path="/events" element={<EventsPage />} />
           <Route path="/cafes" element={<CafePage></CafePage>} />
           <Route path="/editor" element={<EditorPage></EditorPage>} />
+          <Route path="/notice" element={<NoticePage></NoticePage>} />
           <Route
             path="/editorWrite"
             element={<EditorWritePage></EditorWritePage>}
           />
 
           {/* 보호된 라우트는 PrivateRoute 컴포넌트로 감쌉니다 */}
-
           <Route element={<PrivateRoute />}>
             <Route path="/admin" element={<AdminPage></AdminPage>} />
             <Route path="/mypage" element={<MypagePage></MypagePage>} />
             <Route path="/dateai" element={<DateaiPage></DateaiPage>} />
+            <Route path="/inquiry" element={<InquiryPage></InquiryPage>} />
           </Route>
-
           <Route path="*" element={<h1>404 Not Found</h1>} />
         </Routes>
       </div>

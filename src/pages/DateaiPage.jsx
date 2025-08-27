@@ -30,6 +30,7 @@ export default function DateaiPage(params) {
     try {
       const response = await generateAI(prompt); // ✅ AI 호출
       setSearchData(response);
+      console.log(searchData);
       setShowResults(true);
     } catch (err) {
       console.error(err);

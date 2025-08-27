@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import useQueryParam from "../utils/useQueryParam";
 import { getCalendar, getEventList, getFeatured } from "../service/placeAPI";
 import "../css/CulturePage.css";
+import WeatherWidget from "../components/WeatherWidget";
 
 // ✅ 모든 import 끝난 뒤에 플러그인 활성화 (import/first 해결)
 dayjs.extend(isBetween);
@@ -175,7 +176,7 @@ export default function CulturePage() {
       return n;
     });
 
-  const headingGu = gu === "전체" ? "강남구" : gu; // 날씨 제목용(임시)
+  const headingGu = gu === "전체" ? "종로구" : gu; // 날씨 제목용(임시)
 
   // 선택일 범위 내 일정(우측 다크 카드)
   const selDayItems = useMemo(() => {
@@ -338,37 +339,7 @@ export default function CulturePage() {
             </button>
           ))}
         </div>
-
-        {/* ===== 날씨 행 (더미) ===== */}
-        <div className="weather-row">
-          <div className="wr-left">
-            <div className="wr-title">서울특별시 {headingGu} 현재 날씨</div>
-            <div className="wr-big">⛅ 32°</div>
-            <div className="wr-sub">
-              구름많음 · 체감 41° · 습도 62% · 풍속 0.2m/s
-            </div>
-          </div>
-          <div className="wr-right">
-            {[
-              "8.20",
-              "8.21",
-              "8.22",
-              "8.23",
-              "8.24",
-              "8.25",
-              "8.26",
-              "8.27",
-            ].map((d, i) => (
-              <div className="wr-mini" key={i}>
-                <div className="d">{d}</div>
-                <div className="i">☁️</div>
-                <div className="t">
-                  <b>32°</b> / 26°
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <WeatherWidget gu={headingGu}></WeatherWidget>
 
         {/* ===== 검색 ===== */}
         <div className="pg24-search">

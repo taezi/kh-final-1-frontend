@@ -107,8 +107,11 @@ export default function Navbar({ className = "" }) {
     if (category === "places" && type === "restaurants") {
       navigate("/restaurants");
     }
-    if (category === "places" && type === "cafes") {
-      navigate("/cafes");
+    if (category === "customerservice" && type === "notice") {
+      navigate("/notice");
+    }
+    if (category === "customerservice" && type === "inquiry") {
+      navigate("/inquiry");
     }
 
     handleMouseLeave();
@@ -205,6 +208,35 @@ export default function Navbar({ className = "" }) {
                   data-testid="dropdown-ai-recommendations"
                 >
                   AI활용한 데이트 코스 추천
+                </div>
+              </div>
+            </div>
+            {/* customerservice Dropdown */}
+            <div
+              className="nav-item"
+              onMouseEnter={() => handleMouseEnter("customerservice")}
+              onMouseLeave={handleMouseLeave}
+              data-testid="nav-customerservice"
+            >
+              고객센터
+              <div className="dropdown-menu">
+                <div
+                  className="dropdown-item"
+                  onClick={() =>
+                    handleDropdownItemClick("customerservice", "notice")
+                  }
+                  data-testid="dropdown-notice"
+                >
+                  공지사항
+                </div>
+                <div
+                  className="dropdown-item"
+                  onClick={() =>
+                    handleDropdownItemClick("customerservice", "inquiry")
+                  }
+                  data-testid="dropdown-inquiry"
+                >
+                  1:1문의
                 </div>
               </div>
             </div>

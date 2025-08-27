@@ -7,7 +7,7 @@ import "../css/EditorWritePage.css";
 import useAuthStore from "../store/authStore";
 
 export default function EditorWritePage() {
-   const user = useAuthStore((state) => state.user); // ✅ user 가져오기
+  const user = useAuthStore((state) => state.user); // ✅ user 가져오기
   const titleRef = useRef(null);
   const editorRef = useRef();
   const navigate = useNavigate();
@@ -21,14 +21,14 @@ export default function EditorWritePage() {
   //등록 버튼 실패시 사용
   // 등록 버튼 클릭
   const handleClickCreateButton = async () => {
-      console.log("버튼 클릭 확인");
+    console.log("버튼 클릭 확인");
 
     const editorInstance = editorRef.current.getInstance();
     const postData = {
       editortitle: titleRef.current.value,
       // editorcontent: editorInstance.getHTML(),
-       editorcontent: editorInstance.getMarkdown(), // HTML 대신 마크다운
-      userno: user.userno
+      editorcontent: editorInstance.getMarkdown(), // HTML 대신 마크다운
+      userno: user.userno,
     };
 
     try {
