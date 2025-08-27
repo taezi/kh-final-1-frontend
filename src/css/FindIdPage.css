@@ -1,0 +1,123 @@
+/* FindIdPage.css */
+
+/* 전체 컨테이너 스타일 */
+.find-id-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    
+}
+
+/* 폼 박스 스타일 */
+.find-id-box {
+    width: 450px; 
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* 제목 스타일 */
+.find-id-box h3 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 25px; 
+    color: #333;
+}
+
+/* 입력 그룹 스타일 (input + button) */
+.input-group {
+    display: flex;
+    align-items: center; /* 수직 정렬을 보장합니다. */
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+/* 입력 필드 스타일 */
+.find-id-input {
+    flex-grow: 1; 
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box; /* 패딩과 보더를 높이에 포함시킵니다. */
+    height: 44px; /* 높이를 명시적으로 지정하여 버튼과 맞춥니다. */
+    margin-bottom: 10px; 
+}
+
+.find-id-input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* 버튼 스타일 */
+.find-id-button {
+    padding: 0 15px;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    height: 44px; /* 높이를 명시적으로 지정하여 입력 필드와 맞춥니다. */
+    box-sizing: border-box; /* 패딩과 보더를 높이에 포함시킵니다. */
+}
+
+/* 주 버튼 스타일 (아이디 찾기, 로그인 페이지로 이동) */
+.primary-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.primary-button:hover {
+    background-color: #0056b3;
+}
+
+/* 인증번호 전송/재전송 버튼 스타일 */
+.send-code-button {
+    background-color: #007bff;
+    color: white;
+}
+
+/* 확인 버튼 스타일 */
+.verify-button {
+    background-color: #28a745;
+    color: white;
+}
+
+/* 타이머 텍스트 스타일 */
+.timer-text {
+    font-size: 14px;
+    color: #555;
+    white-space: nowrap;
+}
+
+/* 인증 그룹 스타일 (인증번호 입력창과 타이머, 확인 버튼) */
+.verification-group {
+    align-items: center;
+}
+
+/* 아이디 찾기 결과 섹션 */
+.find-id-result {
+    margin-top: 20px;
+}
+
+.find-id-result p {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.find-id-result .found-id {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+    margin: 10px 0;
+}
