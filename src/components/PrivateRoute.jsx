@@ -8,5 +8,6 @@ export default function PrivateRoute(params) {
     return <Outlet></Outlet>;
   }
   alert("로그인 하셔야 이용하실 수 있습니다.");
-  return <Navigate to="/login" replace></Navigate>;
+
+  return <Navigate to="/login" />;
 }
