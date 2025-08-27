@@ -1,0 +1,99 @@
+/* .editor-search {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+.editor-search input {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.editor-search button {
+  padding: 6px 12px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.editor-search button:hover {
+  background-color: #45a049;
+}
+ */
+
+.editor-page {
+  padding: 20px;
+  text-align: center;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.editor-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3열 */
+  gap: 20px;
+}
+
+.editor-card {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: transform 0.2s;
+}
+
+.editor-card:hover {
+  transform: translateY(-5px);
+}
+
+.editor-image {
+  position: relative;
+}
+
+.editor-image img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.like-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: white;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.editor-info {
+  padding: 10px;
+}
+
+.editor-info h4 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.load-more {
+  margin-top: 20px;
+}
+
+.load-more button {
+  padding: 10px 20px;
+  background: #ffe6b3;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}

@@ -32,3 +32,36 @@ export const createPost = async(postData) =>{
   }
 
 };
+
+// 게시글 상세 조회
+export const getPostDetail = async (editorno) => {
+  try {
+    const response = await editorAPI.get(`/detail/${editorno}`);
+    return response.data;
+  } catch (error) {
+    console.error("상세 조회 에러:", error);
+    throw error;
+  }
+};
+
+// 게시글 수정
+export const updatePost = async (editorno, postData) => {
+  try {
+    const response = await editorAPI.put(`/update/${editorno}`, postData);
+    return response.data;
+  } catch (error) {
+    console.error("수정 에러:", error);
+    throw error;
+  }
+};
+
+// 게시글 삭제
+export const deletePost = async (editorno) => {
+  try {
+    const response = await editorAPI.delete(`/delete/${editorno}`);
+    return response.data;
+  } catch (error) {
+    console.error("삭제 에러:", error);
+    throw error;
+  }
+};
