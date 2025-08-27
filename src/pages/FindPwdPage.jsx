@@ -30,6 +30,7 @@ export default function FindPwdPage() {
       ...preFormData,
       [name]: value,
     }));
+    
   };
 
   const handleFindPwd = async () => {

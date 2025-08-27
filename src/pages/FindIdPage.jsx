@@ -56,7 +56,7 @@ export default function FindIdPage() {
       <div className="find-id-container">
         <div className="find-id-box">
           <h3>아이디 찾기</h3>
-          {!showResult ? ( // 결과를 보여줄 상태가 아니면 입력 폼을 렌더링
+          {!showResult ? ( 
             <>
               <input
                 className="find-id-input"
