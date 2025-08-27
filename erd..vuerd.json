@@ -4,9 +4,9 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": -621.0636,
-    "scrollLeft": -232,
-    "zoomLevel": 0.7,
+    "scrollTop": -648.3365,
+    "scrollLeft": -12,
+    "zoomLevel": 0.79,
     "show": 511,
     "database": 8,
     "databaseName": "",
@@ -42,7 +42,8 @@
       "0bBOns9x5gQp_1pr4at8A",
       "7lzxhNQdkLM7LJ8OcRbZk",
       "Lif6t82tPG6qVg1ZhwH7G",
-      "CgowHuIbT1hR-VWgRP_V3"
+      "CgowHuIbT1hR-VWgRP_V3",
+      "D5HQhCMtG-hwfwJkpQs5z"
     ],
     "relationshipIds": [
       "clY9lOHSHnYSc6vFi0Oi_",
@@ -169,7 +170,11 @@
           "dxqlNY9QcswU6d_Ee7HFN",
           "4LM7dVrr6QPaH8AAxVvfN",
           "WCCkiczZ-ENN_Am-bIIys",
-          "kbbsn6zKDUQF-Wi78rXME"
+          "kbbsn6zKDUQF-Wi78rXME",
+          "7NRBq2_urchgOL635V6_c",
+          "VGWENrvpLiJ-RKzPeAziA",
+          "hE1-Tw_BBvbTne05DBynh",
+          "mWmCcT7UKIjeN9qa_ZsNR"
         ],
         "seqColumnIds": [
           "zXXMAmqrS5h3kSfXPfHh_",
@@ -180,18 +185,22 @@
           "dxqlNY9QcswU6d_Ee7HFN",
           "4LM7dVrr6QPaH8AAxVvfN",
           "WCCkiczZ-ENN_Am-bIIys",
-          "kbbsn6zKDUQF-Wi78rXME"
+          "kbbsn6zKDUQF-Wi78rXME",
+          "7NRBq2_urchgOL635V6_c",
+          "VGWENrvpLiJ-RKzPeAziA",
+          "hE1-Tw_BBvbTne05DBynh",
+          "mWmCcT7UKIjeN9qa_ZsNR"
         ],
         "ui": {
-          "x": 1430.3583,
-          "y": 1180.3782,
+          "x": 1407.5735,
+          "y": 1232.277,
           "zIndex": 284,
           "widthName": 60,
           "widthComment": 65,
           "color": ""
         },
         "meta": {
-          "updateAt": 1756172254161,
+          "updateAt": 1756258707008,
           "createAt": 1755654422730
         }
       },
@@ -207,7 +216,11 @@
           "8MWQhZqYYOs2PDFnwC7Ue",
           "iiAdvIhQo8zGoR4kvTVDC",
           "YG-jWCv0C8NzmjS968Dp_",
-          "zgx1pryY1mrWmmIKzgXEB"
+          "zgx1pryY1mrWmmIKzgXEB",
+          "QQRb_tWewHLpDPUpKbpIX",
+          "uOZVDC6RKKGiW90w_64UI",
+          "EUEF7T9TsFNdal89s_W41",
+          "-vLjVZsOOkGJOrCAnMQGN"
         ],
         "seqColumnIds": [
           "JcprYtjHpTGW13F5E3Fo-",
@@ -218,18 +231,22 @@
           "8MWQhZqYYOs2PDFnwC7Ue",
           "iiAdvIhQo8zGoR4kvTVDC",
           "YG-jWCv0C8NzmjS968Dp_",
-          "zgx1pryY1mrWmmIKzgXEB"
+          "zgx1pryY1mrWmmIKzgXEB",
+          "QQRb_tWewHLpDPUpKbpIX",
+          "uOZVDC6RKKGiW90w_64UI",
+          "EUEF7T9TsFNdal89s_W41",
+          "-vLjVZsOOkGJOrCAnMQGN"
         ],
         "ui": {
-          "x": 1426.9736,
-          "y": 927.8796,
+          "x": 1481.4041,
+          "y": 829.1453,
           "zIndex": 324,
           "widthName": 60,
           "widthComment": 65,
           "color": ""
         },
         "meta": {
-          "updateAt": 1756172180749,
+          "updateAt": 1756258807989,
           "createAt": 1755654887410
         }
       },
@@ -536,6 +553,36 @@
         "meta": {
           "updateAt": 1755918687522,
           "createAt": 1755918684533
+        }
+      },
+      "D5HQhCMtG-hwfwJkpQs5z": {
+        "id": "D5HQhCMtG-hwfwJkpQs5z",
+        "name": "seoul_gu",
+        "comment": "서울시 구별 테이블",
+        "columnIds": [
+          "0k0LWNkcsV69pJFwrZfSe",
+          "0vX88G2C4BiU11-LEUb9N",
+          "GganQ2rBqxePOd2beh93j",
+          "CrCnowqrDPccazSUgMUCn"
+        ],
+        "seqColumnIds": [
+          "0k0LWNkcsV69pJFwrZfSe",
+          "0vX88G2C4BiU11-LEUb9N",
+          "GganQ2rBqxePOd2beh93j",
+          "CrCnowqrDPccazSUgMUCn",
+          "i1DE6wtRHzb0nihHV_sb4"
+        ],
+        "ui": {
+          "x": 1378.5602,
+          "y": 56.962,
+          "zIndex": 1736,
+          "widthName": 60,
+          "widthComment": 105,
+          "color": ""
+        },
+        "meta": {
+          "updateAt": 1756192476267,
+          "createAt": 1756192073005
         }
       }
     },
@@ -2725,18 +2772,18 @@
         "tableId": "YjA1KnXWX3w0WK2TD9jS1",
         "name": "restbranch",
         "comment": "식당지점",
-        "dataType": "VARCHAR2(50)",
+        "dataType": "VARCHAR2(200)",
         "default": "",
         "options": 0,
         "ui": {
           "keys": 0,
           "widthName": 60,
           "widthComment": 60,
-          "widthDataType": 81,
+          "widthDataType": 87,
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1756172226094,
+          "updateAt": 1756195025653,
           "createAt": 1756168001667
         }
       },
@@ -2858,6 +2905,266 @@
         "meta": {
           "updateAt": 1756172292108,
           "createAt": 1756172205226
+        }
+      },
+      "0k0LWNkcsV69pJFwrZfSe": {
+        "id": "0k0LWNkcsV69pJFwrZfSe",
+        "tableId": "D5HQhCMtG-hwfwJkpQs5z",
+        "name": "seoulname",
+        "comment": "서울시구별이름",
+        "dataType": "VARCHAR2(50)",
+        "default": "",
+        "options": 4,
+        "ui": {
+          "keys": 0,
+          "widthName": 60,
+          "widthComment": 86,
+          "widthDataType": 81,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1756192299459,
+          "createAt": 1756192094316
+        }
+      },
+      "0vX88G2C4BiU11-LEUb9N": {
+        "id": "0vX88G2C4BiU11-LEUb9N",
+        "tableId": "D5HQhCMtG-hwfwJkpQs5z",
+        "name": "nx",
+        "comment": "x좌표",
+        "dataType": "NUMBER",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 60,
+          "widthComment": 60,
+          "widthDataType": 60,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1756192275428,
+          "createAt": 1756192094707
+        }
+      },
+      "GganQ2rBqxePOd2beh93j": {
+        "id": "GganQ2rBqxePOd2beh93j",
+        "tableId": "D5HQhCMtG-hwfwJkpQs5z",
+        "name": "ny",
+        "comment": "y좌표",
+        "dataType": "NUMBER",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 60,
+          "widthComment": 60,
+          "widthDataType": 60,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1756192279179,
+          "createAt": 1756192094915
+        }
+      },
+      "CrCnowqrDPccazSUgMUCn": {
+        "id": "CrCnowqrDPccazSUgMUCn",
+        "tableId": "D5HQhCMtG-hwfwJkpQs5z",
+        "name": "msradmcode",
+        "comment": "측정소행정구역코드",
+        "dataType": "NUMBER",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 71,
+          "widthComment": 110,
+          "widthDataType": 60,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1756192284146,
+          "createAt": 1756192175075
+        }
+      },
+      "i1DE6wtRHzb0nihHV_sb4": {
+        "id": "i1DE6wtRHzb0nihHV_sb4",
+        "tableId": "D5HQhCMtG-hwfwJkpQs5z",
+        "name": "",
+        "comment": "",
+        "dataType": "",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 60,
+          "widthComment": 60,
+          "widthDataType": 60,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1756192175827,
+          "createAt": 1756192175827
+        }
+      },
+      "QQRb_tWewHLpDPUpKbpIX": {
+        "id": "QQRb_tWewHLpDPUpKbpIX",
+        "tableId": "rsDn4qzoTpnWqA7e0o39W",
+        "name": "cafesummary",
+        "comment": "까페설명",
+        "dataType": "VARCHAR2(4000)",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 72,
+          "widthComment": 60,
+          "widthDataType": 94,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1756258605419,
+          "createAt": 1756258565961
+        }
+      },
+      "uOZVDC6RKKGiW90w_64UI": {
+        "id": "uOZVDC6RKKGiW90w_64UI",
+        "tableId": "rsDn4qzoTpnWqA7e0o39W",
+        "name": "cafewebsite",
+        "comment": "까페사이트",
+        "dataType": "VARCHAR2(500)",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 64,
+          "widthComment": 62,
+          "widthDataType": 87,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1756258641577,
+          "createAt": 1756258566216
+        }
+      },
+      "EUEF7T9TsFNdal89s_W41": {
+        "id": "EUEF7T9TsFNdal89s_W41",
+        "tableId": "rsDn4qzoTpnWqA7e0o39W",
+        "name": "caferating",
+        "comment": "까페별점",
+        "dataType": "VARCHAR2(100)",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 60,
+          "widthComment": 60,
+          "widthDataType": 87,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1756258654787,
+          "createAt": 1756258566512
+        }
+      },
+      "-vLjVZsOOkGJOrCAnMQGN": {
+        "id": "-vLjVZsOOkGJOrCAnMQGN",
+        "tableId": "rsDn4qzoTpnWqA7e0o39W",
+        "name": "cafemapurl",
+        "comment": "까페url",
+        "dataType": "VARCHAR2(500)",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 61,
+          "widthComment": 60,
+          "widthDataType": 87,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1756258802968,
+          "createAt": 1756258567048
+        }
+      },
+      "7NRBq2_urchgOL635V6_c": {
+        "id": "7NRBq2_urchgOL635V6_c",
+        "tableId": "YjA1KnXWX3w0WK2TD9jS1",
+        "name": "restsummary",
+        "comment": "식당설명",
+        "dataType": "VARCHAR2(4000)",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 70,
+          "widthComment": 60,
+          "widthDataType": 94,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1756258787480,
+          "createAt": 1756258706193
+        }
+      },
+      "VGWENrvpLiJ-RKzPeAziA": {
+        "id": "VGWENrvpLiJ-RKzPeAziA",
+        "tableId": "YjA1KnXWX3w0WK2TD9jS1",
+        "name": "restwebsite",
+        "comment": "식당사이트",
+        "dataType": "VARCHAR2(500)",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 62,
+          "widthComment": 62,
+          "widthDataType": 87,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1756258790618,
+          "createAt": 1756258706632
+        }
+      },
+      "hE1-Tw_BBvbTne05DBynh": {
+        "id": "hE1-Tw_BBvbTne05DBynh",
+        "tableId": "YjA1KnXWX3w0WK2TD9jS1",
+        "name": "restrating",
+        "comment": "식당별점",
+        "dataType": "VARCHAR2(100)",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 60,
+          "widthComment": 60,
+          "widthDataType": 87,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1756258793792,
+          "createAt": 1756258706848
+        }
+      },
+      "mWmCcT7UKIjeN9qa_ZsNR": {
+        "id": "mWmCcT7UKIjeN9qa_ZsNR",
+        "tableId": "YjA1KnXWX3w0WK2TD9jS1",
+        "name": "restmapurl",
+        "comment": "식당url",
+        "dataType": "VARCHAR2(500)",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 60,
+          "widthComment": 60,
+          "widthDataType": 87,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1756258797388,
+          "createAt": 1756258707008
         }
       }
     },
