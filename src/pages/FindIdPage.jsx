@@ -88,8 +88,7 @@ export default function FindIdPage() {
       return;
     }
 
-    // TODO: 서버 API를 호출하여 아이디를 찾는 로직을 추가해야 합니다.
-    // 예시: const result = await findId(name, phoneNumber);
+   
 
     // 임시로 가상의 아이디를 찾았다고 가정
     const dummyId = "user1234";
