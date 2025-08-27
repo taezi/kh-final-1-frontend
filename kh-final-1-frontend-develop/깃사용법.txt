@@ -1,0 +1,63 @@
+참고사이트
+https://hackmd.io/@oW_dDxdsRoSpl0M64Tfg2g/ByfwpNJ-K
+
+git config --global user.email "당신의이메일@example.com"
+git config --global user.name "당신의이름"
+(맨처음에 한번만하면됨)
+
+--------맨처음 브런치생성할때-------------
+git clone https://github.com/taezi/kh_java_3_project.git
+cd kh_java_3_project
+
+git checkout develop
+git pull origin develop
+git checkout -b feature/han_login develop
+			-> 자기이름 앞글자 + _ + 자신의작업페이지,여기 develop은 맨처음에만한번
+수정작업~~~
+
+git add .
+git commit -m "커밋내용"  
+	->feat: 로그인 기능 구현 (최초 커밋)" # 의미 있는 커밋 메시지 작
+
+git push -u origin feature/han_login
+----------------2-1.병합하기전----------------------------
+기본적으로 배치키면 원레 작업하던 공간이니까
+바로 수정하면됨
+
+수정작업~~~
+
+git add .
+git commit -m "feat: 로그인 기능 구현 (최초 커밋)" # 의미 있는 커밋 메시지 작
+                                 -> 커밋 + 1,2,3,4.........
+git push -u origin feature/han_develop
+
+아래반복
+****중요*************2-2.병합한후에*****************************
+git checkout develop         # develop 브랜치로 이동
+git pull origin develop      # 원격에서 최신 내용 가져오기
+git checkout feature/han_develop          <-------------------작업하는 브런치
+git merge develop
+git add .
+git commit -m "Merge develop into feature/han_develop "
+
+수정작업~~~
+
+git add .
+git commit -m "커밋한 내용 간단히"
+git push origin feature/han_develop 
+
+---->>>>>>>>>>>깃허브에서 병합 리퀘스트 하는데************
+ ******* main으로 되어있는 거 꼭 develop으로 변경하고 병합해야함 *********************
+--------------------------------------
+생성된브런치로 이동할때
+git checkout feature/han_develop
+			-> 자기이름 앞글자 + _ + 자신의작업페이지
+수정작업~~~
+
+git add .
+git commit -m "커밋1" 
+                                 -> 커밋 + 1,2,3,4.........
+git push -u origin feature/han_develop
+----------------------
+해당 브런치에있는 데이터다운
+git pull orgin 브런치명
