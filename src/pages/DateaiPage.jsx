@@ -9,6 +9,7 @@ import { generateAI } from "../service/aiAPI";
 export default function DateaiPage(params) {
   const [showResults, setShowResults] = useState(false);
   const [searchData, setSearchData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSearch = async (data) => {
     console.log("검색 데이터:", data);
@@ -23,30 +24,35 @@ export default function DateaiPage(params) {
       - 추가 요청사항: ${data.query || "없음"}
 
       위 조건에 맞는 서울 데이트 코스를 추천해줘.
-      가능하다면 2~3가지 코스를 구체적으로 알려줘.
-      각 코스는 장소 이름, 활동 설명, 예상 소요시간, 대략적인 비용을 포함해줘.
+      1가지 코스를 구체적으로 알려줘.
+      각 코스는 장소 이름(name), 활동 설명(desc), 예상 소요시간(ex 13:00~15:00)(time), 대략적인 비용(price)을 포함해서 json형태로줘.
     `;
 
     try {
-      const response = await generateAI(prompt); // ✅ AI 호출
-      setSearchData(response);
-      console.log(searchData);
+      setSearchData(null);
+      setLoading(true);
       setShowResults(true);
+
+      const response = await generateAI(prompt);
+      setSearchData(response);
+      console.log("searchData : " + searchData);
     } catch (err) {
       console.error(err);
       setSearchData({ error: "AI 추천 중 오류가 발생했습니다" });
-      setShowResults(true);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleBackToSearch = () => {
     setShowResults(false);
+    setSearchData(null);
+    setLoading(false);
   };
 
   return (
     <Layout>
-      {/* ✅ 검색 결과 화면 */}
-      {showResults && searchData ? (
+      {showResults ? (
         <div className="date-course-page">
           <div className="back-button-container">
             <button
@@ -58,10 +64,16 @@ export default function DateaiPage(params) {
               <span>다시 검색하기</span>
             </button>
           </div>
-          <DateCourseResults searchData={searchData} />
+
+          {/*  로딩 중 표시 */}
+          {loading && <p className="loading">검색중입니다...</p>}
+
+          {/*  결과 표시 */}
+          {!loading && searchData && (
+            <DateCourseResults searchData={searchData} />
+          )}
         </div>
       ) : (
-        /* ✅ 기본 검색 화면 */
         <div className="date-course-page">
           <div className="main-header">
             <h1 className="main-title" data-testid="main-title">
