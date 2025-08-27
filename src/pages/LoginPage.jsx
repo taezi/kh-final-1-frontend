@@ -35,7 +35,7 @@ export default function LoginPage() {
           </button>
           <div className="social-login-container">
             <button className="kakao-button">카카오로 로그인</button>
-            <button className="naver-button">네이버로 로그인</button>
+            <button className="naver-button">네이버로 로그인1</button>
           </div>
           <div className="account-actions">
             <Link to="/signup">회원가입</Link>
