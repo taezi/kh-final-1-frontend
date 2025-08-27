@@ -1,116 +1,62 @@
-import { useState, useEffect } from "react";
+import { useState } from "react"; 
 import Layout from "../components/Layout";
 import "../css/FindIdPage.css";
-import { findId } from "../service/authAPI"; // 아이디를 찾는 API 호출을 가정합니다.
-
-// 타이머를 위한 커스텀 훅
-const useTimer = (initialSeconds) => {
-  const [timer, setTimer] = useState(initialSeconds);
-  const [isActive, setIsActive] = useState(false);
-
-  useEffect(() => {
-    let interval;
-    if (isActive) {
-      interval = setInterval(() => {
-        setTimer((prevTimer) => (prevTimer > 0 ? prevTimer - 1 : 0));
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [isActive]);
-
-  const resetTimer = () => {
-    setTimer(initialSeconds);
-    setIsActive(true);
-  };
-
-  const stopTimer = () => {
-    setIsActive(false);
-  };
-
-  return { timer, resetTimer, stopTimer };
-};
-
-const INITIAL_TIMER_SECONDS = 180;
+import { findIdByUserInfo } from "../service/authAPI"; // 아이디를 찾는 API 호출을 가정합니다. (함수 이름 변경)
+import { useNavigate } from "react-router-dom"; // 로그인 페이지로 돌아가기 위해 useNavigate 훅을 사용합니다.
 
 export default function FindIdPage() {
   const [name, setName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [verificationCode, setVerificationCode] = useState("");
-  const [isCodeSent, setIsCodeSent] = useState(false);
-  const [foundId, setFoundId] = useState("");
-  const [showResult, setShowResult] = useState(false);
+  const [nickname, setNickname] = useState("");
+  const [foundId, setFoundId] = useState(""); // 찾은 아이디를 저장하는 상태
+  const [showResult, setShowResult] = useState(false); // 결과를 보여줄지 말지 결정하는 상태
 
-  // 타이머 훅 사용
-  const { timer, resetTimer, stopTimer } = useTimer(INITIAL_TIMER_SECONDS);
-
-  const handlePhoneNumberChange = (e) => {
-    const numbersOnly = e.target.value.replace(/\D/g, "");
-    setPhoneNumber(numbersOnly);
-  };
-
-  const displayFormattedPhoneNumber = (numbers) => {
-    if (numbers.length <= 3) {
-      return numbers;
-    } else if (numbers.length <= 7) {
-      return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
-    } else {
-      return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(
-        7
-      )}`;
-    }
-  };
-
-  const handleSendCode = () => {
-    if (phoneNumber.length < 10) {
-      alert("전화번호를 올바르게 입력해주세요.");
-      return;
-    }
-    // TODO: 실제로 인증번호를 서버로 전송하는 로직을 추가해야 합니다.
-    console.log(`인증번호를 ${phoneNumber}로 전송합니다.`);
-    setIsCodeSent(true);
-    resetTimer(); // 타이머 시작
-  };
-
-  const handleVerifyCode = () => {
-    // TODO: 서버에서 인증번호를 확인하는 로직을 추가해야 합니다.
-    // 여기서는 간단히 '123456'이 올바른 인증번호라고 가정합니다.
-    if (verificationCode === "123456") {
-      alert("인증 성공!");
-      stopTimer(); // 타이머 중지
-    } else {
-      alert("인증번호가 잘못되었습니다.");
-    }
-  };
+  const navigate = useNavigate(); // 페이지 이동을 위한 훅
 
   const handleFindId = async () => {
-    if (!name || !phoneNumber) {
-      alert("이름과 전화번호를 입력해주세요.");
+    // 필수 입력 필드 검증
+    if (!name.trim()) {
+      alert("이름을 입력해주세요.");
+      return;
+    }
+    if (!nickname.trim()) {
+      alert("별명을 입력해주세요.");
       return;
     }
 
-   
+    try {
+      // TODO: 실제로 이름과 별명으로 아이디를 찾는 API 호출 로직을 구현해야 합니다.
+      // 예시: const response = await findIdByUserInfo(name, nickname);
+      // const resultId = response.data.foundId;
 
-    // 임시로 가상의 아이디를 찾았다고 가정
-    const dummyId = "user1234";
+      // 임시로 가상의 아이디를 찾았다고 가정 (API 연동 전 테스트용)
+      let resultId = "";
+      if (name === "테스트" && nickname === "별명") {
+        resultId = "testuser123"; // 임시로 찾은 아이디
+      } else {
+        resultId = null; // 찾지 못한 경우
+      }
 
-    setFoundId(dummyId);
-    setShowResult(true);
+      setFoundId(resultId); // 찾은 아이디 업데이트 (없으면 null)
+      setShowResult(true); // 결과를 보여주도록 상태 변경
+    } catch (error) {
+      console.error("아이디 찾기 중 오류 발생:", error);
+      alert("아이디를 찾는 중 오류가 발생했습니다. 다시 시도해주세요.");
+      setFoundId(null); // 에러 발생 시 아이디를 찾지 못함으로 처리
+      setShowResult(true); // 결과를 보여주도록 상태 변경
+    }
   };
 
-  // 타이머가 0이 되면 isCodeSent 상태를 리셋
-  useEffect(() => {
-    if (timer === 0 && isCodeSent) {
-      setIsCodeSent(false);
-      alert("인증 시간이 초과되었습니다. 다시 시도해주세요.");
-    }
-  }, [timer, isCodeSent]);
+  // 로그인 페이지로 이동하는 함수
+  const goToLoginPage = () => {
+    navigate("/login");
+  };
 
   return (
     <Layout>
       <div className="find-id-container">
         <div className="find-id-box">
           <h3>아이디 찾기</h3>
-          {!showResult ? (
+          {!showResult ? ( // 결과를 보여줄 상태가 아니면 입력 폼을 렌더링
             <>
               <input
                 className="find-id-input"
@@ -118,45 +64,17 @@ export default function FindIdPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="이름을 입력해주세요"
+                required
+                autoFocus // 페이지 로드 시 자동으로 포커스
               />
-              <div className="input-group">
-                <input
-                  className="find-id-input"
-                  type="text"
-                  value={displayFormattedPhoneNumber(phoneNumber)}
-                  onChange={handlePhoneNumberChange}
-                  placeholder="전화번호를 입력해주세요"
-                  maxLength="13"
-                />
-                <button
-                  className="find-id-button send-code-button"
-                  onClick={handleSendCode}
-                  disabled={isCodeSent && timer > 0}
-                >
-                  {isCodeSent ? "재전송" : "인증번호 전송"}
-                </button>
-              </div>
-              {isCodeSent && (
-                <div className="input-group verification-group">
-                  <input
-                    className="find-id-input"
-                    type="text"
-                    value={verificationCode}
-                    onChange={(e) => setVerificationCode(e.target.value)}
-                    placeholder="인증번호 6자리"
-                    maxLength="6"
-                  />
-                  <span className="timer-text">
-                    {Math.floor(timer / 60)}:{("0" + (timer % 60)).slice(-2)}
-                  </span>
-                  <button
-                    className="find-id-button verify-button"
-                    onClick={handleVerifyCode}
-                  >
-                    확인
-                  </button>
-                </div>
-              )}
+              <input
+                className="find-id-input"
+                type="text"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                placeholder="별명을 입력해주세요"
+                required
+              />
               <button
                 className="find-id-button primary-button"
                 onClick={handleFindId}
@@ -165,13 +83,24 @@ export default function FindIdPage() {
               </button>
             </>
           ) : (
+            // 결과를 보여줄 상태이면 결과 메시지를 렌더링
             <div className="find-id-result">
-              <p>회원님의 아이디는</p>
-              <p className="found-id">{foundId}</p>
-              <p>입니다.</p>
+              {foundId ? ( // 아이디를 찾았을 경우
+                <>
+                  <p>회원님의 아이디는</p>
+                  <p className="found-id">"{foundId}"</p>
+                  <p>입니다.</p>
+                </>
+              ) : (
+                // 아이디를 찾지 못했을 경우
+                <>
+                  <p>입력하신 정보로 아이디를 찾을 수 없습니다.</p>
+                  <p>정보를 다시 확인하거나 회원가입을 해주세요.</p>
+                </>
+              )}
               <button
                 className="find-id-button primary-button"
-                onClick={() => (window.location.href = "/login")}
+                onClick={goToLoginPage}
               >
                 로그인 페이지로 이동
               </button>
