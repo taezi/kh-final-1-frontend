@@ -107,6 +107,9 @@ export default function Navbar({ className = "" }) {
     if (category === "places" && type === "restaurants") {
       navigate("/restaurants");
     }
+    if (category === "places" && type === "movie") {
+      navigate("/movie");
+    }
     if (category === "customerservice" && type === "notice") {
       navigate("/notice");
     }
@@ -135,14 +138,6 @@ export default function Navbar({ className = "" }) {
             >
               Seoul Date
             </a>
-            {/* <Link to="/" className="logo" data-testid="link-home">
-              <img
-                src={logoImage}
-                alt="Seoul Date Logo"
-                className="logo-image"
-              />
-              <span className="logo-text">Seoul Date</span>
-            </Link> */}
           </div>
 
           {/* Navigation */}
@@ -178,6 +173,13 @@ export default function Navbar({ className = "" }) {
                   data-testid="dropdown-cafes"
                 >
                   까페
+                </div>
+                <div
+                  className="dropdown-item"
+                  onClick={() => handleDropdownItemClick("places", "movie")}
+                  data-testid="dropdown-cafes"
+                >
+                  영화
                 </div>
               </div>
             </div>
