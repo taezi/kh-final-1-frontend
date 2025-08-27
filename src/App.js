@@ -18,6 +18,8 @@ import EditorWritePage from "./pages/EditorWritePage";
 import EventsPage from "./pages/EventPage";
 import NoticePage from "./pages/NoticePage";
 import InquiryPage from "./pages/InquiryPage";
+import MoviePage from "./pages/MoviePage";
+import MoviedetailPage from "./pages/MoviedetailPage";
 
 function App() {
   return (
@@ -42,6 +44,12 @@ function App() {
           <Route
             path="/editorWrite"
             element={<EditorWritePage></EditorWritePage>}
+          />
+
+          <Route path="/movie" element={<MoviePage></MoviePage>} />
+          <Route
+            path="/moviedetail"
+            element={<MoviedetailPage></MoviedetailPage>}
           />
 
           {/* 보호된 라우트는 PrivateRoute 컴포넌트로 감쌉니다 */}
