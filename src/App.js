@@ -20,6 +20,7 @@ import NoticePage from "./pages/NoticePage";
 import InquiryPage from "./pages/InquiryPage";
 import MoviePage from "./pages/MoviePage";
 import MoviedetailPage from "./pages/MoviedetailPage";
+import CultureViewPage from "./pages/CultureViewPage";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/findid" element={<FindIdPage></FindIdPage>} />
           <Route path="/findpwd" element={<FindPwdPage></FindPwdPage>} />
           <Route path="/culture" element={<CulturePage></CulturePage>} />
+          <Route path="/culture/:id" element={<CultureViewPage />} />
           <Route
             path="/restaurants"
             element={<RestaurantPage></RestaurantPage>}
