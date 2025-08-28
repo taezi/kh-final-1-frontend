@@ -1,0 +1,156 @@
+
+.movie-page-content {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 40px;
+}
+
+/* ===== HERO (full-bleed) ===== */
+.hero-band {
+  background: #000;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw; /* 전체 뷰포트 너비를 차지 */
+}
+
+.hero {
+  position: relative;
+  aspect-ratio: 1940/730; /* 이미지 비율에 맞춰 종횡비 유지 */
+  background: #000 center/cover no-repeat;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.25),
+    rgba(0, 0, 0, 0) 35%,
+    rgba(0, 0, 0, 0) 70%,
+    rgba(0, 0, 0, 0.2)
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 9999px;
+  border: 1px solid var(--border); /* --border 변수 정의가 필요할 수 있음 */
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.hero-arrow.left {
+  left: 14px;
+}
+
+.hero-arrow.right {
+  right: 14px;
+}
+
+
+
+.movie-backdrop-banner {
+  width: 100%;
+  height: 800px; /* 원하는 높이로 조절 가능 */
+  background-size: cover; /* 이미지가 div를 꽉 채우도록 설정 */
+  background-position: center; /* 이미지 중앙 */
+  background-repeat: no-repeat; /* 이미지 반복 없음 */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+
+.movie-section,
+.cinema-section {
+  background-color: #f9f9f9;
+  padding: 100px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* MovieSection 스타일 */
+.movie-section h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.movie-list {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.movie-item {
+  text-align: center;
+  width: 150px;
+}
+
+.movie-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.movie-item p {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* CinemaSection 스타일 */
+.cinema-section h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.region-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.region-buttons button {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.region-buttons button:hover,
+.region-buttons button.active {
+  background-color: #333;
+  color: #fff;
+}
+
+.map-container {
+  width: 100%;
+  height: 400px; /* 지도 높이 설정 */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}

@@ -51,7 +51,7 @@ function App() {
           <Route path="/editor/edit/:editorno" element={<EditorEditPage />} />
           <Route path="/movie" element={<MoviePage></MoviePage>} />
           <Route
-            path="/moviedetail"
+            path="/movie/:id"
             element={<MoviedetailPage></MoviedetailPage>}
           />
 
