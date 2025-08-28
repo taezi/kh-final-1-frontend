@@ -24,6 +24,7 @@ export const generateAI = async (prompt) => {
     const response = await aiAPI.get("generate", {
       params: { prompt },
     });
+    console.log("ai 대답 : ", response.data);
     return response.data;
   } catch (error) {
     console.error("AI 요청 실패:", error);
