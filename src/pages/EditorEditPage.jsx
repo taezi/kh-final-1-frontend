@@ -1,7 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Editor } from "@toast-ui/react-editor";
-import { getPostDetail, updatePost } from "../service/editorAPI";
+import {
+  getPostDetail,
+  updatePost,
+  uploadImageToS3,
+} from "../service/editorAPI";
 import "@toast-ui/editor/toastui-editor.css";
 import "../css/EditorWritePage.css";
 import useAuthStore from "../store/authStore";
@@ -15,6 +19,7 @@ export default function EditorEditPage() {
   const [title, setTitle] = useState(""); // 제목 상태
   const [content, setContent] = useState(""); // 내용 상태
   const [loading, setLoading] = useState(true); // 로딩 상태
+  const [fileUrl, setFileUrl] = useState(null); // 업로드된 이미지 URL 상태
 
   // 게시글 불러오기
   useEffect(() => {
@@ -38,6 +43,7 @@ export default function EditorEditPage() {
   // 수정 완료
   const handleUpdate = async () => {
     const editorInstance = editorRef.current.getInstance();
+
     const postData = {
       editortitle: title,
       editorcontent: editorInstance.getMarkdown(),
@@ -89,14 +95,7 @@ export default function EditorEditPage() {
           hooks={{
             addImageBlobHook: async (blob, callback) => {
               try {
-                const formData = new FormData();
-                formData.append("file", blob);
-                const res = await fetch(
-                  "http://localhost:9999/api/editor/upload",
-                  { method: "POST", body: formData }
-                );
-                const data = await res.json();
-                callback(data.url, "이미지");
+                const fileUrl = await uploadImageToS3(blob); // service 활용
               } catch (err) {
                 console.error("이미지 업로드 실패:", err);
               }
