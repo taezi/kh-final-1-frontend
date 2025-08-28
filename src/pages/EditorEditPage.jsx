@@ -11,17 +11,17 @@ export default function EditorEditPage() {
   const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   const editorRef = useRef();
-  
-  const [title, setTitle] = useState("");         // 제목 상태
-  const [content, setContent] = useState("");     // 내용 상태
-  const [loading, setLoading] = useState(true);   // 로딩 상태
+
+  const [title, setTitle] = useState(""); // 제목 상태
+  const [content, setContent] = useState(""); // 내용 상태
+  const [loading, setLoading] = useState(true); // 로딩 상태
 
   // 게시글 불러오기
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await getPostDetail(editorno);
-        const post = res.data || res;  // res 구조에 맞게 조정
+        const post = res.data || res; // res 구조에 맞게 조정
 
         setTitle(post.editortitle);
         setContent(post.editorcontent);
@@ -44,11 +44,11 @@ export default function EditorEditPage() {
       userno: user.userno,
     };
 
-     console.log("업데이트 전송 데이터:", postData);
+    console.log("업데이트 전송 데이터:", postData);
     try {
       await updatePost(editorno, postData);
       alert("수정 완료!");
-       navigate("/editor"); // ← 여기를 리스트 페이지로
+      navigate("/editor"); // ← 여기를 리스트 페이지로
     } catch (err) {
       console.error("수정 실패", err);
       alert("수정 실패");
@@ -84,7 +84,7 @@ export default function EditorEditPage() {
           initialEditType="wysiwyg"
           useCommandShortcut={true}
           ref={editorRef}
-          key={content}  // content가 바뀔 때마다 Editor를 리렌더
+          key={content} // content가 바뀔 때마다 Editor를 리렌더
           initialValue={content}
           hooks={{
             addImageBlobHook: async (blob, callback) => {
