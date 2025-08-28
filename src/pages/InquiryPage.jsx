@@ -2,6 +2,7 @@ import Layout from "../components/Layout";
 import React, { useState } from "react";
 import "../css/InquiryPage.css";
 
+
 export default function InquiryPage() {
   const [inquiry, setInquiry] = useState({
     name: "",

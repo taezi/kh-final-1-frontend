@@ -15,11 +15,13 @@ import CulturePage from "./pages/CulturePage";
 import RestaurantPage from "./pages/RestaurantPage";
 import CafePage from "./pages/CafePage";
 import EditorWritePage from "./pages/EditorWritePage";
+import EditorDetailPage from "./pages/EditorDetailPage";
 import EventsPage from "./pages/EventPage";
 import NoticePage from "./pages/NoticePage";
 import InquiryPage from "./pages/InquiryPage";
 import MoviePage from "./pages/MoviePage";
 import MoviedetailPage from "./pages/MoviedetailPage";
+import EditorEditPage from "./pages/EditorEditPage";
 
 function App() {
   return (
@@ -45,7 +47,8 @@ function App() {
             path="/editorWrite"
             element={<EditorWritePage></EditorWritePage>}
           />
-
+          <Route path="/editor/:editorno" element={<EditorDetailPage />} />
+          <Route path="/editor/edit/:editorno" element={<EditorEditPage />} />
           <Route path="/movie" element={<MoviePage></MoviePage>} />
           <Route
             path="/moviedetail"
