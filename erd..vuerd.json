@@ -4,9 +4,9 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": -648.3365,
-    "scrollLeft": -12,
-    "zoomLevel": 0.79,
+    "scrollTop": -624.1554,
+    "scrollLeft": -193.9873,
+    "zoomLevel": 0.94,
     "show": 511,
     "database": 8,
     "databaseName": "",
@@ -317,15 +317,15 @@
           "Ss-wmkircjp3KNBDGjHdo"
         ],
         "ui": {
-          "x": -108.0088,
-          "y": 659.9296,
+          "x": -48.4343,
+          "y": 662.0573,
           "zIndex": 347,
           "widthName": 60,
           "widthComment": 60,
           "color": ""
         },
         "meta": {
-          "updateAt": 1756089439898,
+          "updateAt": 1756357064874,
           "createAt": 1755655046593
         }
       },
@@ -351,15 +351,15 @@
           "Y0oqlkn1thCjgUNIT1rAG"
         ],
         "ui": {
-          "x": -40.8398,
-          "y": 1086.9932,
+          "x": -85.9618,
+          "y": 1085.7737,
           "zIndex": 550,
           "widthName": 60,
           "widthComment": 89,
           "color": ""
         },
         "meta": {
-          "updateAt": 1756168814323,
+          "updateAt": 1756357058085,
           "createAt": 1755658626048
         }
       },
@@ -534,25 +534,6 @@
         "meta": {
           "updateAt": 1756174636504,
           "createAt": 1755759120154
-        }
-      },
-      "TrsVhRW8Jcqz1kmoNCv7o": {
-        "id": "TrsVhRW8Jcqz1kmoNCv7o",
-        "name": "w",
-        "comment": "",
-        "columnIds": [],
-        "seqColumnIds": [],
-        "ui": {
-          "x": 979.4521,
-          "y": 1482.2511,
-          "zIndex": 1736,
-          "widthName": 60,
-          "widthComment": 60,
-          "color": ""
-        },
-        "meta": {
-          "updateAt": 1755918687522,
-          "createAt": 1755918684533
         }
       },
       "D5HQhCMtG-hwfwJkpQs5z": {
@@ -3188,8 +3169,8 @@
           "columnIds": [
             "eZr_Jx3THldIa2pX7bL0z"
           ],
-          "x": 154.4912,
-          "y": 659.9296,
+          "x": 214.0657,
+          "y": 662.0573,
           "direction": 4
         },
         "meta": {
@@ -3244,8 +3225,8 @@
           "columnIds": [
             "ajA2734oESlHmbFGOsDDx"
           ],
-          "x": 317.16020000000003,
-          "y": 1086.9932,
+          "x": 272.0382,
+          "y": 1085.7737,
           "direction": 4
         },
         "meta": {

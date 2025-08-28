@@ -51,7 +51,7 @@ export default function EditorDetailPage() {
                 삭제
               </button>
               <button
-                onClick={() => navigate(`/editor/edit/${editor.editorno}`)}
+                    onClick={() => navigate(`/editor/edit/${editor.editorno}`)}
                 className="btnEdit"
               >
                 수정
@@ -74,6 +74,9 @@ export default function EditorDetailPage() {
             <p><strong>조회수:</strong> {editor.editorview}</p>
           </div>
         </div>
+         <button onClick={() => navigate(-1)} className="btnBack">
+          목록으로
+        </button>
       </div>
     </Layout>
   );
