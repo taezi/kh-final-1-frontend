@@ -40,3 +40,49 @@
 .editor-detail-info strong {
   color: #333;
 }
+
+.editor-action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.btnEdit {
+  background-color: #1e90ff;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.btnEdit:hover {
+  background-color: #1c86ee;
+}
+
+.btnDelete {
+  background-color: #f44336;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.btnDelete:hover {
+  background-color: #d32f2f;
+}
+
+.btnBack {
+  background-color: #4a90e2;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.btnBack:hover {
+  background-color: #357ab8;
+}

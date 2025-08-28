@@ -6,6 +6,7 @@ import useAuthStore from "../store/authStore";
 import { editorAPI } from "../service/editorAPI";
 import defaultImage from "../img/editor.png";
 
+
 export default function EditorPage() {
   const navigate = useNavigate();
   const user = useAuthStore();

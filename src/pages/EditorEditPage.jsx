@@ -113,6 +113,7 @@ export default function EditorEditPage() {
           취소
         </button>
       </div>
+  
     </div>
   );
 }
