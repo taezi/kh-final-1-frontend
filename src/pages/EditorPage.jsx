@@ -8,7 +8,7 @@ import defaultImage from "../img/editor.png";
 
 export default function EditorPage() {
   const navigate = useNavigate();
-  const user = useAuthStore();
+  const user = useAuthStore((state) => state.user);
   const [editorList, setEditorList] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [page, setPage] = useState(1);
@@ -79,9 +79,15 @@ export default function EditorPage() {
         {/* 헤더 */}
         <div className="editor-header">
           <h3>에디터 추천 데이트 코스</h3>
-          <button className="register-btn" onClick={handleClick}>
-            등록
-          </button>
+          {user?.role === "editor" ? (
+            <>
+              <button className="register-btn" onClick={handleClick}>
+                등록
+              </button>
+            </>
+          ) : (
+            <></>
+          )}
         </div>
 
         {/* 검색창 */}
