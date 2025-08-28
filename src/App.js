@@ -15,12 +15,18 @@ import CulturePage from "./pages/CulturePage";
 import RestaurantPage from "./pages/RestaurantPage";
 import CafePage from "./pages/CafePage";
 import EditorWritePage from "./pages/EditorWritePage";
+import EditorDetailPage from "./pages/EditorDetailPage";
 import EventsPage from "./pages/EventPage";
 import NoticePage from "./pages/NoticePage";
 import InquiryPage from "./pages/InquiryPage";
 import MoviePage from "./pages/MoviePage";
 import MoviedetailPage from "./pages/MoviedetailPage";
 import CultureViewPage from "./pages/CultureViewPage";
+import EditorEditPage from "./pages/EditorEditPage";
+import NoticeWritePage from "./pages/NoticeWritePage";
+import NoticeDetailPage from "./pages/NoticeDetailPage";
+import NoticeEditPage from "./pages/NoticeEditPage";
+
 
 function App() {
   return (
@@ -41,12 +47,15 @@ function App() {
           />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/cafes" element={<CafePage></CafePage>} />
+
           <Route path="/editor" element={<EditorPage></EditorPage>} />
+          <Route path="/editorWrite" element={<EditorWritePage></EditorWritePage>}/>
+          <Route path="/editor/:editorno" element={<EditorDetailPage />} />
+          <Route path="/editor/edit/:editorno" element={<EditorEditPage />} />
           <Route path="/notice" element={<NoticePage></NoticePage>} />
-          <Route
-            path="/editorWrite"
-            element={<EditorWritePage></EditorWritePage>}
-          />
+          <Route path="/noticeWrite" element={<NoticeWritePage></NoticeWritePage>} />
+          <Route path="/notice/:noticeno" element={<NoticeDetailPage />} />
+          <Route path="/notice/edit/:noticeno" element={<NoticeEditPage />} />
 
           <Route path="/movie" element={<MoviePage></MoviePage>} />
           <Route
