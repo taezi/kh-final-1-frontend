@@ -21,9 +21,10 @@ aiAPI.interceptors.request.use(
 
 export const generateAI = async (prompt) => {
   try {
-    const response = await aiAPI.get("generate", {
-      params: { prompt },
+    const response = await aiAPI.post("generate", {
+      prompt: prompt,
     });
+    console.log("ai 대답 : ", response.data);
     return response.data;
   } catch (error) {
     console.error("AI 요청 실패:", error);
