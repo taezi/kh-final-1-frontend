@@ -4,7 +4,7 @@ import Layout from "../components/Layout";
 import "../css/EditorPage.css";
 import useAuthStore from "../store/authStore";
 import { editorAPI } from "../service/editorAPI";
-import defaultImage from "../img/editor.png";
+import defaultImage from "../img/save-image.png";
 
 export default function EditorPage() {
   const navigate = useNavigate();
@@ -112,7 +112,7 @@ export default function EditorPage() {
             >
               <div className="editor-image">
                 <img
-                  src={editor.thumbnailUrl || defaultImage} // ✅ thumbnail → thumbnailUrl 로 변경
+                  src={editor.thumbnail || defaultImage} // ✅ thumbnail → thumbnailUrl 로 변경
                   alt={editor.editortitle}
                 />
                 <button
