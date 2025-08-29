@@ -6,7 +6,6 @@ import useAuthStore from "../store/authStore";
 import { editorAPI } from "../service/editorAPI";
 import defaultImage from "../img/editor.png";
 
-
 export default function EditorPage() {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
@@ -112,7 +111,7 @@ export default function EditorPage() {
             >
               <div className="editor-image">
                 <img
-                  src={editor.thumbnail || defaultImage}
+                  src={editor.thumbnailUrl || defaultImage} // ✅ thumbnail → thumbnailUrl 로 변경
                   alt={editor.editortitle}
                 />
                 <button
