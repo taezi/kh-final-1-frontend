@@ -107,6 +107,7 @@ export default function MoviePage() {
           cinemas={cinemas}
           selectedRegion={selectedRegion}
           onRegionChange={handleRegionChange}
+          error={error} 
         />
       </div>
     </>
