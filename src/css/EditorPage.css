@@ -1,4 +1,4 @@
-/* .editor-search {
+.editor-search {
   margin-top: 10px;
   display: flex;
   gap: 8px;
@@ -23,7 +23,7 @@
 .editor-search button:hover {
   background-color: #45a049;
 }
- */
+
 
 .editor-page {
   padding: 20px;
