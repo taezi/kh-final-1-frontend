@@ -1,9 +1,15 @@
 import Layout from "../components/Layout";
+import MypageUpdate from "../components/Mypageupdate";
+import MypageDelete from "../components/MypageDelete"; 
 import "../css/MypagePage.css";
-export default function MypagePage(params) {
+
+export default function MypagePage() {
   return (
     <Layout>
-      <h3>마이페이지</h3>
+      <div className="mypage-content-wrapper">
+        <MypageUpdate />
+        <MypageDelete />
+      </div>
     </Layout>
   );
 }
