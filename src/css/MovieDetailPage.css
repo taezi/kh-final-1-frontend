@@ -144,7 +144,7 @@
     font-size: 1em;
 }
 
-.review-input-box .photo-upload-label {
+.photo-upload-label {
     background-color: #edb4b7;
     color: #fff;
     border: none;
@@ -156,7 +156,7 @@
     font-size: 0.9em;
 }
 
-.review-input-box .photo-upload-label:hover {
+.photo-upload-label:hover {
     background-color: #e50914;
 }
 
@@ -169,7 +169,7 @@
     color: #fff;
     border: none;
     border-radius: 8px;
-    padding: 10px 20px;
+    padding: 10px 15px;
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s;
@@ -211,13 +211,6 @@
     margin: 0;
 }
 
-.reviewer-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #de9296;
-}
 
 /* 로딩 스피너 */
 .detail-loading-container {

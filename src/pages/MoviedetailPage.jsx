@@ -73,7 +73,7 @@ export default function MovieDetailPage() {
         setIsReviewOpen(!isReviewOpen);
     };
 
-    // --- 추가된 함수 ---
+    // --- 파일 업로드 처리 함수 ---
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -84,6 +84,7 @@ export default function MovieDetailPage() {
 
     const handleReviewSubmit = () => {
         // TODO: 여기서 리뷰 텍스트(reviewText)와 사진(photo)을 서버로 전송하는 로직을 구현해야
+        // 현재는 콘솔에 출력만
         console.log("리뷰 제출:", { text: reviewText, photo: photo });
 
         // 제출 후 상태 초기화
@@ -91,7 +92,7 @@ export default function MovieDetailPage() {
         setPhoto(null);
         setPhotoPreview('https://placehold.co/50x50/ADD8E6/000000?text=👤');
     };
-    // --- 추가된 함수 끝 ---
+    // --- 파일 업로드 처리 함수 끝 ---
 
     if (loading) {
         return (
@@ -153,22 +154,20 @@ export default function MovieDetailPage() {
                     {isReviewOpen && (
                         <div className="review-content-container">
                             <div className="review-input-box">
-                                {/* 아바타 미리보기와 파일 입력 필드 추가 */}
-                                <img src={photoPreview} alt="프로필 미리보기" className="reviewer-avatar"/>
+                                <textarea
+                                    placeholder="리뷰를 작성하세요. . . . . ."
+                                    value={reviewText}
+                                    onChange={(e) => setReviewText(e.target.value)}
+                                ></textarea>
                                 <label htmlFor="photo-upload" className="photo-upload-label">
-                                    사진 업로드
+                                    사진
                                 </label>
                                 <input
                                     type="file"
                                     id="photo-upload"
                                     accept="image/*"
                                     onChange={handleFileChange}
-                                />
-                                <textarea
-                                    placeholder="리뷰를 작성하세요. . . . . ."
-                                    value={reviewText}
-                                    onChange={(e) => setReviewText(e.target.value)}
-                                ></textarea>
+                                />                                
                                 <button onClick={handleReviewSubmit} className="review-submit-button">등록</button>
                             </div>
                             <div className="review-list">
@@ -178,14 +177,14 @@ export default function MovieDetailPage() {
                                         <span className="user-info">부모님이랑 같이 보다가 그래서 셋이 잘 안만난다고 200시간 했어요</span>
                                         <span className="date">dtfm - 2025.08.13</span>
                                     </div>
-                                    <img src="https://placehold.co/50x50/ffc0cb/000000?text=A" alt="리뷰어 프로필" className="reviewer-avatar"/>
+                                    <img src="사진이 업로드 되었을 경우 사진이 뜨게 하고 싶음" className="?"/>
                                 </div>
                                 <div className="review-item">
                                     <div className="review-header">
                                         <span className="user-info">보면서도 이런다고?? 했는데, 감독이 한국 사람이네요. 배우랑 동행 사인한 느낌</span>
                                         <span className="date">omo5 - 2025.08.10</span>
                                     </div>
-                                    <img src="https://placehold.co/50x50/ADD8E6/000000?text=B" alt="리뷰어 프로필" className="reviewer-avatar"/>
+                                    <img src="사진이 업로드 되었을 경우 사진이 뜨게 하고 싶음" className="?"/>
                                 </div>
                                 {/* 실제로는 API에서 리뷰 목록을 가져와서 map() 함수로 렌더링해야 */}
                             </div>
