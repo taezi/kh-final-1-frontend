@@ -9,6 +9,7 @@ import {
 import "@toast-ui/editor/toastui-editor.css";
 import "../css/EditorWritePage.css";
 import useAuthStore from "../store/authStore";
+import Layout from "../components/Layout";
 
 export default function EditorEditPage() {
   const { editorno } = useParams();
@@ -69,7 +70,8 @@ export default function EditorEditPage() {
   if (loading) return <p>로딩중...</p>;
 
   return (
-    <div className="editor-container">
+    <Layout>
+<div className="editor-container">
       <h2 className="title">에디터 게시글 수정</h2>
 
       <div className="formGroup">
@@ -114,5 +116,7 @@ export default function EditorEditPage() {
       </div>
   
     </div>
+    </Layout>
+    
   );
 }
