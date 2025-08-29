@@ -11,7 +11,7 @@ export default function EditorWritePage() {
   const titleRef = useRef(null);
   const editorRef = useRef();
   const navigate = useNavigate();
-  const [content, setContent] = useState("");
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
 
   useEffect(() => {
     console.log("마운트");
@@ -29,6 +29,7 @@ export default function EditorWritePage() {
       // editorcontent: editorInstance.getHTML(),
       editorcontent: editorInstance.getMarkdown(), // HTML 대신 마크다운
       userno: user.userno,
+      thumbnailUrl,
     };
 
     try {
@@ -90,6 +91,10 @@ export default function EditorWritePage() {
               addImageBlobHook: async (blob, callback) => {
                 try {
                   const fileUrl = await uploadImageToS3(blob); // service 활용
+                  callback(fileUrl, blob.name); // 에디터에 이미지 삽입
+                  if (!thumbnailUrl) {
+                    setThumbnailUrl(fileUrl); // 첫 이미지 저장
+                  }
                 } catch (err) {
                   console.error("이미지 업로드 실패:", err);
                 }
