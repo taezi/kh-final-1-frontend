@@ -109,6 +109,9 @@ export default function InquiryPage() {
             ></textarea>
           </div>
           <div className="button-group">
+            <button type="submit" className="submit-button">
+              등록
+            </button>
             <button
               type="button"
               className="cancel-button"
@@ -116,9 +119,7 @@ export default function InquiryPage() {
             >
               취소
             </button>
-            <button type="submit" className="submit-button">
-              등록
-            </button>
+            
           </div>
         </form>
       </div>
