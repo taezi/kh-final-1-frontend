@@ -1,15 +1,97 @@
-// src/pages/CulturePage.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useQueryParam from "../utils/useQueryParam";
-import { getCalendar, getEventList, getFeatured } from "../service/placeAPI";
+import { getCalendar, getEventList } from "../service/placeAPI";
 import "../css/CulturePage.css";
 import WeatherWidget from "../components/WeatherWidget";
+import SEOUL_NIGHT from "../img/seoul-night.jpg";
 
-// ✅ 모든 import 끝난 뒤에 플러그인 활성화 (import/first 해결)
 dayjs.extend(isBetween);
+
+/** ─────────────────────────  상단 고정 배너  ─────────────────────────
+ *  1) 기본: public/hero/seoul-night.jpg (프로젝트에 넣기만 하면 됨)
+ *  2) 폴백: 외부 고정 야경 사진 2장 (Seoul night skyline)
+ *  ※ 캐러셀/무작위 이미지 일체 없음
+ */
+const BANNER_SOURCES = [SEOUL_NIGHT];
+
+function HeroBannerFixed({ title }) {
+  const [idx, setIdx] = useState(0);
+  const src = BANNER_SOURCES[idx];
+
+  const handleError = () => {
+    setIdx((i) => (i + 1 < BANNER_SOURCES.length ? i + 1 : i));
+  };
+
+  return (
+    <div
+      className="hero-band"
+      style={{
+        background: "#000",
+        position: "relative",
+        left: "50%",
+        transform: "translateX(-50%)",
+        width: "100vw",
+      }}
+    >
+      <div
+        style={{
+          position: "relative",
+          aspectRatio: "1940/730",
+          overflow: "hidden",
+        }}
+      >
+        <img
+          src={src}
+          onError={handleError}
+          alt="Seoul night skyline"
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover", // 꽉 채움
+            objectPosition: "center 70%", // 스카이라인/불꽃 쪽 비중
+            filter: "brightness(.9)",
+          }}
+          loading="eager"
+        />
+
+        {/* 상하 그라데이션: 가독성 확보 */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0) 35%, rgba(0,0,0,0) 70%, rgba(0,0,0,.3))",
+          }}
+        />
+
+        {/* 큰 제목 */}
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            bottom: 32,
+            transform: "translateX(-50%)",
+            width: "min(1100px, calc(100vw - 32px))",
+            color: "#fff",
+            fontWeight: 900,
+            fontSize: 42,
+            letterSpacing: "-.5px",
+            textShadow: "0 2px 10px rgba(0,0,0,.35)",
+            lineHeight: 1.15,
+          }}
+        >
+          {title}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 /** ── 25개 자치구 칩 ── */
 const GU_LIST = [
@@ -48,27 +130,11 @@ function makeMonthCells(viewMonth) {
 }
 
 export default function CulturePage() {
-  // 쿼리파라미터(gu, date) – 글로벌 location 대신 라우터 location 사용
   const routerLocation = useLocation();
+  const navigate = useNavigate();
   const { gu: guQS = "", date: dateQS = "" } = useQueryParam(
     routerLocation.search
   );
-
-  // ===== 상단 캐러셀 =====
-  const [hero, setHero] = useState([]);
-  const [heroIdx, setHeroIdx] = useState(0);
-  const heroTimer = useRef(null);
-  const HERO_MS = 3500;
-  const startAuto = () => {
-    stopAuto();
-    heroTimer.current = setInterval(
-      () => setHeroIdx((i) => (i + 1) % Math.max(hero.length, 1)),
-      HERO_MS
-    );
-  };
-  const stopAuto = () => {
-    if (heroTimer.current) clearInterval(heroTimer.current);
-  };
 
   // ===== 본문 상태 =====
   const [selectedDate, setSelectedDate] = useState(
@@ -129,45 +195,6 @@ export default function CulturePage() {
     loadList(1);
   }, [selectedDate, gu, q]);
 
-  // ===== 상단 캐러셀 로드 =====
-  useEffect(() => {
-    const from = viewMonth.startOf("month").format("YYYY-MM-DD");
-    const to = viewMonth.endOf("month").format("YYYY-MM-DD");
-    getFeatured({ gu: gu === "전체" ? "" : gu, from, to, limit: 4 })
-      .then((list) => {
-        setHero(
-          (list || []).map((ev) => ({
-            src: ev.thumbUrl || "https://picsum.photos/1200/700?blur=2",
-            title: ev.title,
-            sub: `${ev.place} · ${ev.gu} · ${dayjs(ev.dateStart).format(
-              "M.D"
-            )}${
-              ev.dateStart !== ev.dateEnd
-                ? `~${dayjs(ev.dateEnd).format("M.D")}`
-                : ""
-            }`,
-            id: ev.id,
-          }))
-        );
-        setHeroIdx(0);
-      })
-      .catch(() => {
-        setHero([
-          {
-            src: "https://picsum.photos/1200/700",
-            title: gu === "전체" ? "서울 문화생활" : `${gu} 문화생활`,
-            sub: "데이터를 불러오는 중입니다",
-          },
-        ]);
-        setHeroIdx(0);
-      });
-  }, [gu, viewMonth]);
-
-  useEffect(() => {
-    startAuto();
-    return stopAuto;
-  }, [hero.length]);
-
   const searchRef = useRef(null);
   const toggleLike = (id) =>
     setLikes((prev) => {
@@ -176,7 +203,7 @@ export default function CulturePage() {
       return n;
     });
 
-  const headingGu = gu === "전체" ? "종로구" : gu; // 날씨 제목용(임시)
+  const headingGu = gu === "전체" ? "종로구" : gu;
 
   // 선택일 범위 내 일정(우측 다크 카드)
   const selDayItems = useMemo(() => {
@@ -193,64 +220,12 @@ export default function CulturePage() {
 
   return (
     <div className="page">
-      {/* ====== HERO (full-bleed) ====== */}
-      <div className="hero-band">
-        <div
-          className="hero hero-carousel"
-          style={{
-            backgroundImage: hero[heroIdx]?.src
-              ? `url(${hero[heroIdx].src})`
-              : "none",
-          }}
-          onMouseEnter={stopAuto}
-          onMouseLeave={startAuto}
-          aria-label="문화 히어로 포스터"
-        >
-          {/* 말풍선 */}
-          <div className="hero-note">
-            <div className="bubble">
-              <div className="title">{hero[heroIdx]?.title || ""}</div>
-              <div className="meta">{hero[heroIdx]?.sub || ""}</div>
-            </div>
-          </div>
+      {/* ===== 고정 야경 배너 (캐러셀/랜덤 없음) ===== */}
+      <HeroBannerFixed title="전시/공연/축제/행사" />
 
-          {/* 좌우 화살표 + 점 */}
-          <button
-            className="hero-arrow left"
-            onClick={() =>
-              setHeroIdx(
-                (i) =>
-                  (i - 1 + Math.max(hero.length, 1)) % Math.max(hero.length, 1)
-              )
-            }
-            aria-label="이전 포스터"
-          >
-            ‹
-          </button>
-          <button
-            className="hero-arrow right"
-            onClick={() =>
-              setHeroIdx((i) => (i + 1) % Math.max(hero.length, 1))
-            }
-            aria-label="다음 포스터"
-          >
-            ›
-          </button>
-          <div className="hero-dots">
-            {(hero.length ? hero : [1, 2, 3, 4]).map((_, i) => (
-              <button
-                key={i}
-                className={`dot ${i === heroIdx ? "is-active" : ""}`}
-                onClick={() => setHeroIdx(i)}
-                aria-label={`${i + 1}번 포스터`}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-
+      {/* ===== 본문 ===== */}
       <div className="section pg24">
-        {/* ===== 상단: 좌 달력 / 우 다크 카드 ===== */}
+        {/* 상단: 좌 달력 / 우 다크 카드 */}
         <div className="pg24-head">
           {/* 미니 달력 */}
           <div className="mini-cal">
@@ -324,7 +299,7 @@ export default function CulturePage() {
           </div>
         </div>
 
-        {/* ===== GU 칩 ===== */}
+        {/* GU 칩 */}
         <div className="pg24-chips">
           {GU_LIST.map((name) => (
             <button
@@ -339,9 +314,11 @@ export default function CulturePage() {
             </button>
           ))}
         </div>
-        <WeatherWidget gu={headingGu}></WeatherWidget>
 
-        {/* ===== 검색 ===== */}
+        {/* 날씨 */}
+        <WeatherWidget gu={headingGu} />
+
+        {/* 검색 */}
         <div className="pg24-search">
           <div className="label">서울특별시 {headingGu} 문화/행사</div>
           <div className="search-pill">
@@ -380,13 +357,18 @@ export default function CulturePage() {
           </div>
         </div>
 
-        {/* ===== 카드 그리드 ===== */}
+        {/* 카드 그리드 */}
         <div className="ev-grid">
           {items.length === 0 && (
             <div className="empty">조건에 맞는 행사가 없습니다.</div>
           )}
           {items.map((ev) => (
-            <article key={ev.id} className="ev-card">
+            <article
+              key={ev.id}
+              className="ev-card"
+              onClick={() => navigate(`/culture/${ev.id}`, { state: ev })}
+              style={{ cursor: "pointer" }}
+            >
               <div
                 className="thumb"
                 style={{
@@ -405,7 +387,10 @@ export default function CulturePage() {
               </div>
               <button
                 className={`heart ${likes.has(ev.id) ? "is-on" : ""}`}
-                onClick={() => toggleLike(ev.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleLike(ev.id);
+                }}
                 title="찜"
               >
                 ♡

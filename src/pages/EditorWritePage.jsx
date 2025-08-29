@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Editor } from "@toast-ui/react-editor";
-import { createPost } from "../service/editorAPI";
+import { createPost, uploadImageToS3 } from "../service/editorAPI";
 import "@toast-ui/editor/toastui-editor.css";
 import "../css/EditorWritePage.css";
 import useAuthStore from "../store/authStore";
@@ -89,22 +89,7 @@ export default function EditorWritePage() {
             hooks={{
               addImageBlobHook: async (blob, callback) => {
                 try {
-                  // 1. FormData에 이미지 담기
-                  const formData = new FormData();
-                  formData.append("file", blob);
-
-                  // 2. 서버에 업로드 요청 (S3 등)
-                  const res = await fetch(
-                    "http://localhost:9999/api/editor/upload",
-                    {
-                      method: "POST",
-                      body: formData,
-                    }
-                  );
-                  const data = await res.json();
-
-                  // 3. S3 URL을 에디터에 삽입
-                  callback(data.url, "이미지");
+                  const fileUrl = await uploadImageToS3(blob); // service 활용
                 } catch (err) {
                   console.error("이미지 업로드 실패:", err);
                 }

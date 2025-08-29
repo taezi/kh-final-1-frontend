@@ -1,9 +1,15 @@
 import Layout from "../components/Layout";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useAuthStore from "../store/authStore";
+import { createInquiry } from "../service/manageAPI"; 
 import "../css/InquiryPage.css";
 
-
 export default function InquiryPage() {
+  // useAuthStore를 사용하여 인증된 사용자 정보를 가져옵니다.
+  const user = useAuthStore((state) => state.user);
+  const navigate = useNavigate();
+
   const [inquiry, setInquiry] = useState({
     name: "",
     phone: "",
@@ -18,7 +24,7 @@ export default function InquiryPage() {
 
   const handleCancel = () => {
     if (window.confirm("작성을 취소하시겠습니까?")) {
-      // 폼 초기화 로직 (원하는 곳으로 이동시키거나 필드를 초기화)
+      // 폼 초기화 또는 페이지 이동
       setInquiry({
         name: "",
         phone: "",
@@ -29,11 +35,27 @@ export default function InquiryPage() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // 문의 등록 로직 (여기서는 간단히 콘솔에 출력)
-    console.log("문의 내용:", inquiry);
-    alert("문의가 성공적으로 등록되었습니다.");
+
+    // postData에 사용자 번호(userno)를 포함하여 요청 본문을 구성합니다.
+    const postData = {
+      ...inquiry,
+      userno: user.userno,
+    };
+
+    try {
+      // API 호출
+      const response = await createInquiry(postData);
+      console.log("문의 등록 성공:", response);
+      alert("문의가 성공적으로 등록되었습니다.");
+
+      // 문의 등록 후 페이지 이동
+      // navigate("/"); 또는 navigate("/inquiry-success");
+    } catch (error) {
+      console.error("문의 등록 실패:", error);
+      alert("문의 등록에 실패했습니다. 다시 시도해 주세요.");
+    }
   };
 
   return (
