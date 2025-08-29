@@ -82,7 +82,9 @@ export default function DateaiPage(params) {
           </div>
 
           {/*  로딩 중 표시 */}
-          {loading && <p className="loading">검색중입니다...</p>}
+          {loading && (
+            <p className="loading">Ai가 데이트 코스를 생성하는 중입니다.</p>
+          )}
 
           {/*  결과 표시 */}
           {!loading && searchData && (

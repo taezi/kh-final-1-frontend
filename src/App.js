@@ -46,13 +46,9 @@ function App() {
           <Route path="/cafes" element={<CafePage></CafePage>} />
 
           <Route path="/editor" element={<EditorPage></EditorPage>} />
-          <Route path="/editorWrite" element={<EditorWritePage></EditorWritePage>}/>
           <Route path="/editor/:editorno" element={<EditorDetailPage />} />
-          <Route path="/editor/edit/:editorno" element={<EditorEditPage />} />
+
           <Route path="/notice" element={<NoticePage></NoticePage>} />
-          <Route path="/noticeWrite" element={<NoticeWritePage></NoticeWritePage>} />
-          <Route path="/notice/:noticeno" element={<NoticeDetailPage />} />
-          <Route path="/notice/edit/:noticeno" element={<NoticeEditPage />} />
 
           <Route path="/movie" element={<MoviePage></MoviePage>} />
           <Route
@@ -60,13 +56,33 @@ function App() {
             element={<MoviedetailPage></MoviedetailPage>}
           />
 
-          {/* 보호된 라우트는 PrivateRoute 컴포넌트로 감쌉니다 */}
+          {/* 로그인만 체크 */}
           <Route element={<PrivateRoute />}>
-            <Route path="/admin" element={<AdminPage></AdminPage>} />
             <Route path="/mypage" element={<MypagePage></MypagePage>} />
             <Route path="/dateai" element={<DateaiPage></DateaiPage>} />
             <Route path="/inquiry" element={<InquiryPage></InquiryPage>} />
           </Route>
+          {/* 관리자만 체크 */}
+          <Route element={<PrivateRoute requiredRole="admin" />}>
+            <Route path="/admin" element={<AdminPage></AdminPage>} />
+            <Route
+              path="/noticeWrite"
+              element={<NoticeWritePage></NoticeWritePage>}
+            />
+            <Route path="/notice/:noticeno" element={<NoticeDetailPage />} />
+            <Route path="/notice/edit/:noticeno" element={<NoticeEditPage />} />
+          </Route>
+
+          {/* 에디터만 체크 */}
+          <Route element={<PrivateRoute requiredRole="editor" />}>
+            <Route
+              path="/editorWrite"
+              element={<EditorWritePage></EditorWritePage>}
+            />
+            <Route path="/editor/edit/:editorno" element={<EditorEditPage />} />
+          </Route>
+
+          {/* 그외의 주소 404 */}
           <Route path="*" element={<h1>404 Not Found</h1>} />
         </Routes>
       </div>

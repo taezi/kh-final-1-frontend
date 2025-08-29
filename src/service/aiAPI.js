@@ -1,4 +1,5 @@
 import axios from "axios";
+import setupInterceptors from "./interceptor";
 
 const AI_URL = "http://localhost:9999/api/ai/";
 
@@ -7,17 +8,7 @@ export const aiAPI = axios.create({
   withCredentials: true,
 });
 
-aiAPI.interceptors.request.use(
-  (config) => {
-    const accessToken = localStorage.getItem("accessToken");
-    console.log("토큰:", localStorage.getItem("accessToken"));
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+setupInterceptors(aiAPI);
 
 export const generateAI = async (prompt) => {
   try {
