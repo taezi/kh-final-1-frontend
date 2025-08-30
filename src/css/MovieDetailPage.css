@@ -19,7 +19,6 @@
 
 /* 영화 정보 섹션 */
 .info-section {
-    /* 스크린샷(83)처럼 글자가 포스터 오른쪽에 오도록 flexbox 설정 */
     display: flex;
     gap: 40px;
     flex-wrap: wrap; 

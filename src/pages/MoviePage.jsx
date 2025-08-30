@@ -8,9 +8,9 @@ import { fetchCinemas } from "../service/cinemaAPI";
 export default function MoviePage() {
   const [movies, setMovies] = useState([]);
   const [cinemas, setCinemas] = useState([]);
-  // 서울 25개 구 전체 목록을 직접 정의합니다.
+  // 서울 25개 구 전체 목록을 직접 정의
   const allRegions = ['강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구', '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구', '성북구', '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구'];
-  // 초기값을 '강남구'로 설정하여 처음 로딩 시 강남구 데이터가 표시되도록 합니다.
+  // 초기값을 '강남구'로 설정하여 처음 로딩 시 강남구 데이터가 표시되도록
   const [selectedRegion, setSelectedRegion] = useState('강남구');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -36,7 +36,7 @@ export default function MoviePage() {
       if (!selectedRegion) return;
       setLoading(true);
       try {
-        // 선택된 지역구의 데이터만 가져옵니다.
+        // 선택된 지역구의 데이터만 가져오기
         const data = await fetchCinemas(selectedRegion);
         setCinemas(data);
       } catch (err) {
@@ -107,6 +107,7 @@ export default function MoviePage() {
           cinemas={cinemas}
           selectedRegion={selectedRegion}
           onRegionChange={handleRegionChange}
+          error={error} 
         />
       </div>
     </>
