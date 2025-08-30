@@ -1,8 +1,7 @@
-
-
 import React, { useState } from "react";
-import Layout from "../components/Layout";
-import "../css/ServicerulePage.css";
+import Layout from "../../components/Layout";
+import "../../css/ServicerulePage.css";
+import { useNavigate } from "react-router-dom";
 
 export default function ServicerulePage() {
   const [agreements, setAgreements] = useState({
@@ -13,6 +12,7 @@ export default function ServicerulePage() {
   });
 
   const allAgreed = Object.values(agreements).every((value) => value);
+  const navigate = useNavigate();
 
   const handleAgreementChange = (event) => {
     const { id, checked } = event.target;
@@ -35,6 +35,7 @@ export default function ServicerulePage() {
   const handleSubmit = () => {
     if (agreements.privacy && agreements.terms) {
       alert("필수 약관에 모두 동의하셨습니다. 다음 단계로 이동합니다.");
+      navigate("/signup");
     } else {
       alert(
         "필수 약관(개인정보 수집 및 이용, 서비스 이용 약관)에 동의해야 합니다."
@@ -60,11 +61,9 @@ export default function ServicerulePage() {
         <hr className="divider" />
 
         <div className="checkbox-list">
-       
           <div className="checkbox-item required">
             <div className="checkbox-label-group">
               {" "}
-            
               <input
                 type="checkbox"
                 id="privacy"
@@ -94,11 +93,9 @@ export default function ServicerulePage() {
             </div>
           </div>
 
-      
           <div className="checkbox-item required">
             <div className="checkbox-label-group">
               {" "}
-            
               <input
                 type="checkbox"
                 id="terms"
@@ -143,11 +140,9 @@ export default function ServicerulePage() {
             </div>
           </div>
 
-         
           <div className="checkbox-item">
             <div className="checkbox-label-group">
               {" "}
-           
               <input
                 type="checkbox"
                 id="age"
@@ -158,11 +153,9 @@ export default function ServicerulePage() {
             </div>
           </div>
 
-     
           <div className="checkbox-item optional">
             <div className="checkbox-label-group">
               {" "}
-            
               <input
                 type="checkbox"
                 id="marketing"

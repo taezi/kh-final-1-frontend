@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../components/Layout";
-import "../css/EditorPage.css";
-import useAuthStore from "../store/authStore";
-import { editorAPI } from "../service/editorAPI";
-import defaultImage from "../img/save-image.png";
-import defaultImage from "../img/editor.png";
-
+import Layout from "../../components/Layout";
+import "../../css/EditorPage.css";
+import useAuthStore from "../../store/authStore";
+import { editorAPI } from "../../service/editorAPI";
+import defaultImage from "../../img/save-image.png";
 
 export default function EditorPage() {
   const navigate = useNavigate();
@@ -16,34 +14,33 @@ export default function EditorPage() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
 
-   // 리스트 로드 함수
+  // 리스트 로드 함수
   const loadList = async (p = 1) => {
-  try {
-    const response = await editorAPI.get(`/list`); // size=6는 무시될 수 있으니 제거
-    const allItems = response.data.eList.map((editor) => ({
-      ...editor,
-      liked: false,
-    }));
+    try {
+      const response = await editorAPI.get(`/list`);
+      const allItems = response.data.eList.map((editor) => ({
+        ...editor,
+        liked: false,
+      }));
 
-    // 6개씩 잘라서 보여주기
-    const start = (p - 1) * 6;
-    const newItems = allItems.slice(start, start + 6);
+      // 6개씩 잘라서 보여주기
+      const start = (p - 1) * 6;
+      const newItems = allItems.slice(start, start + 6);
 
-    setEditorList((prev) =>
-      p === 1 ? newItems : [...prev, ...newItems]
-    );
+      setEditorList((prev) => (p === 1 ? newItems : [...prev, ...newItems]));
 
-    // 더보기 여부
-    setHasMore(allItems.length > start + 6);
-    setPage(p);
-  } catch (error) {
-    console.error("게시글 불러오기 실패:", error);
-    if (p === 1) {
-      setEditorList([]);
-      setHasMore(false);
+      // 더보기 여부
+      setHasMore(allItems.length > start + 6);
+      setPage(p);
+    } catch (error) {
+      console.error("게시글 불러오기 실패:", error);
+      if (p === 1) {
+        setEditorList([]);
+        setHasMore(false);
+      }
     }
-  }
-};
+  };
+
   // ✅ 초기 게시글 로드 (1페이지)
   useEffect(() => {
     loadList(1);
@@ -76,6 +73,7 @@ export default function EditorPage() {
   const goToDetail = (editorno) => {
     navigate(`/editor/${editorno}`);
   };
+
   return (
     <Layout>
       <div className="editor-page">
@@ -83,11 +81,9 @@ export default function EditorPage() {
         <div className="editor-header">
           <h3>에디터 추천 데이트 코스</h3>
           {user?.role === "editor" ? (
-            <>
-              <button className="register-btn" onClick={handleClick}>
-                등록
-              </button>
-            </>
+            <button className="register-btn" onClick={handleClick}>
+              등록
+            </button>
           ) : (
             <></>
           )}
@@ -114,7 +110,7 @@ export default function EditorPage() {
             >
               <div className="editor-image">
                 <img
-                  src={editor.thumbnail || defaultImage} // ✅ thumbnail → thumbnailUrl 로 변경
+                  src={editor.thumbnailUrl || defaultImage} // ✅ 변경: thumbnail → thumbnailUrl
                   alt={editor.editortitle}
                 />
                 <button

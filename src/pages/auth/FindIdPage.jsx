@@ -1,7 +1,7 @@
-import { useState } from "react"; 
-import Layout from "../components/Layout";
-import "../css/FindIdPage.css";
-import { findIdByUserInfo } from "../service/authAPI"; // 아이디를 찾는 API 호출을 가정합니다. (함수 이름 변경)
+import { useState } from "react";
+import Layout from "../../components/Layout";
+import "../../css/FindIdPage.css";
+import { findIdByUserInfo } from "../../service/authAPI"; // 아이디를 찾는 API 호출을 가정합니다. (함수 이름 변경)
 import { useNavigate } from "react-router-dom"; // 로그인 페이지로 돌아가기 위해 useNavigate 훅을 사용합니다.
 
 export default function FindIdPage() {
@@ -56,7 +56,7 @@ export default function FindIdPage() {
       <div className="find-id-container">
         <div className="find-id-box">
           <h3>아이디 찾기</h3>
-          {!showResult ? ( 
+          {!showResult ? (
             <>
               <input
                 className="find-id-input"

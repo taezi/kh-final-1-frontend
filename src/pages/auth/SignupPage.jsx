@@ -1,8 +1,8 @@
 import { useState } from "react";
-import "../css/SignupPage.css";
+import "../../css/SignupPage.css";
 import { useNavigate } from "react-router-dom";
-import { signup } from "../service/authAPI";
-import Layout from "../components/Layout";
+import { signup } from "../../service/authAPI";
+import Layout from "../../components/Layout";
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
@@ -117,13 +117,11 @@ export default function SignupPage() {
             placeholder="별명을 입력해주세요"
             required
           />
-         
-          
+
           <button className="signup-button" onClick={handleRegister}>
             회원가입
           </button>
-          
-          
+
           <p className="login-link">
             이미 계정이 있으신가요? <a href="/login">로그인</a>
           </p>

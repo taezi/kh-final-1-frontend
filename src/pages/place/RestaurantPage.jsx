@@ -1,5 +1,5 @@
-import Layout from "../components/Layout";
-import WeatherWidget from "../components/WeatherWidget";
+import Layout from "../../components/Layout";
+import WeatherWidget from "../../components/WeatherWidget";
 
 export default function RestaurantPage(params) {
   return (

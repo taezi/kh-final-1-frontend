@@ -1,10 +1,10 @@
-import "../css/DateaiPage.css";
+import "../../css/DateaiPage.css";
 import { ArrowLeft } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import DateCourseForm from "../components/DateCourseForm";
-import DateCourseResults from "../components/DateCourseResults";
-import Layout from "../components/Layout";
-import { generateAI } from "../service/aiAPI";
+import DateCourseForm from "../../components/DateCourseForm";
+import DateCourseResults from "../../components/DateCourseResults";
+import Layout from "../../components/Layout";
+import { generateAI } from "../../service/aiAPI";
 
 export default function DateaiPage(params) {
   const [showResults, setShowResults] = useState(false);

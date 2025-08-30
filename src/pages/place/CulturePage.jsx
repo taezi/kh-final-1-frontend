@@ -2,11 +2,11 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 import { useLocation, useNavigate } from "react-router-dom";
-import useQueryParam from "../utils/useQueryParam";
-import { getCalendar, getEventList } from "../service/placeAPI";
-import "../css/CulturePage.css";
-import WeatherWidget from "../components/WeatherWidget";
-import SEOUL_NIGHT from "../img/seoul-night.jpg";
+import useQueryParam from "../../utils/useQueryParam";
+import { getCalendar, getEventList } from "../../service/placeAPI";
+import "../../css/CulturePage.css";
+import WeatherWidget from "../../components/WeatherWidget";
+import SEOUL_NIGHT from "../../img/seoul-night.jpg";
 
 dayjs.extend(isBetween);
 

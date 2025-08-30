@@ -2,9 +2,9 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/toastui-editor.css";
-import "../css/NoticeWritePage.css";
-import useAuthStore from "../store/authStore";
-import { createNotice } from "../service/noticeAPI";
+import "../../css/NoticeWritePage.css";
+import useAuthStore from "../../store/authStore";
+import { createNotice } from "../../service/noticeAPI";
 
 export default function EditorWritePage() {
   const user = useAuthStore((state) => state.user); // ✅ user 가져오기
@@ -63,7 +63,7 @@ export default function EditorWritePage() {
         <div className="formGroup">
           <label className="label">내용</label>
           <Editor
-            ref={contentRef} 
+            ref={contentRef}
             initialValue="공지사항 작성 페이지"
             previewStyle="vertical" // vertical 또는 tab
             height="400px"

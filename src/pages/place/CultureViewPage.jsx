@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
-import "../css/CulturePage.css"; // 공통 버튼/폰트
-import "../css/CultureViewPage.css"; // 상세 전용
-import { getEventDetail } from "../service/placeAPI";
-import { normalizeEvent } from "../utils/eventNormalizer";
+import "../../css/CulturePage.css"; // 공통 버튼/폰트
+import "../../css/CultureViewPage.css"; // 상세 전용
+import { getEventDetail } from "../../service/placeAPI";
+import { normalizeEvent } from "../../utils/eventNormalizer";
 
 export default function CultureViewPage() {
   const { id } = useParams();

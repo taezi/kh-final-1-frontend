@@ -2,7 +2,8 @@
 import axios from "axios";
 import setupInterceptors from "./interceptor";
 
-const API_URL = "http://localhost:9999/api/notice";
+// RESTful 엔드포인트: /api/notices
+const API_URL = "http://localhost:9999/api/notices";
 
 export const noticeAPI = axios.create({
   baseURL: API_URL,
@@ -11,11 +12,11 @@ export const noticeAPI = axios.create({
 
 setupInterceptors(noticeAPI);
 
-// 공지사항 작성
+// 공지사항 작성 (POST /api/notices)
 export const createNotice = async (noticeData) => {
   console.log("전송 데이터:", noticeData);
   try {
-    const response = await noticeAPI.post("/write", noticeData);
+    const response = await noticeAPI.post("", noticeData);
     return response.data;
   } catch (error) {
     console.error("공지사항 작성 에러:", error);
@@ -23,10 +24,10 @@ export const createNotice = async (noticeData) => {
   }
 };
 
-// 공지사항 상세 조회
+// 공지사항 상세 조회 (GET /api/notices/{id})
 export const getNoticeDetail = async (noticeno) => {
   try {
-    const response = await noticeAPI.get(`/detail/${noticeno}`);
+    const response = await noticeAPI.get(`/${noticeno}`);
     return response.data;
   } catch (error) {
     console.error("공지사항 상세 조회 에러:", error);
@@ -34,10 +35,10 @@ export const getNoticeDetail = async (noticeno) => {
   }
 };
 
-// 공지사항 수정
+// 공지사항 수정 (PUT /api/notices/{id})
 export const updateNotice = async (noticeno, noticeData) => {
   try {
-    const response = await noticeAPI.put(`/update/${noticeno}`, noticeData);
+    const response = await noticeAPI.put(`/${noticeno}`, noticeData);
     return response.data;
   } catch (error) {
     console.error("공지사항 수정 에러:", error);
@@ -45,10 +46,10 @@ export const updateNotice = async (noticeno, noticeData) => {
   }
 };
 
-// 공지사항 삭제
+// 공지사항 삭제 (DELETE /api/notices/{id})
 export const deleteNotice = async (noticeno) => {
   try {
-    const response = await noticeAPI.delete(`/delete/${noticeno}`);
+    const response = await noticeAPI.delete(`/${noticeno}`);
     return response.data;
   } catch (error) {
     console.error("공지사항 삭제 에러:", error);
@@ -56,10 +57,10 @@ export const deleteNotice = async (noticeno) => {
   }
 };
 
-// 공지사항 리스트 조회
-export const getNoticeList = async (page = 1) => {
+// 공지사항 리스트 조회 (GET /api/notices?page=1&size=10)
+export const getNoticeList = async (page = 1, size = 10) => {
   try {
-    const response = await noticeAPI.get(`/list?page=${page}`);
+    const response = await noticeAPI.get(`?page=${page}&size=${size}`);
     return response.data;
   } catch (error) {
     console.error("공지사항 리스트 조회 에러:", error);

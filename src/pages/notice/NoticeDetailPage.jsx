@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Layout from "../components/Layout";
-import "../css/NoticeDetailPage.css";
-import useAuthStore from "../store/authStore";
-import { getNoticeDetail, deleteNotice } from "../service/noticeAPI";
+import Layout from "../../components/Layout";
+import "../../css/NoticeDetailPage.css";
+import useAuthStore from "../../store/authStore";
+import { getNoticeDetail, deleteNotice } from "../../service/noticeAPI";
 
 export default function NoticeDetailPage() {
   const { noticeno } = useParams();
@@ -67,18 +67,27 @@ export default function NoticeDetailPage() {
         </div>
 
         <div className="editor-meta">
-          <p><strong>번호:</strong> {notice.noticeno}</p>
-          <p><strong>작성일:</strong> {notice.noticedate}</p>
-          <p><strong>조회수:</strong> {notice.noticeview}</p>
+          <p>
+            <strong>번호:</strong> {notice.noticeno}
+          </p>
+          <p>
+            <strong>작성일:</strong> {notice.noticedate}
+          </p>
+          <p>
+            <strong>조회수:</strong> {notice.noticeview}
+          </p>
         </div>
 
         <div className="notice-detail-item">
-          <p className="notice-title"><strong>제목:  {notice.noticetitle}</strong></p>
+          <p className="notice-title">
+            <strong>제목: {notice.noticetitle}</strong>
+          </p>
           <div className="notice-detail-info">
-            <p><strong>내용: {notice.noticepost}</strong></p>
+            <p>
+              <strong>내용: {notice.noticepost}</strong>
+            </p>
           </div>
         </div>
-
       </div>
     </Layout>
   );
