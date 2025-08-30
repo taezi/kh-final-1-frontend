@@ -72,6 +72,7 @@ const extractText = (markdown) => {
       <div className="editor-detail-page">
         <h2>에디터 게시글 상세 정보</h2>
 
+
         <div className="editor-action-wrapper">
           <button onClick={() => navigate(-1)} className="btnBack">
             목록으로

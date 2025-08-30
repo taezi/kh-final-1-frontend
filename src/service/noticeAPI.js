@@ -1,5 +1,6 @@
 // src/service/noticeAPI.js
 import axios from "axios";
+import setupInterceptors from "./interceptor";
 
 const API_URL = "http://localhost:9999/api/notice";
 
@@ -8,17 +9,7 @@ export const noticeAPI = axios.create({
   withCredentials: true,
 });
 
-// 요청 인터셉터 → 토큰 넣기
-noticeAPI.interceptors.request.use(
-  (config) => {
-    const accessToken = localStorage.getItem("accessToken"); // 또는 zustand 사용
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+setupInterceptors(noticeAPI);
 
 // 공지사항 작성
 export const createNotice = async (noticeData) => {

@@ -1,23 +1,14 @@
 import axios from "axios";
+import setupInterceptors from "./interceptor";
 
-const API_URL = "http://localhost:9999/api/editor/";
+const API_URL = "http://localhost:9999/api/editor";
 
 export const editorAPI = axios.create({
   baseURL: API_URL,
   withCredentials: true,
 });
 
-editorAPI.interceptors.request.use(
-  (config) => {
-    const accessToken = localStorage.getItem("accessToken"); // 또는 zustand에서 가져오기
-    console.log(accessToken);
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+setupInterceptors(editorAPI);
 
 //게시글 작성 함수
 export const createPost = async (postData) => {
@@ -69,15 +60,12 @@ export const deletePost = async (editorno) => {
 export const uploadImageToS3 = async (blob) => {
   try {
     // 1) Presigned URL 요청 (Spring API 호출)
-    const presignedRes = await axios.get(
-      `http://localhost:9999/api/editor/s3/presigned`,
-      {
-        params: {
-          filename: blob.name || `image_${Date.now()}.png`,
-          contentType: blob.type || "image/png",
-        },
-      }
-    );
+    const presignedRes = await editorAPI.get("/s3/presigned", {
+      params: {
+        filename: blob.name || `image_${Date.now()}.png`,
+        contentType: blob.type || "image/png",
+      },
+    });
 
     const { uploadUrl, fileUrl } = presignedRes.data;
 

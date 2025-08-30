@@ -1,4 +1,5 @@
 import axios from "axios";
+import setupInterceptors from "./interceptor";
 
 // API 기본 URL 설정
 const API_URL = "http://localhost:9999/api/manage";
@@ -9,20 +10,7 @@ export const manageAPI = axios.create({
   withCredentials: true,
 });
 
-// 요청 인터셉터 설정 (토큰 자동 포함)
-manageAPI.interceptors.request.use(
-  (config) => {
-    // 로컬 스토리지에서 accessToken을 가져옵니다.
-    const accessToken = localStorage.getItem("accessToken");
-    console.log("토큰:", accessToken);
-    if (accessToken) {
-      // 헤더에 Authorization 토큰을 추가합니다.
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+setupInterceptors(manageAPI);
 
 /**
  * 새로운 문의를 등록하는 함수

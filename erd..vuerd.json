@@ -4,9 +4,9 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": -624.1554,
-    "scrollLeft": -193.9873,
-    "zoomLevel": 0.94,
+    "scrollTop": -386.2255,
+    "scrollLeft": -582,
+    "zoomLevel": 0.91,
     "show": 511,
     "database": 8,
     "databaseName": "",
@@ -282,15 +282,15 @@
           "fyDCRAX9SiGt8wVpUhU9A"
         ],
         "ui": {
-          "x": 691.2699,
-          "y": 485.2138,
+          "x": 830.8303,
+          "y": 504.994,
           "zIndex": 342,
           "widthName": 60,
           "widthComment": 105,
           "color": ""
         },
         "meta": {
-          "updateAt": 1756168875955,
+          "updateAt": 1756466065341,
           "createAt": 1755654927642
         }
       },
@@ -451,7 +451,8 @@
           "lcuhaBqZzsBEYfacY0FP6",
           "dQAVBIa3Crzv3GHZ6vYge",
           "3hpoc8vAvqyJE_8ajEjnv",
-          "mYTRcvdj3MmJNywGSuIpN"
+          "mYTRcvdj3MmJNywGSuIpN",
+          "MhQ0DhqF23ESBYu0gIoq7"
         ],
         "seqColumnIds": [
           "rP1y991X5ZI-Tm6vrWdYe",
@@ -464,7 +465,8 @@
           "mYTRcvdj3MmJNywGSuIpN",
           "jn8tsGJfTb6IKYy9CuroT",
           "D15Th22RpPP8yu-D5-7bo",
-          "Y3xCKtDQcmLzdI3hqqrjD"
+          "Y3xCKtDQcmLzdI3hqqrjD",
+          "MhQ0DhqF23ESBYu0gIoq7"
         ],
         "ui": {
           "x": 754.3087,
@@ -475,7 +477,7 @@
           "color": ""
         },
         "meta": {
-          "updateAt": 1756091691354,
+          "updateAt": 1756432639924,
           "createAt": 1755757889229
         }
       },
@@ -3147,6 +3149,26 @@
           "updateAt": 1756258797388,
           "createAt": 1756258707008
         }
+      },
+      "MhQ0DhqF23ESBYu0gIoq7": {
+        "id": "MhQ0DhqF23ESBYu0gIoq7",
+        "tableId": "7lzxhNQdkLM7LJ8OcRbZk",
+        "name": "thumbnailurl",
+        "comment": "에디터게시글 이미지",
+        "dataType": "VARCHAR(500)",
+        "default": "",
+        "options": 8,
+        "ui": {
+          "keys": 0,
+          "widthName": 70,
+          "widthComment": 113,
+          "widthDataType": 81,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1756432713983,
+          "createAt": 1756432639923
+        }
       }
     },
     "relationshipEntities": {
@@ -3197,8 +3219,8 @@
           "columnIds": [
             "AFxeG7Zk6ztHDfWTGea3O"
           ],
-          "x": 691.2699,
-          "y": 585.2138,
+          "x": 830.8303,
+          "y": 554.994,
           "direction": 1
         },
         "meta": {
@@ -3272,18 +3294,18 @@
           "columnIds": [
             "QDST9RDAJrNDG3PatJPXK"
           ],
-          "x": 1073.2699,
-          "y": 685.2138,
-          "direction": 8
+          "x": 830.8303,
+          "y": 654.994,
+          "direction": 1
         },
         "end": {
           "tableId": "3cE6FYQizMuNBqlofdAZF",
           "columnIds": [
             "naDEPFowS4J8H4n5g3ZzH"
           ],
-          "x": 997.6001,
-          "y": 808.8835,
-          "direction": 2
+          "x": 748.1001,
+          "y": 756.8835,
+          "direction": 4
         },
         "meta": {
           "updateAt": 1755668547693,
@@ -3300,8 +3322,8 @@
           "columnIds": [
             "QDST9RDAJrNDG3PatJPXK"
           ],
-          "x": 1455.2699,
-          "y": 585.2138,
+          "x": 1594.8303,
+          "y": 604.994,
           "direction": 2
         },
         "end": {
@@ -3309,9 +3331,9 @@
           "columnIds": [
             "u2MJXsqnnCyaEuDswG_ev"
           ],
-          "x": 1411.4482,
-          "y": 825.6218,
-          "direction": 1
+          "x": 1665.4482,
+          "y": 761.6218,
+          "direction": 4
         },
         "meta": {
           "updateAt": 1755757746426,
@@ -3338,7 +3360,7 @@
             "rP1y991X5ZI-Tm6vrWdYe"
           ],
           "x": 754.3087,
-          "y": 151.1107,
+          "y": 163.1107,
           "direction": 1
         },
         "meta": {
@@ -3357,7 +3379,7 @@
             "FnhxPTWfB9jd0kWHJY1zs"
           ],
           "x": 1026.3087,
-          "y": 263.1107,
+          "y": 287.1107,
           "direction": 8
         },
         "end": {
