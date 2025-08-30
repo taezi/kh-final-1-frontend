@@ -11,6 +11,7 @@ export default function EditorWritePage() {
   const titleRef = useRef(null);
   const editorRef = useRef();
   const navigate = useNavigate();
+  
   const [thumbnailUrl, setThumbnailUrl] = useState(""); // TOAST UI 에디터용 이미지
   const [thumbnail, setThumbnail] = useState("");      // 썸네일용
   const dropZoneRef = useRef(null); // drop-zone에 접근하기 위한 ref
@@ -79,6 +80,7 @@ export default function EditorWritePage() {
     }
   }, []);
 
+
   useEffect(() => {
     console.log("마운트");
     return () => console.log("언마운트");
@@ -110,8 +112,10 @@ export default function EditorWritePage() {
       // editorcontent: editorInstance.getHTML(),
       editorcontent: editorInstance.getMarkdown(), // HTML 대신 마크다운
       userno: user.userno,
+
       thumbnailUrl, // ✅ TOAST UI 이미지
       thumbnail,    // ✅ 썸네일용 이미지
+
     };
 
     console.log("등록 데이터(postData):", postData); // ✅ 서버로 보낼 데이터 확인
@@ -173,6 +177,42 @@ export default function EditorWritePage() {
                     console.error(err);
                     alert("썸네일 이미지 업로드에 실패했습니다.");
                   }
+             
+          <label className="label">내용</label>
+          <Editor
+            initialValue="에디터작성페이지"
+            previewStyle="vertical" // vertical 또는 tab
+            height="400px"
+            initialEditType="wysiwyg" // markdown 또는 wysiwyg
+            useCommandShortcut={true} // 단축키 사용 여부
+            toolbarItems={[
+              [
+                "heading",
+                "bold",
+                "italic",
+                "strike",
+                "code",
+                "quote",
+                "ul",
+                "ol",
+                "task",
+                "table",
+                "image",
+                "codeblock",
+                "scrollSync",
+              ],
+            ]}
+            ref={editorRef}
+            hooks={{
+              addImageBlobHook: async (blob, callback) => {
+                try {
+                  const fileUrl = await uploadImageToS3(blob); // service 활용
+                  callback(fileUrl, blob.name); // 에디터에 이미지 삽입
+                  if (!thumbnailUrl) {
+                    setThumbnailUrl(fileUrl); // 첫 이미지 저장
+                  }
+                } catch (err) {
+                  console.error("이미지 업로드 실패:", err);
                 }
               }}
             />

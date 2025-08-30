@@ -26,6 +26,7 @@ import EditorEditPage from "./pages/EditorEditPage";
 import NoticeWritePage from "./pages/NoticeWritePage";
 import NoticeDetailPage from "./pages/NoticeDetailPage";
 import NoticeEditPage from "./pages/NoticeEditPage";
+import ServicerulePage from "./pages/ServicerulePage";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage></LoginPage>} />
           <Route path="/signup" element={<SignupPage></SignupPage>} />
+          <Route path="/servicerule" element={<ServicerulePage></ServicerulePage>} />
           <Route path="/" element={<MainPage></MainPage>} />
           <Route path="/findid" element={<FindIdPage></FindIdPage>} />
           <Route path="/findpwd" element={<FindPwdPage></FindPwdPage>} />
@@ -49,17 +51,23 @@ function App() {
           <Route path="/cafes" element={<CafePage></CafePage>} />
 
           <Route path="/editor" element={<EditorPage></EditorPage>} />
-          <Route path="/editorWrite" element={<EditorWritePage></EditorWritePage>}/>
+          <Route
+            path="/editorWrite"
+            element={<EditorWritePage></EditorWritePage>}
+          />
           <Route path="/editor/:editorno" element={<EditorDetailPage />} />
           <Route path="/editor/edit/:editorno" element={<EditorEditPage />} />
           <Route path="/notice" element={<NoticePage></NoticePage>} />
-          <Route path="/noticeWrite" element={<NoticeWritePage></NoticeWritePage>} />
+          <Route
+            path="/noticeWrite"
+            element={<NoticeWritePage></NoticeWritePage>}
+          />
           <Route path="/notice/:noticeno" element={<NoticeDetailPage />} />
           <Route path="/notice/edit/:noticeno" element={<NoticeEditPage />} />
 
           <Route path="/movie" element={<MoviePage></MoviePage>} />
           <Route
-            path="/moviedetail"
+            path="/movie/:id"
             element={<MoviedetailPage></MoviedetailPage>}
           />
 
