@@ -21,6 +21,7 @@ export default function EditorEditPage() {
   const [content, setContent] = useState(""); // 내용 상태
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [fileUrl, setFileUrl] = useState(null); // 업로드된 이미지 URL 상태
+   const [thumbnailUrl, setThumbnailUrl] = useState("");
 
   // 게시글 불러오기
   useEffect(() => {
@@ -31,6 +32,7 @@ export default function EditorEditPage() {
 
         setTitle(post.editortitle);
         setContent(post.editorcontent);
+        setThumbnailUrl(post.thumbnailUrl || ""); 
         setLoading(false);
       } catch (err) {
         console.error("불러오기 실패", err);
@@ -49,18 +51,22 @@ export default function EditorEditPage() {
       editortitle: title,
       editorcontent: editorInstance.getMarkdown(),
       userno: user.userno,
+      thumbnailUrl,
     };
 
     console.log("업데이트 전송 데이터:", postData);
     try {
       await updatePost(editorno, postData);
       alert("수정 완료!");
-      navigate("/editor"); // ← 여기를 리스트 페이지로
+      // navigate("/editor");
+      navigate("/editor", { replace: true }); // ← 여기를 리스트 페이지로
     } catch (err) {
       console.error("수정 실패", err);
       alert("수정 실패");
     }
   };
+
+  
 
   // 취소
   const handleCancel = () => {
@@ -93,11 +99,32 @@ export default function EditorEditPage() {
           useCommandShortcut={true}
           ref={editorRef}
           key={content} // content가 바뀔 때마다 Editor를 리렌더
-          initialValue={content}
+          initialValue="markdown"
+          toolbarItems={[
+              [
+                "heading",
+                "bold",
+                "italic",
+                "strike",
+                "code",
+                "quote",
+                "ul",
+                "ol",
+                "task",
+                "table",
+                "image",
+                "codeblock",
+                "scrollSync",
+              ],
+            ]}
           hooks={{
             addImageBlobHook: async (blob, callback) => {
               try {
                 const fileUrl = await uploadImageToS3(blob); // service 활용
+                 callback(fileUrl, blob.name); // 에디터에 이미지 삽입
+                  if (!thumbnailUrl) {
+                    setThumbnailUrl(fileUrl); // 첫 이미지 저장
+                  }
               } catch (err) {
                 console.error("이미지 업로드 실패:", err);
               }
