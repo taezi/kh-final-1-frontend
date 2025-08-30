@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // API 기본 URL 설정
-const API_URL = "http://localhost:9999/api/inquiry/";
+const API_URL = "http://localhost:9999/api/manage";
 
 // axios 인스턴스 생성
 export const manageAPI = axios.create({
@@ -33,7 +33,7 @@ export const createInquiry = async (inquiryData) => {
   console.log("전송 데이터:", inquiryData);
   try {
     // POST 요청을 보냅니다.
-    const response = await manageAPI.post("/submit", inquiryData);
+    const response = await manageAPI.post("/inquiry/submit", inquiryData);
     console.log("서버 응답:", response);
     return response.data;
   } catch (error) {
