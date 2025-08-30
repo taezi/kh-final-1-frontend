@@ -21,10 +21,13 @@ import NoticePage from "./pages/NoticePage";
 import InquiryPage from "./pages/InquiryPage";
 import MoviePage from "./pages/MoviePage";
 import MoviedetailPage from "./pages/MoviedetailPage";
+import CultureViewPage from "./pages/CultureViewPage";
 import EditorEditPage from "./pages/EditorEditPage";
 import NoticeWritePage from "./pages/NoticeWritePage";
 import NoticeDetailPage from "./pages/NoticeDetailPage";
 import NoticeEditPage from "./pages/NoticeEditPage";
+import ServicerulePage from "./pages/ServicerulePage";
+
 
 function App() {
   return (
@@ -34,10 +37,12 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage></LoginPage>} />
           <Route path="/signup" element={<SignupPage></SignupPage>} />
+          <Route path="/servicerule" element={<ServicerulePage></ServicerulePage>} />
           <Route path="/" element={<MainPage></MainPage>} />
           <Route path="/findid" element={<FindIdPage></FindIdPage>} />
           <Route path="/findpwd" element={<FindPwdPage></FindPwdPage>} />
           <Route path="/culture" element={<CulturePage></CulturePage>} />
+          <Route path="/culture/:id" element={<CultureViewPage />} />
           <Route
             path="/restaurants"
             element={<RestaurantPage></RestaurantPage>}
@@ -46,13 +51,10 @@ function App() {
           <Route path="/cafes" element={<CafePage></CafePage>} />
 
           <Route path="/editor" element={<EditorPage></EditorPage>} />
-          <Route path="/editor/:editorno" element={<EditorDetailPage />} />
-
-          <Route path="/notice" element={<NoticePage></NoticePage>} />
 
           <Route path="/movie" element={<MoviePage></MoviePage>} />
           <Route
-            path="/moviedetail"
+            path="/movie/:id"
             element={<MoviedetailPage></MoviedetailPage>}
           />
 

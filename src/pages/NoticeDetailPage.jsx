@@ -43,32 +43,42 @@ export default function NoticeDetailPage() {
       <div className="notice-detail-page">
         <h2>공지사항 상세 정보</h2>
 
-        {/* 수정/삭제 버튼 (작성자만 보이게) */}
-        {currentUser && currentUser.userno === notice.userno && (
-          <div className="notice-action-buttons">
-            <button
-              onClick={() => navigate(`/notice/edit/${notice.noticeno}`)}
-              className="btnEdit"
-            >
-              수정
-            </button>
-            <button onClick={handleDelete} className="btnDelete">
-              삭제
-            </button>
-          </div>
-        )}
+        <div className="editor-action-wrapper">
+          <button onClick={() => navigate(-1)} className="btnBack">
+            목록으로
+          </button>
 
-        <div className="notice-detail-item">
+          {/* 수정/삭제 버튼 (작성자만 보이게) */}
+          <div className="editor-action-buttons">
+            {currentUser && currentUser.userno === notice.userno && (
+              <>
+                <button
+                  onClick={() => navigate(`/notice/edit/${notice.noticeno}`)}
+                  className="btnEdit"
+                >
+                  수정
+                </button>
+                <button onClick={handleDelete} className="btnDelete">
+                  삭제
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+
+        <div className="editor-meta">
           <p><strong>번호:</strong> {notice.noticeno}</p>
-          <p><strong>제목:</strong> {notice.noticetitle}</p>
-          <p><strong>내용:</strong> {notice.noticepost}</p>
           <p><strong>작성일:</strong> {notice.noticedate}</p>
           <p><strong>조회수:</strong> {notice.noticeview}</p>
         </div>
 
-        <button onClick={() => navigate(-1)} className="btnBack">
-          목록으로
-        </button>
+        <div className="notice-detail-item">
+          <p className="notice-title"><strong>제목:  {notice.noticetitle}</strong></p>
+          <div className="notice-detail-info">
+            <p><strong>내용: {notice.noticepost}</strong></p>
+          </div>
+        </div>
+
       </div>
     </Layout>
   );

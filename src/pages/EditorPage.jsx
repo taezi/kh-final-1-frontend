@@ -4,7 +4,9 @@ import Layout from "../components/Layout";
 import "../css/EditorPage.css";
 import useAuthStore from "../store/authStore";
 import { editorAPI } from "../service/editorAPI";
+import defaultImage from "../img/save-image.png";
 import defaultImage from "../img/editor.png";
+
 
 export default function EditorPage() {
   const navigate = useNavigate();
@@ -12,22 +14,39 @@ export default function EditorPage() {
   const [editorList, setEditorList] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
 
-  // 초기 게시글 로드
+   // 리스트 로드 함수
+  const loadList = async (p = 1) => {
+  try {
+    const response = await editorAPI.get(`/list`); // size=6는 무시될 수 있으니 제거
+    const allItems = response.data.eList.map((editor) => ({
+      ...editor,
+      liked: false,
+    }));
+
+    // 6개씩 잘라서 보여주기
+    const start = (p - 1) * 6;
+    const newItems = allItems.slice(start, start + 6);
+
+    setEditorList((prev) =>
+      p === 1 ? newItems : [...prev, ...newItems]
+    );
+
+    // 더보기 여부
+    setHasMore(allItems.length > start + 6);
+    setPage(p);
+  } catch (error) {
+    console.error("게시글 불러오기 실패:", error);
+    if (p === 1) {
+      setEditorList([]);
+      setHasMore(false);
+    }
+  }
+};
+  // ✅ 초기 게시글 로드 (1페이지)
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await editorAPI.get(`/list?page=${page}`);
-        const listWithLike = response.data.eList.map((editor) => ({
-          ...editor,
-          liked: false,
-        }));
-        setEditorList(listWithLike);
-      } catch (error) {
-        console.error("게시글 조회 실패:", error);
-      }
-    };
-    fetchData();
+    loadList(1);
   }, []);
 
   // 글 작성 페이지 이동
@@ -43,7 +62,7 @@ export default function EditorPage() {
 
   // 좋아요 토글
   const toggleLike = (editorno, e) => {
-    e.stopPropagation(); // 카드 클릭 이벤트 방지
+    e.stopPropagation();
     setEditorList((prev) =>
       prev.map((editor) =>
         editor.editorno === editorno
@@ -57,22 +76,6 @@ export default function EditorPage() {
   const goToDetail = (editorno) => {
     navigate(`/editor/${editorno}`);
   };
-
-  // 더보기 버튼
-  const loadMore = async () => {
-    try {
-      const response = await editorAPI.get(`/list?page=${page + 1}`);
-      const newList = response.data.eList.map((editor) => ({
-        ...editor,
-        liked: false,
-      }));
-      setEditorList((prev) => [...prev, ...newList]);
-      setPage((prev) => prev + 1);
-    } catch (error) {
-      console.error("더보기 실패:", error);
-    }
-  };
-
   return (
     <Layout>
       <div className="editor-page">
@@ -111,7 +114,7 @@ export default function EditorPage() {
             >
               <div className="editor-image">
                 <img
-                  src={editor.thumbnailUrl || defaultImage} // ✅ thumbnail → thumbnailUrl 로 변경
+                  src={editor.thumbnail || defaultImage} // ✅ thumbnail → thumbnailUrl 로 변경
                   alt={editor.editortitle}
                 />
                 <button
@@ -128,9 +131,12 @@ export default function EditorPage() {
           ))}
         </div>
 
-        {/* 더보기 버튼 */}
         <div className="load-more">
-          <button onClick={loadMore}>더보기</button>
+          {hasMore ? (
+            <button onClick={() => loadList(page + 1)}>더보기</button>
+          ) : (
+            <button disabled>더보기</button>
+          )}
         </div>
       </div>
     </Layout>

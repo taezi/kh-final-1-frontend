@@ -117,17 +117,8 @@ export default function SignupPage() {
             placeholder="별명을 입력해주세요"
             required
           />
-          <div className="agreement-section">
-            <input
-              type="checkbox"
-              className="signup-checkbox"
-              checked={isAgreed}
-              onChange={(e) => setIsAgreed(e.target.checked)}
-            />
-            <label htmlFor="chk_id">
-              가입 필수 정보를 위임하는데 동의합니다.
-            </label>
-          </div>
+         
+          
           <button className="signup-button" onClick={handleRegister}>
             회원가입
           </button>

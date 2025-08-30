@@ -55,3 +55,7 @@ export const getEventList = ({ date, gu = "", q = "", page = 1, size = 12 }) =>
   placeAPI
     .get("events/list", { params: { date, gu, q, page, size } })
     .then((r) => r.data);
+
+// src/service/placeAPI.js (맨 아래 추가)
+export const getEventDetail = ({ id }) =>
+  placeAPI.get(`events/${encodeURIComponent(id)}`).then((r) => r.data);
