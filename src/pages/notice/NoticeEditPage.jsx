@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Editor } from "@toast-ui/react-editor";
-import Layout from "../components/Layout";
-import { getNoticeDetail, updateNotice } from "../service/noticeAPI";
+import Layout from "../../components/Layout";
+import { getNoticeDetail, updateNotice } from "../../service/noticeAPI";
 import "@toast-ui/editor/dist/toastui-editor.css";
-import "../css/NoticeWritePage.css"; // EditorEditPage와 동일 UI를 위해
+import "../../css/NoticeWritePage.css"; // EditorEditPage와 동일 UI를 위해
 
 export default function NoticeEditPage() {
   const { noticeno } = useParams();
@@ -60,9 +60,10 @@ export default function NoticeEditPage() {
 
   return (
     <Layout>
-      <div className="editor-container"> {/* EditorEditPage와 동일 UI */}
+      <div className="editor-container">
+        {" "}
+        {/* EditorEditPage와 동일 UI */}
         <h2 className="title">공지사항 수정</h2>
-
         <div className="formGroup">
           <label className="label">제목</label>
           <input
@@ -72,7 +73,6 @@ export default function NoticeEditPage() {
             className="input"
           />
         </div>
-
         <div className="formGroup">
           <label className="label">내용</label>
           <Editor
@@ -85,7 +85,6 @@ export default function NoticeEditPage() {
             initialValue={content}
           />
         </div>
-
         <div className="buttonGroup">
           <button onClick={handleUpdate} className="btn btnCreate">
             수정 완료

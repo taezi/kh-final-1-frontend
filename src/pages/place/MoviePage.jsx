@@ -1,17 +1,43 @@
 import React, { useEffect, useState } from "react";
-import MovieSection from "../components/MovieSection";
-import CinemaSection from "../components/CinemaSection";
-import "../css/MoviePage.css";
-import { fetchMoviesNowPlaying } from "../service/movieAPI";
-import { fetchCinemas } from "../service/cinemaAPI";
+import MovieSection from "../../components/MovieSection";
+import CinemaSection from "../../components/CinemaSection";
+import "../../css/MoviePage.css";
+import { fetchMoviesNowPlaying } from "../../service/movieAPI";
+import { fetchCinemas } from "../../service/cinemaAPI";
 
 export default function MoviePage() {
   const [movies, setMovies] = useState([]);
   const [cinemas, setCinemas] = useState([]);
   // 서울 25개 구 전체 목록을 직접 정의
-  const allRegions = ['강남구', '강동구', '강북구', '강서구', '관악구', '광진구', '구로구', '금천구', '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구', '성북구', '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구'];
+  const allRegions = [
+    "강남구",
+    "강동구",
+    "강북구",
+    "강서구",
+    "관악구",
+    "광진구",
+    "구로구",
+    "금천구",
+    "노원구",
+    "도봉구",
+    "동대문구",
+    "동작구",
+    "마포구",
+    "서대문구",
+    "서초구",
+    "성동구",
+    "성북구",
+    "송파구",
+    "양천구",
+    "영등포구",
+    "용산구",
+    "은평구",
+    "종로구",
+    "중구",
+    "중랑구",
+  ];
   // 초기값을 '강남구'로 설정하여 처음 로딩 시 강남구 데이터가 표시되도록
-  const [selectedRegion, setSelectedRegion] = useState('강남구');
+  const [selectedRegion, setSelectedRegion] = useState("강남구");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -76,14 +102,15 @@ export default function MoviePage() {
     );
   }
 
-  const currentBannerImage = movies.length > 0
-    ? `https://image.tmdb.org/t/p/original${movies[currentSlide].backdrop_path}`
-    : "";
+  const currentBannerImage =
+    movies.length > 0
+      ? `https://image.tmdb.org/t/p/original${movies[currentSlide].backdrop_path}`
+      : "";
 
   return (
     <>
       <div className="top-blank-temp"></div>
-      
+
       <div className="movie-page-content">
         <div className="hero-band">
           <div
@@ -100,14 +127,14 @@ export default function MoviePage() {
         </div>
 
         <MovieSection movies={movies} />
-        
+
         <CinemaSection
           // 모든 지역구 목록을 prop으로 전달
-          allRegions={allRegions} 
+          allRegions={allRegions}
           cinemas={cinemas}
           selectedRegion={selectedRegion}
           onRegionChange={handleRegionChange}
-          error={error} 
+          error={error}
         />
       </div>
     </>

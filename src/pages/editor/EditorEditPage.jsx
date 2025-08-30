@@ -5,11 +5,11 @@ import {
   getPostDetail,
   updatePost,
   uploadImageToS3,
-} from "../service/editorAPI";
+} from "../../service/editorAPI";
 import "@toast-ui/editor/toastui-editor.css";
-import "../css/EditorWritePage.css";
-import useAuthStore from "../store/authStore";
-import Layout from "../components/Layout";
+import "../../css/EditorWritePage.css";
+import useAuthStore from "../../store/authStore";
+import Layout from "../../components/Layout";
 
 export default function EditorEditPage() {
   const { editorno } = useParams();
@@ -21,7 +21,7 @@ export default function EditorEditPage() {
   const [content, setContent] = useState(""); // 내용 상태
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [fileUrl, setFileUrl] = useState(null); // 업로드된 이미지 URL 상태
-   const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
 
   // 게시글 불러오기
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function EditorEditPage() {
 
         setTitle(post.editortitle);
         setContent(post.editorcontent);
-        setThumbnailUrl(post.thumbnailUrl || ""); 
+        setThumbnailUrl(post.thumbnailUrl || "");
         setLoading(false);
       } catch (err) {
         console.error("불러오기 실패", err);
@@ -66,8 +66,6 @@ export default function EditorEditPage() {
     }
   };
 
-  
-
   // 취소
   const handleCancel = () => {
     navigate("/editor"); // 상세 페이지 대신 리스트로
@@ -77,30 +75,30 @@ export default function EditorEditPage() {
 
   return (
     <Layout>
-<div className="editor-container">
-      <h2 className="title">에디터 게시글 수정</h2>
+      <div className="editor-container">
+        <h2 className="title">에디터 게시글 수정</h2>
 
-      <div className="formGroup">
-        <label className="label">제목</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="input"
-        />
-      </div>
+        <div className="formGroup">
+          <label className="label">제목</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="input"
+          />
+        </div>
 
-      <div className="formGroup">
-        <label className="label">내용</label>
-        <Editor
-          previewStyle="vertical"
-          height="400px"
-          initialEditType="wysiwyg"
-          useCommandShortcut={true}
-          ref={editorRef}
-          key={content} // content가 바뀔 때마다 Editor를 리렌더
-          initialValue="markdown"
-          toolbarItems={[
+        <div className="formGroup">
+          <label className="label">내용</label>
+          <Editor
+            previewStyle="vertical"
+            height="400px"
+            initialEditType="wysiwyg"
+            useCommandShortcut={true}
+            ref={editorRef}
+            key={content} // content가 바뀔 때마다 Editor를 리렌더
+            initialValue="markdown"
+            toolbarItems={[
               [
                 "heading",
                 "bold",
@@ -117,33 +115,31 @@ export default function EditorEditPage() {
                 "scrollSync",
               ],
             ]}
-          hooks={{
-            addImageBlobHook: async (blob, callback) => {
-              try {
-                const fileUrl = await uploadImageToS3(blob); // service 활용
-                 callback(fileUrl, blob.name); // 에디터에 이미지 삽입
+            hooks={{
+              addImageBlobHook: async (blob, callback) => {
+                try {
+                  const fileUrl = await uploadImageToS3(blob); // service 활용
+                  callback(fileUrl, blob.name); // 에디터에 이미지 삽입
                   if (!thumbnailUrl) {
                     setThumbnailUrl(fileUrl); // 첫 이미지 저장
                   }
-              } catch (err) {
-                console.error("이미지 업로드 실패:", err);
-              }
-            },
-          }}
-        />
-      </div>
+                } catch (err) {
+                  console.error("이미지 업로드 실패:", err);
+                }
+              },
+            }}
+          />
+        </div>
 
-      <div className="buttonGroup">
-        <button onClick={handleUpdate} className="btn btnCreate">
-          수정 완료
-        </button>
-        <button onClick={handleCancel} className="btn btnCancel">
-          취소
-        </button>
+        <div className="buttonGroup">
+          <button onClick={handleUpdate} className="btn btnCreate">
+            수정 완료
+          </button>
+          <button onClick={handleCancel} className="btn btnCancel">
+            취소
+          </button>
+        </div>
       </div>
-  
-    </div>
     </Layout>
-    
   );
 }

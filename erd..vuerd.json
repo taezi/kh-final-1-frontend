@@ -4,8 +4,8 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": -386.2255,
-    "scrollLeft": -582,
+    "scrollTop": -136.2255,
+    "scrollLeft": -602,
     "zoomLevel": 0.91,
     "show": 511,
     "database": 8,
@@ -41,7 +41,6 @@
       "3cE6FYQizMuNBqlofdAZF",
       "0bBOns9x5gQp_1pr4at8A",
       "7lzxhNQdkLM7LJ8OcRbZk",
-      "Lif6t82tPG6qVg1ZhwH7G",
       "CgowHuIbT1hR-VWgRP_V3",
       "D5HQhCMtG-hwfwJkpQs5z"
     ],
@@ -52,8 +51,7 @@
       "BRYLh5PZVowPA512CvE-t",
       "WLKDEMbwWxEUPgX4sd-QD",
       "1tvQ5lrUnR5GHGNS2jVqy",
-      "eFMsamsZjYt2TveFAbk5N",
-      "ke1IVL_O4PbKIB2MX9uSZ"
+      "eFMsamsZjYt2TveFAbk5N"
     ],
     "indexIds": [],
     "memoIds": []
@@ -363,25 +361,6 @@
           "createAt": 1755658626048
         }
       },
-      "rH_o8AsrcgXZoLRLFqaZ1": {
-        "id": "rH_o8AsrcgXZoLRLFqaZ1",
-        "name": "data_recomend",
-        "comment": "데이트추천테이블",
-        "columnIds": [],
-        "seqColumnIds": [],
-        "ui": {
-          "x": 1460.0887,
-          "y": 279.7218,
-          "zIndex": 667,
-          "widthName": 84,
-          "widthComment": 98,
-          "color": ""
-        },
-        "meta": {
-          "updateAt": 1756090711996,
-          "createAt": 1755662451543
-        }
-      },
       "3cE6FYQizMuNBqlofdAZF": {
         "id": "3cE6FYQizMuNBqlofdAZF",
         "name": "review_response",
@@ -452,7 +431,8 @@
           "dQAVBIa3Crzv3GHZ6vYge",
           "3hpoc8vAvqyJE_8ajEjnv",
           "mYTRcvdj3MmJNywGSuIpN",
-          "MhQ0DhqF23ESBYu0gIoq7"
+          "MhQ0DhqF23ESBYu0gIoq7",
+          "hyhNT8XBwE8Y8ySNbhWbL"
         ],
         "seqColumnIds": [
           "rP1y991X5ZI-Tm6vrWdYe",
@@ -466,7 +446,8 @@
           "jn8tsGJfTb6IKYy9CuroT",
           "D15Th22RpPP8yu-D5-7bo",
           "Y3xCKtDQcmLzdI3hqqrjD",
-          "MhQ0DhqF23ESBYu0gIoq7"
+          "MhQ0DhqF23ESBYu0gIoq7",
+          "hyhNT8XBwE8Y8ySNbhWbL"
         ],
         "ui": {
           "x": 754.3087,
@@ -477,7 +458,7 @@
           "color": ""
         },
         "meta": {
-          "updateAt": 1756432639924,
+          "updateAt": 1756552263572,
           "createAt": 1755757889229
         }
       },
@@ -2579,7 +2560,7 @@
         "default": "",
         "options": 8,
         "ui": {
-          "keys": 2,
+          "keys": 0,
           "widthName": 60,
           "widthComment": 122,
           "widthDataType": 60,
@@ -3154,10 +3135,10 @@
         "id": "MhQ0DhqF23ESBYu0gIoq7",
         "tableId": "7lzxhNQdkLM7LJ8OcRbZk",
         "name": "thumbnailurl",
-        "comment": "에디터게시글 이미지",
+        "comment": "에디터게시글 썸네일",
         "dataType": "VARCHAR(500)",
         "default": "",
-        "options": 8,
+        "options": 0,
         "ui": {
           "keys": 0,
           "widthName": 70,
@@ -3166,8 +3147,28 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1756432713983,
+          "updateAt": 1756552290370,
           "createAt": 1756432639923
+        }
+      },
+      "hyhNT8XBwE8Y8ySNbhWbL": {
+        "id": "hyhNT8XBwE8Y8ySNbhWbL",
+        "tableId": "7lzxhNQdkLM7LJ8OcRbZk",
+        "name": "contentimgurl",
+        "comment": "에디터게시글 본문이미지",
+        "dataType": "VARCHAR(500)",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 77,
+          "widthComment": 137,
+          "widthDataType": 81,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1756552345523,
+          "createAt": 1756552263571
         }
       }
     },
@@ -3360,7 +3361,7 @@
             "rP1y991X5ZI-Tm6vrWdYe"
           ],
           "x": 754.3087,
-          "y": 163.1107,
+          "y": 175.1107,
           "direction": 1
         },
         "meta": {

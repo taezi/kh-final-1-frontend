@@ -1,8 +1,7 @@
-
 import { useState } from "react";
-import Layout from "../components/Layout";
-import "../css/FindPwdPage.css";
-import { findPassword } from "../service/authAPI"; // 비밀번호를 찾는 API 호출을 가정합니다.
+import Layout from "../../components/Layout";
+import "../../css/FindPwdPage.css";
+import { findPassword } from "../../service/authAPI"; // 비밀번호를 찾는 API 호출을 가정합니다.
 import { useNavigate } from "react-router-dom";
 
 export default function FindPwdPage() {
@@ -22,11 +21,14 @@ export default function FindPwdPage() {
       ...preFormData,
       [name]: value,
     }));
-    
   };
 
   const handleFindPwd = async () => {
-    if (!formData.name.trim() || !formData.userid.trim() || !formData.nickname.trim()) {
+    if (
+      !formData.name.trim() ||
+      !formData.userid.trim() ||
+      !formData.nickname.trim()
+    ) {
       alert("이름, 아이디, 별명을 모두 입력해주세요.");
       return;
     }
@@ -38,7 +40,11 @@ export default function FindPwdPage() {
 
       // 임시로 가상의 비밀번호를 찾았다고 가정 (API 연동 전 테스트용)
       let tempPwd = "";
-      if (formData.name === "테스트" && formData.userid === "testuser123" && formData.nickname === "별명") {
+      if (
+        formData.name === "테스트" &&
+        formData.userid === "testuser123" &&
+        formData.nickname === "별명"
+      ) {
         tempPwd = "temp-password-123";
       } else {
         tempPwd = null;
@@ -46,7 +52,6 @@ export default function FindPwdPage() {
 
       setFoundPwd(tempPwd);
       setShowResult(true);
-
     } catch (error) {
       console.error("비밀번호 찾기 중 오류 발생:", error);
       alert("비밀번호를 찾는 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -94,7 +99,10 @@ export default function FindPwdPage() {
                 placeholder="별명을 입력해주세요"
                 required
               />
-              <button className="find-pwd-button primary-button" onClick={handleFindPwd}>
+              <button
+                className="find-pwd-button primary-button"
+                onClick={handleFindPwd}
+              >
                 비밀번호 찾기
               </button>
             </>
@@ -112,8 +120,8 @@ export default function FindPwdPage() {
                   <p>정보를 다시 확인하거나 관리자에게 문의해주세요.</p>
                 </>
               )}
-              <button 
-                className="find-pwd-button primary-button" 
+              <button
+                className="find-pwd-button primary-button"
                 onClick={goToLoginPage}
               >
                 로그인 페이지로 이동

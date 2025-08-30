@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../components/Layout";
-import "../css/NoticePage.css";
-import { noticeAPI } from "../service/noticeAPI";
+import Layout from "../../components/Layout";
+import "../../css/NoticePage.css";
+import { getNoticeList, noticeAPI } from "../../service/noticeAPI";
+import useAuthStore from "../../store/authStore";
 
 export default function NoticePage() {
   const navigate = useNavigate();
   const [noticeList, setNoticeList] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1); // 총 페이지 수
+  const user = useAuthStore((state) => state.user);
 
   const PAGE_SIZE = 10; // 한 페이지에 10건
 
@@ -16,14 +18,15 @@ export default function NoticePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await noticeAPI.get(`/list?page=${page}&size=${PAGE_SIZE}`);
-        console.log("noticeList:", response.data.nList);
-        setNoticeList(response.data.nList); // nList는 백엔드에서 내려주는 리스트 이름 예시
-        setTotalPages(Math.ceil(response.data.total / PAGE_SIZE)); // total: 백엔드에서 전체 게시글 수
+        const response = await getNoticeList(page, PAGE_SIZE);
+        console.log("noticeList:", response.nList);
+        setNoticeList(response.nList);
+        setTotalPages(Math.ceil(response.total / PAGE_SIZE));
       } catch (error) {
         console.error("공지사항 조회 실패:", error);
       }
     };
+
     fetchData();
   }, [page]);
 
@@ -42,7 +45,13 @@ export default function NoticePage() {
       <div className="notice-page">
         <div className="notice-header">
           <h3>공지사항 페이지</h3>
-          <button className="register-btn" onClick={handleClick}>등록</button>
+          {user?.role === "admin" ? (
+            <button className="register-btn" onClick={handleClick}>
+              등록
+            </button>
+          ) : (
+            <></>
+          )}
         </div>
         {/* 리스트 */}
         <table className="notice-table">
@@ -58,7 +67,11 @@ export default function NoticePage() {
 
           <tbody>
             {noticeList.map((notice) => (
-              <tr key={notice.noticeno} onClick={() => goToDetail(notice.noticeno)} className="notice-row">
+              <tr
+                key={notice.noticeno}
+                onClick={() => goToDetail(notice.noticeno)}
+                className="notice-row"
+              >
                 <td>{notice.noticeno}</td>
                 <td className="title">{notice.noticetitle}</td>
                 <td>{notice.noticepost}</td>
@@ -81,7 +94,6 @@ export default function NoticePage() {
             </button>
           ))}
         </div>
-
       </div>
     </Layout>
   );

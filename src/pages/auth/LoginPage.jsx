@@ -1,8 +1,8 @@
 import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import useAuthStore from "../store/authStore";
-import "../css/LoginPage.css";
-import Layout from "../components/Layout";
+import useAuthStore from "../../store/authStore";
+import "../../css/LoginPage.css";
+import Layout from "../../components/Layout";
 
 export default function LoginPage() {
   const userid = useRef(null);
@@ -38,7 +38,7 @@ export default function LoginPage() {
             <button className="naver-button">네이버로 로그인</button>
           </div>
           <div className="account-actions">
-            <Link to="/signup">회원가입</Link>
+            <Link to="/servicerule">회원가입</Link>
             <span className="divider">|</span>
             <Link to="/findid">아이디 찾기</Link>
             <span className="divider">|</span>
