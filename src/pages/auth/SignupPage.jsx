@@ -14,8 +14,6 @@ export default function SignupPage() {
     email: "",
   });
 
-  const [isAgreed, setIsAgreed] = useState(false);
-
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -29,10 +27,6 @@ export default function SignupPage() {
   const handleRegister = async () => {
     if (formData.password !== formData.repassword) {
       alert("비밀번호가 일치하지 않습니다.");
-      return;
-    }
-    if (!isAgreed) {
-      alert("필수 약관에 동의해야 회원가입이 가능합니다.");
       return;
     }
 

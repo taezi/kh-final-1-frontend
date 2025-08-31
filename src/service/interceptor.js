@@ -1,5 +1,3 @@
-import axios from "axios";
-
 const setupInterceptors = (apiInstance) => {
   // 요청 인터셉터
   apiInstance.interceptors.request.use(

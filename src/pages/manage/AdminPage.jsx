@@ -1,5 +1,5 @@
-import Layout from "../components/Layout";
-import "../css/AdminPage.css";
+import Layout from "../../components/Layout";
+import "../../css/AdminPage.css";
 export default function AdminPage(params) {
   return (
     <Layout>

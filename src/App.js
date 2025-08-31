@@ -7,9 +7,9 @@ import Navbar from "./components/Navbar";
 import FindIdPage from "./pages/auth/FindIdPage";
 import FindPwdPage from "./pages/auth/FindPwdPage";
 import PrivateRoute from "./components/PrivateRoute";
-import AdminPage from "./pages/AdminPage";
+import AdminPage from "./pages/manage/AdminPage";
 import EditorPage from "./pages/editor/EditorPage";
-import MypagePage from "./pages/MypagePage";
+import MypagePage from "./pages/manage/MypagePage";
 import DateaiPage from "./pages/ai/DateaiPage";
 import CulturePage from "./pages/place/CulturePage";
 import RestaurantPage from "./pages/place/RestaurantPage";
@@ -18,7 +18,7 @@ import EditorWritePage from "./pages/editor/EditorWritePage";
 import EditorDetailPage from "./pages/editor/EditorDetailPage";
 import EventsPage from "./pages/place/EventPage";
 import NoticePage from "./pages/notice/NoticePage";
-import InquiryPage from "./pages/InquiryPage";
+import InquiryPage from "./pages/manage/InquiryPage";
 import MoviePage from "./pages/place/MoviePage";
 import MoviedetailPage from "./pages/place/MoviedetailPage";
 import CultureViewPage from "./pages/place/CultureViewPage";
@@ -27,6 +27,11 @@ import NoticeWritePage from "./pages/notice/NoticeWritePage";
 import NoticeDetailPage from "./pages/notice/NoticeDetailPage";
 import NoticeEditPage from "./pages/notice/NoticeEditPage";
 import ServicerulePage from "./pages/auth/ServicerulePage";
+import UpdateIdPage from "./pages/manage/update/UpdateIdPage";
+import UpdatePwdPage from "./pages/manage/update/UpdatePwdPage";
+import UpdateNamePage from "./pages/manage/update/UpdateNamePage";
+import UpdateNickPage from "./pages/manage/update/UpdateNickPage";
+import UpdateEmailPage from "./pages/manage/update/UpdateEmailPage";
 
 function App() {
   return (
@@ -68,6 +73,23 @@ function App() {
             <Route path="/mypage" element={<MypagePage></MypagePage>} />
             <Route path="/dateai" element={<DateaiPage></DateaiPage>} />
             <Route path="/inquiry" element={<InquiryPage></InquiryPage>} />
+            <Route path="/update-id" element={<UpdateIdPage></UpdateIdPage>} />
+            <Route
+              path="/update-pwd"
+              element={<UpdatePwdPage></UpdatePwdPage>}
+            />
+            <Route
+              path="/update-name"
+              element={<UpdateNamePage></UpdateNamePage>}
+            />
+            <Route
+              path="/update-nick"
+              element={<UpdateNickPage></UpdateNickPage>}
+            />
+            <Route
+              path="/update-email"
+              element={<UpdateEmailPage></UpdateEmailPage>}
+            />
           </Route>
           {/* 관리자만 체크 */}
           <Route element={<PrivateRoute requiredRole="admin" />}>

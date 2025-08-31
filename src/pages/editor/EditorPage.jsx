@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../../components/Layout";
 import "../../css/EditorPage.css";
 import useAuthStore from "../../store/authStore";
-import { editorAPI } from "../../service/editorAPI";
+import { getPostList } from "../../service/editorAPI";
 import defaultImage from "../../img/save-image.png";
 
 export default function EditorPage() {
@@ -17,8 +17,8 @@ export default function EditorPage() {
   // 리스트 로드 함수
   const loadList = async (p = 1) => {
     try {
-      const response = await editorAPI.get(`/list`);
-      const allItems = response.data.eList.map((editor) => ({
+      const response = await getPostList();
+      const allItems = response.eList.map((editor) => ({
         ...editor,
         liked: false,
       }));
