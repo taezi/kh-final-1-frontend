@@ -41,3 +41,67 @@ export const createInquiry = async (inquiryData) => {
 //     throw error;
 //   }
 // };
+
+export const deleteUser = async (data) => {
+  console.log("회원 탈퇴 데이터 : ", data);
+  try {
+    const response = await manageAPI.delete("", { data });
+
+    return response.data;
+  } catch (error) {
+    console.log("회원 탈퇴 에러 : ", error);
+    throw error;
+  }
+};
+
+export const updateUserid = async (before, after) => {
+  try {
+    console.log("before, after : ", before, after);
+    const response = await manageAPI.put("/userid", { before, after });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateUsername = async (userid, after) => {
+  try {
+    console.log("userid, after : ", userid, after);
+    const response = await manageAPI.put("/username", { userid, after });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const updateNickname = async (userid, after) => {
+  try {
+    console.log("userid, after : ", userid, after);
+    const response = await manageAPI.put("/nickname", { userid, after });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const updateEmail = async (userid, after) => {
+  try {
+    console.log("userid, after : ", userid, after);
+    const response = await manageAPI.put("/email", { userid, after });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updatePassword = async (userid, before, after) => {
+  try {
+    console.log("userid, before, after : ", userid, before, after);
+    const response = await manageAPI.put("/password", {
+      userid,
+      before,
+      after,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

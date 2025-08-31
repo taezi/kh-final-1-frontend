@@ -11,6 +11,7 @@ export default function EditorDetailPage() {
   const navigate = useNavigate();
   const [editor, setEditor] = useState(null);
   const currentUser = useAuthStore((state) => state.user);
+  console.log(editor);
 
   // 이미지 태그 추출
   const extractImages = (markdown) => {

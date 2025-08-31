@@ -1,9 +1,9 @@
-import Layout from "../components/Layout";
+import Layout from "../../components/Layout";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuthStore from "../store/authStore";
-import { createInquiry } from "../service/manageAPI"; 
-import "../css/InquiryPage.css";
+import useAuthStore from "../../store/authStore";
+import { createInquiry } from "../../service/manageAPI";
+import "../../css/InquiryPage.css";
 
 export default function InquiryPage() {
   // useAuthStore를 사용하여 인증된 사용자 정보를 가져옵니다.
@@ -119,7 +119,6 @@ export default function InquiryPage() {
             >
               취소
             </button>
-            
           </div>
         </form>
       </div>

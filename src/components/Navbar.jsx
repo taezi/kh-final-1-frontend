@@ -75,6 +75,7 @@ export default function Navbar({ className = "" }) {
   const handleLogout = async () => {
     if (user) {
       console.log(user);
+
       logout(); // Zustand 액션 함수 호출
       alert("로그아웃 성공");
     } else {

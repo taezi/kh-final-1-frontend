@@ -14,6 +14,24 @@ const useAuthStore = create(
         loading: false,
         error: null,
 
+        justLoggedOut: false,
+        clearJustLoggedOut: () => set({ justLoggedOut: false }),
+
+        // 사용자 정보 업데이트 (동기 처리)
+        updateUser: (newUserData) =>
+          set((state) => {
+            const updatedUser = { ...state.user, ...newUserData };
+
+            // localStorage(auth-storage)도 갱신
+            const authData = JSON.parse(localStorage.getItem("auth-storage"));
+            if (authData && authData.state && authData.state.user) {
+              authData.state.user = updatedUser;
+              localStorage.setItem("auth-storage", JSON.stringify(authData));
+            }
+
+            return { user: updatedUser };
+          }),
+
         // 로그인 (비동기 처리)
         loginUser: async ({ userid, password }) => {
           set({ loading: true, error: null });
@@ -54,11 +72,15 @@ const useAuthStore = create(
 
         // 로그아웃 (동기 처리)
         logout: () => {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("auth-storage");
           set({
             user: null,
             accessToken: null,
             refreshToken: null,
             error: null,
+            justLoggedOut: true,
           });
         },
       }),
