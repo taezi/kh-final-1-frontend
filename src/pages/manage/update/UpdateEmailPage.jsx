@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../../store/authStore";
 import { useRef } from "react";
 import { updateEmail } from "../../../service/manageAPI";
+import "../../../css/UpdateEmailPage.css";
 
 export default function UpdateEmailPage(params) {
   const user = useAuthStore((state) => state.user);
@@ -42,24 +43,36 @@ export default function UpdateEmailPage(params) {
   };
   return (
     <Layout>
-      <h3>이메일변경페이지</h3>
-      <div className="form-group">
-        <label htmlFor="email">이메일</label>
-        <input
-          type="text"
-          id="email"
-          name="email"
-          ref={email}
-          placeholder={user.email}
-        />
-      </div>
-      <div className="button-group">
-        <button type="button" onClick={handleUpdate} className="update-button">
-          변경
-        </button>
-        <button type="button" onClick={handleCancel} className="cancel-button">
-          취소
-        </button>
+      <div className="update-email-container">
+        {" "}
+        {/* 클래스명이 추가된 부분 */}
+        <h3>이메일변경페이지</h3>
+        <div className="form-group">
+          <label htmlFor="email">이메일</label>
+          <input
+            type="text"
+            id="email"
+            name="email"
+            ref={email}
+            placeholder={user.email}
+          />
+        </div>
+        <div className="button-group">
+          <button
+            type="button"
+            onClick={handleUpdate}
+            className="update-button"
+          >
+            변경
+          </button>
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="cancel-button"
+          >
+            취소
+          </button>
+        </div>
       </div>
     </Layout>
   );
