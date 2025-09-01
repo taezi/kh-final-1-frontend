@@ -1,29 +1,59 @@
+/* 검색창 컨테이너 */
 .editor-search {
-  margin-top: 10px;
   display: flex;
-  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  position: relative; /* 자식 요소인 버튼의 위치 기준점 */
+  width: 100%;
+  max-width: 450px;
+  margin: 25px auto;
 }
 
-.editor-search input {
-  flex: 1;
-  padding: 6px 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+/* 검색 입력 필드 */
+.editor-search-input {
+  width: 100%;
+  /* 아이콘 버튼이 겹치지 않도록 오른쪽 패딩을 추가 */
+  padding: 10px 15px; 
+  padding-right: 50px; /* 아이콘 버튼을 위한 여백 */
+  border: 1px solid #e0e0e0;
+  border-radius: 25px;
+  font-size: 15px;
+  color: #333;
+  outline: none;
+  background-color: #f8f8f8;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
 
-.editor-search button {
-  padding: 6px 12px;
-  background-color: #4caf50;
-  color: white;
+.editor-search-input::placeholder {
+  color: #a0a0a0;
+  font-weight: 300;
+}
+
+.editor-search-input:focus {
+  border-color: #8bb4e7;
+  background-color: #fff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 검색 아이콘 버튼 */
+.search-icon-btn {
+  position: absolute; /* input 위에 겹쳐지도록 설정 */
+  right: 15px; /* 오른쪽에서 15px 떨어진 위치 */
+  top: 50%; /* 수직 중앙 정렬 */
+  transform: translateY(-50%);
+  background-color: transparent;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
+  padding: 0;
+  font-size: 15px; /* 아이콘 크기 */
+  color: #a0a0a0;
+  transition: color 0.2s;
 }
 
-.editor-search button:hover {
-  background-color: #45a049;
+.search-icon-btn:hover {
+  color: #666; /* 호버 시 색상 변경 */
 }
-
 
 .editor-page {
   padding: 20px;
@@ -36,17 +66,14 @@
   align-items: center;
 }
 
+/* 게시글 카드 리스트 */
 .editor-grid {
   margin: 20px auto;
-  /* 위아래 20px, 좌우 자동 가운데 정렬 */
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  /* 3열 고정 */
+  grid-template-columns: repeat(3, 1fr); 
   gap: 20px;
   max-width: 1000px;
-  /* 그리드 전체 최대 너비 제한 */
   padding: 0 20px;
-  /* 좌우 여백 */
   box-sizing: border-box;
 }
 
@@ -67,9 +94,10 @@
   position: relative;
 }
 
+/* 썸네일 이미지에 16:9 비율 적용 */
 .editor-image img {
   width: 100%;
-  height: 180px;
+  aspect-ratio: 16 / 9; /* 가로:세로 비율을 16:9로 설정 */
   object-fit: cover;
 }
 

@@ -16,9 +16,12 @@ export const createPost = async (postData) => {
   return response.data;
 };
 
-// 게시글 전체 조회
-export const getPostList = async () => {
-  const response = await editorAPI.get(""); // GET /api/editors
+// 게시글 전체 조회 + 검색
+export const getPostList = async (search= "") => {
+  // GET /api/editors
+  const response = await editorAPI.get("/editor", {
+   params: { search },
+  });
   return response.data;
 };
 

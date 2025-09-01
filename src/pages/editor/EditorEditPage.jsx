@@ -51,6 +51,39 @@ export default function EditorEditPage() {
   const handleUpdate = async () => {
     const editorInstance = editorRef.current.getInstance();
 
+     const editorContent = editorInstance.getMarkdown();
+    // 제목이 없을 경우 경고창
+  if (!title) {
+    alert("제목을 입력해주세요!");
+    return;
+  }
+  
+  // 썸네일 이미지가 없을 경우 경고창
+  if (!thumbnailUrl) {
+    alert("썸네일 이미지를 첨부해주세요!");
+    return;
+  }
+  
+  // 본문(에디터) 이미지가 없을 경우 경고창
+  if (!contentImgUrl) {
+    alert("에디터 이미지를 최소 하나 업로드해주세요!");
+    return;
+  }
+  
+  // 본문(에디터) 내용이 없을 경우 경고창
+  if (!editorInstance.getMarkdown()) {
+    alert("내용을 입력해주세요!");
+    return;
+  }
+  
+  // 본문(에디터) 내에 이미지가 없을 경우 경고창
+  // Markdown 이미지 형식( ![alt](url) )이 포함되어 있는지 확인합니다.
+  const hasImageInEditor = /!\[.*?\]\(.*?\)/.test(editorContent);
+  if (!hasImageInEditor) {
+    alert("에디터 본문에 이미지를 최소 하나 업로드해주세요!");
+    return;
+  }
+    
     const postData = {
       editortitle: title,
       editorcontent: editorInstance.getMarkdown(),
