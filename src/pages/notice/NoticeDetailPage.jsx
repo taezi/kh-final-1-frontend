@@ -74,6 +74,9 @@ export default function NoticeDetailPage() {
             <strong>작성일:</strong> {notice.noticedate}
           </p>
           <p>
+            <strong>수정일:</strong> {notice.noticeupdatedate}
+          </p>
+          <p>
             <strong>조회수:</strong> {notice.noticeview}
           </p>
         </div>

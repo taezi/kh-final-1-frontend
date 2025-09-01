@@ -7,7 +7,7 @@ import "../css/MainPage.css";
 
 /* Swiper */
 import { Swiper, SwiperSlide } from "swiper/react";
-// import { Navigation, Autoplay, Keyboard, A11y } from "swiper/modules";
+import { Navigation, Autoplay, Keyboard, A11y } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -307,7 +307,7 @@ export default function MainPage() {
                 ‹
               </button>
 
-              {/* <Swiper
+              <Swiper
                 className="home-swiper"
                 modules={[Navigation, Autoplay, Keyboard, A11y]}
                 onSwiper={(s) => (swiperRef.current = s)}
@@ -319,7 +319,6 @@ export default function MainPage() {
                 }}
                 keyboard={{ enabled: true }}
                 a11y={{ enabled: true }}
-                
                 effect="slide"
                 centeredSlides={false}
                 centeredSlidesBounds={false}
@@ -376,7 +375,7 @@ export default function MainPage() {
                     </SwiperSlide>
                   );
                 })}
-              </Swiper> */}
+              </Swiper>
 
               <button className="home-arrow ev-next" aria-label="오른쪽으로">
                 ›

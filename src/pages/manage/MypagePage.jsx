@@ -4,6 +4,8 @@ import MypageDelete from "../../components/MypageDelete";
 import "../../css/MypagePage.css";
 import useAuthStore from "../../store/authStore";
 import { useState } from "react";
+import InquiryDetailPage from "./inquiry/InquiryDetailPage";
+import MypageInquiry from "../../components/MypageInquiry";
 
 export default function MypagePage() {
   const user = useAuthStore((state) => state.user);
@@ -14,6 +16,13 @@ export default function MypagePage() {
     <Layout>
       <div className="mypage-content-wrapper">
         <div className="mypage-menu">
+          {/* 나의 문의 버튼 */}
+          <button
+            className={activeTab === "update" ? "active" : ""}
+            onClick={() => setActiveTab("inquiry")}
+          >
+            나의 문의
+          </button>
           {/* 회원정보수정 버튼 */}
           <button
             className={activeTab === "update" ? "active" : ""}
@@ -30,6 +39,7 @@ export default function MypagePage() {
           </button>
         </div>
         <div className="mypage-content">
+          {activeTab === "inquiry" && <MypageInquiry></MypageInquiry>}
           {activeTab === "update" && <MypageUpdate user={user} />}
           {activeTab === "delete" && <MypageDelete />}
         </div>
