@@ -1,0 +1,117 @@
+.editor-search {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+.editor-search input {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.editor-search button {
+  padding: 6px 12px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.editor-search button:hover {
+  background-color: #45a049;
+}
+
+
+.editor-page {
+  padding: 20px;
+  text-align: center;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.editor-grid {
+  margin: 20px auto;
+  /* 위아래 20px, 좌우 자동 가운데 정렬 */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* 3열 고정 */
+  gap: 20px;
+  max-width: 1000px;
+  /* 그리드 전체 최대 너비 제한 */
+  padding: 0 20px;
+  /* 좌우 여백 */
+  box-sizing: border-box;
+}
+
+.editor-card {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s;
+}
+
+.editor-card:hover {
+  transform: translateY(-5px);
+}
+
+.editor-image {
+  position: relative;
+}
+
+.editor-image img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.like-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #ff0000; /* 더 진한 빨강 */
+  font-weight: 900; /* 글자 굵기 최대 */
+  transition: transform 0.2s, color 0.2s;
+  
+}
+
+.like-btn:hover {
+  color: #ff7875;
+  /* 마우스 올렸을 때 밝은 빨강 */
+  transform: scale(1.2);
+  /* 살짝 커지게 */
+}
+
+.editor-info {
+  padding: 10px;
+}
+
+.editor-info h4 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.load-more {
+  margin-top: 20px;
+}
+
+.load-more button {
+  padding: 10px 20px;
+  background: #ffe6b3;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}

@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  Search,
-  Heart,
-  Globe,
-  Menu,
   MapPin,
   UserStar,
   UserCheck,
   UserCog,
+  Cloud,
+  CloudRain,
+  Sun,
+  Snowflake,
+  CloudSun,
 } from "lucide-react";
 import "../css/Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -21,9 +22,60 @@ export default function Navbar({ className = "" }) {
   const { user, logout } = useAuthStore();
   const isLoggedIn = !!user;
 
+  const [weather, setWeather] = useState({ temp: null, sky: null, pty: null });
+
+  useEffect(() => {
+    const fetchWeather = async () => {
+      try {
+        const res = await fetch("http://localhost:9999/api/weather/now"); // 스프링 서버
+        const data = await res.json();
+
+        console.log(data);
+        // 기온(TMP), 하늘상태(SKY), 강수형태(PTY) 추출
+        const { temp, sky, pty } = data;
+
+        setWeather({ temp, sky, pty });
+      } catch (err) {
+        console.error("날씨 API 에러:", err);
+      }
+    };
+
+    fetchWeather();
+  }, []);
+
+  // 아이콘 매핑 함수
+  const getWeatherIcon = () => {
+    if (weather.pty && weather.pty !== "0") {
+      switch (weather.pty) {
+        case "1":
+          return <CloudRain className="weather-icon" />; // 비
+        case "2":
+          return <CloudRain className="weather-icon" />; // 비/눈
+        case "3":
+          return <Snowflake className="weather-icon" />; // 눈
+        case "4":
+          return <CloudRain className="weather-icon" />; // 소나기
+        default:
+          return <Cloud className="weather-icon" />;
+      }
+    } else {
+      switch (weather.sky) {
+        case "1":
+          return <Sun className="weather-icon" />; // 맑음
+        case "3":
+          return <CloudSun className="weather-icon" />; // 구름많음
+        case "4":
+          return <Cloud className="weather-icon" />; // 흐림
+        default:
+          return <Sun className="weather-icon" />;
+      }
+    }
+  };
+
   const handleLogout = async () => {
     if (user) {
       console.log(user);
+
       logout(); // Zustand 액션 함수 호출
       alert("로그아웃 성공");
     } else {
@@ -56,8 +108,14 @@ export default function Navbar({ className = "" }) {
     if (category === "places" && type === "restaurants") {
       navigate("/restaurants");
     }
-    if (category === "places" && type === "cafes") {
-      navigate("/cafes");
+    if (category === "places" && type === "movie") {
+      navigate("/movie");
+    }
+    if (category === "customerservice" && type === "notice") {
+      navigate("/notice");
+    }
+    if (category === "customerservice" && type === "inquiry") {
+      navigate("/inquiry");
     }
 
     handleMouseLeave();
@@ -81,14 +139,6 @@ export default function Navbar({ className = "" }) {
             >
               Seoul Date
             </a>
-            {/* <Link to="/" className="logo" data-testid="link-home">
-              <img
-                src={logoImage}
-                alt="Seoul Date Logo"
-                className="logo-image"
-              />
-              <span className="logo-text">Seoul Date</span>
-            </Link> */}
           </div>
 
           {/* Navigation */}
@@ -125,6 +175,13 @@ export default function Navbar({ className = "" }) {
                 >
                   까페
                 </div>
+                <div
+                  className="dropdown-item"
+                  onClick={() => handleDropdownItemClick("places", "movie")}
+                  data-testid="dropdown-cafes"
+                >
+                  영화
+                </div>
               </div>
             </div>
 
@@ -157,14 +214,43 @@ export default function Navbar({ className = "" }) {
                 </div>
               </div>
             </div>
+            {/* customerservice Dropdown */}
+            <div
+              className="nav-item"
+              onMouseEnter={() => handleMouseEnter("customerservice")}
+              onMouseLeave={handleMouseLeave}
+              data-testid="nav-customerservice"
+            >
+              고객센터
+              <div className="dropdown-menu">
+                <div
+                  className="dropdown-item"
+                  onClick={() =>
+                    handleDropdownItemClick("customerservice", "notice")
+                  }
+                  data-testid="dropdown-notice"
+                >
+                  공지사항
+                </div>
+                <div
+                  className="dropdown-item"
+                  onClick={() =>
+                    handleDropdownItemClick("customerservice", "inquiry")
+                  }
+                  data-testid="dropdown-inquiry"
+                >
+                  1:1문의
+                </div>
+              </div>
+            </div>
           </nav>
 
           {/* Right Section */}
           <div className="right-section">
             {/* Weather Info */}
             <div className="weather-info" data-testid="weather-info">
-              <MapPin className="weather-icon" />
-              <span>31.6°C</span>
+              {getWeatherIcon()}
+              <span>{weather.temp ? `${weather.temp}°C` : "로딩중..."}</span>
             </div>
 
             {/* Login Button */}
