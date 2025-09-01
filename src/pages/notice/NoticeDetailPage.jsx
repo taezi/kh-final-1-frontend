@@ -75,6 +75,7 @@ export default function NoticeDetailPage() {
           <span>
             <strong>수정일:</strong> {notice.noticeupdatedate}
           </span>
+
         </div>
         </div>
 
