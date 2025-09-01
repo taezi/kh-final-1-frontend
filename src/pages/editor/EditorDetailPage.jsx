@@ -69,9 +69,8 @@ export default function EditorDetailPage() {
 
   return (
     <Layout>
-      <div className="editor-detail-page">
-        <h2>에디터 게시글 상세 정보</h2>
 
+      <div className="editor-detail-page">
         <div className="editor-action-wrapper">
           <button onClick={() => navigate(-1)} className="btnBack">
             목록으로
@@ -92,35 +91,22 @@ export default function EditorDetailPage() {
             )}
           </div>
         </div>
-
+        <p><strong>조회수:</strong> {editor.editorview}</p>
+        <h4>에디터 추천 데이트코스</h4>
+        <p className="editor-title">
+            <strong>{editor.editortitle}</strong>
+          </p>
         <div className="editor-meta">
-          <p>
-            <strong>에디터게시글 고유번호:</strong> {editor.editorno}
-          </p>
-          <p>
-            <strong>유저 고유번호:</strong> {editor.userno}
-          </p>
-          <p>
-            <strong>작성일:</strong> {editor.editordate}
-          </p>
-          <p>
-            <strong>수정일:</strong> {editor.editorupdatedate}
-          </p>
-          <p>
-            <strong>조회수:</strong> {editor.editorview}
-          </p>
+          <div className="date-info">
+            <span>
+              <strong>작성일:</strong> {editor.editordate}
+            </span>
+            <span className="separator"> / </span>
+            <span>
+              <strong>수정일:</strong> {editor.editorupdatedate}
+            </span>
+          </div>
         </div>
-
-        <div className="editor-detail-item">
-          <p className="editor-title">
-            <strong>에디터게시글 제목: {editor.editortitle}</strong>
-          </p>
-          {/* <div className="editor-detail-image">
-        <img src={editor.thumbnailUrl || defaultImage} alt={editor.editortitle} />
-      </div> */}
-          {/* <div className="editor-detail-info">
-        <p>에디터게시글 내용: {editor.editorcontent}</p>
-      </div> */}
 
           <div className="editor-detail-container">
             {/* 이미지 영역 */}
@@ -145,7 +131,7 @@ export default function EditorDetailPage() {
             </div>
           </div>
         </div>
-      </div>
+     
     </Layout>
   );
 }

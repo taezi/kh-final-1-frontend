@@ -52,10 +52,18 @@ export default function EditorPage() {
   };
 
   // 검색
-  const handleSearch = () => {
-    console.log("검색어:", searchKeyword);
-    // 실제로는 API 호출 또는 editorList 필터링
-  };
+  const handleSearch = async (e) => {
+  e.preventDefault(); // 폼 제출 시 새로고침 방지
+  console.log("검색어:", searchKeyword);
+
+  try {
+    const res = await getPostList(searchKeyword); 
+    setEditorList(res.eList.map(x => ({ ...x, liked: false }))); // eList 바로 사용
+    setPage(1); // 페이지 초기화
+  } catch (err) {
+    console.error("검색 실패:", err);
+  }
+};
 
   // 좋아요 토글
   const toggleLike = (editorno, e) => {
@@ -90,15 +98,17 @@ export default function EditorPage() {
         </div>
 
         {/* 검색창 */}
-        <div className="editor-search">
+        <form className="editor-search" onSubmit={handleSearch}>
           <input
             type="text"
-            placeholder="검색어를 입력하세요"
+              className="editor-search-input"
+            placeholder="키워드 검색"
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
           />
-          <button onClick={handleSearch}>검색</button>
-        </div>
+          <button type="submit" className="search-icon-btn">
+          </button>
+        </form>
 
         {/* 게시글 카드 리스트 */}
         <div className="editor-grid">
