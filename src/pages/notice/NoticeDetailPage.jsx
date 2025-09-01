@@ -41,14 +41,10 @@ export default function NoticeDetailPage() {
   return (
     <Layout>
       <div className="notice-detail-page">
-        <h2>공지사항 상세 정보</h2>
-
         <div className="editor-action-wrapper">
           <button onClick={() => navigate(-1)} className="btnBack">
             목록으로
           </button>
-
-          {/* 수정/삭제 버튼 (작성자만 보이게) */}
           <div className="editor-action-buttons">
             {currentUser && currentUser.userno === notice.userno && (
               <>
@@ -65,26 +61,27 @@ export default function NoticeDetailPage() {
             )}
           </div>
         </div>
-
-        <div className="editor-meta">
-          <p>
-            <strong>번호:</strong> {notice.noticeno}
-          </p>
-          <p>
+        <p><strong>조회수:</strong> {notice.noticeview}</p>
+        <h4>공지사항 상세 정보</h4>
+        <p className="notice-title">
+          <strong>{notice.noticetitle}</strong>
+        </p>
+      <div className="editor-meta">
+        <div className="date-info">
+          <span>
             <strong>작성일:</strong> {notice.noticedate}
-          </p>
-          <p>
+          </span>
+          <span className="separator"> / </span>
+          <span>
             <strong>수정일:</strong> {notice.noticeupdatedate}
-          </p>
-          <p>
-            <strong>조회수:</strong> {notice.noticeview}
-          </p>
+          </span>
+
+        </div>
         </div>
 
-        <div className="notice-detail-item">
-          <p className="notice-title">
-            <strong>제목: {notice.noticetitle}</strong>
-          </p>
+        <div className="notice-detail-container">
+
+       
           <div className="notice-detail-info">
             <p>
               <strong>내용: {notice.noticepost}</strong>
@@ -92,6 +89,6 @@ export default function NoticeDetailPage() {
           </div>
         </div>
       </div>
-    </Layout>
+    </Layout >
   );
 }

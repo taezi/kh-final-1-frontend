@@ -1,5 +1,5 @@
 import React from "react";
-import "../css/MypageUpdate.css";
+import "../css/MypageUpdate.css"; // CSS 파일 import
 import { useNavigate } from "react-router-dom";
 
 export default function MypageUpdate({ user }) {
@@ -22,6 +22,8 @@ export default function MypageUpdate({ user }) {
 
   return (
     <div className="mypage-update-container">
+      {" "}
+      {/* 클래스명이 추가된 부분 */}
       <h3>프로필</h3>
       <form>
         <div className="profile-item">
@@ -82,7 +84,7 @@ export default function MypageUpdate({ user }) {
           </button>
         </div>
 
-        {/* 닉네임 */}
+        {/* 이메일 */}
         <div className="profile-item">
           <div className="item-label">
             <label>이메일</label>

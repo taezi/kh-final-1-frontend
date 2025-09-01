@@ -74,7 +74,14 @@ export default function NoticePage() {
               >
                 <td>{notice.noticeno}</td>
                 <td className="title">{notice.noticetitle}</td>
-                <td>{notice.noticepost}</td>
+                <td
+                  style={{
+                    maxWidth: '300px',
+                    textAlign: 'center',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}>{notice.noticepost}</td>
                 <td>{notice.noticedate}</td>
                 <td>{notice.noticeview}</td>
               </tr>
