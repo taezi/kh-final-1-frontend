@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../../store/authStore";
 import { useRef } from "react";
 import { updateUserid } from "../../../service/manageAPI";
+import "../../../css/UpdateIdPage.css"; 
 
 export default function UpdateIdPage(params) {
   const user = useAuthStore((state) => state.user);
@@ -41,24 +42,36 @@ export default function UpdateIdPage(params) {
   };
   return (
     <Layout>
-      <h3>아이디 변경</h3>
-      <div className="form-group">
-        <label htmlFor="userid">아이디</label>
-        <input
-          type="text"
-          id="userid"
-          name="userid"
-          ref={userid}
-          placeholder={user.userid}
-        />
-      </div>
-      <div className="button-group">
-        <button type="button" onClick={handleUpdate} className="update-button">
-          변경
-        </button>
-        <button type="button" onClick={handleCancel} className="cancel-button">
-          취소
-        </button>
+      <div className="update-id-container">
+        {" "}
+        {/* 클래스명이 추가된 부분 */}
+        <h3>아이디 변경</h3>
+        <div className="form-group">
+          <label htmlFor="userid">아이디</label>
+          <input
+            type="text"
+            id="userid"
+            name="userid"
+            ref={userid}
+            placeholder={user.userid}
+          />
+        </div>
+        <div className="button-group">
+          <button
+            type="button"
+            onClick={handleUpdate}
+            className="update-button"
+          >
+            변경
+          </button>
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="cancel-button"
+          >
+            취소
+          </button>
+        </div>
       </div>
     </Layout>
   );

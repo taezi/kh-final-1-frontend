@@ -1,0 +1,90 @@
+
+.update-name-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  padding: 40px 20px;
+  max-width: 500px; 
+  margin: 0 auto; 
+  text-align: center; 
+}
+
+
+.update-name-container h3 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+
+.form-group {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block; 
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 8px;
+  text-align: left; 
+}
+
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box; 
+  transition: border-color 0.3s ease;
+}
+
+
+.form-group input:focus {
+  border-color: #007bff;
+  outline: none; 
+}
+
+
+.button-group {
+  display: flex;
+  justify-content: center; 
+  gap: 15px; 
+  margin-top: 20px;
+}
+
+
+.button-group button {
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+
+.update-button {
+  background-color: #007bff;
+  color: #fff;
+}
+
+
+.update-button:hover {
+  background-color: #0056b3;
+}
+
+
+.cancel-button {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+
+.cancel-button:hover {
+  background-color: #5a6268;
+}

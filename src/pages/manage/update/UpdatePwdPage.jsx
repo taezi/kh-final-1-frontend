@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../../store/authStore";
 import { useRef } from "react";
 import { updatePassword } from "../../../service/manageAPI";
+import "../../../css/UpdatePwdPage.css"; // CSS 파일 import
 
 export default function UpdatePwdPage(params) {
   const user = useAuthStore((state) => state.user);
@@ -68,44 +69,56 @@ export default function UpdatePwdPage(params) {
   };
   return (
     <Layout>
-      <h3>비밀번호변경페이지</h3>
-      <div className="form-group">
-        <label htmlFor="before-password">현재 비밀번호</label>
-        <input
-          type="password"
-          id="before-password"
-          name="before-password"
-          ref={beforePassowrd}
-          placeholder="현재 비밀번호를 입력하세요"
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="after-password">새 비밀번호</label>
-        <input
-          type="password"
-          id="after-password"
-          name="after-password"
-          ref={afterPassowrd}
-          placeholder="새 비밀번호를 입력하세요"
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="confirm-password">새 비밀번호 확인</label>
-        <input
-          type="password"
-          id="confirm-password"
-          name="confirm-password"
-          ref={confirmPassowrd}
-          placeholder="새 비밀번호를 다시 입력하세요"
-        />
-      </div>
-      <div className="button-group">
-        <button type="button" onClick={handleUpdate} className="update-button">
-          변경
-        </button>
-        <button type="button" onClick={handleCancel} className="cancel-button">
-          취소
-        </button>
+      <div className="update-pwd-container">
+        {" "}
+        {/* 클래스명이 추가된 부분 */}
+        <h3>비밀번호변경페이지</h3>
+        <div className="form-group">
+          <label htmlFor="before-password">현재 비밀번호</label>
+          <input
+            type="password"
+            id="before-password"
+            name="before-password"
+            ref={beforePassowrd}
+            placeholder="현재 비밀번호를 입력하세요"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="after-password">새 비밀번호</label>
+          <input
+            type="password"
+            id="after-password"
+            name="after-password"
+            ref={afterPassowrd}
+            placeholder="새 비밀번호를 입력하세요"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="confirm-password">새 비밀번호 확인</label>
+          <input
+            type="password"
+            id="confirm-password"
+            name="confirm-password"
+            ref={confirmPassowrd}
+            placeholder="새 비밀번호를 다시 입력하세요"
+          />
+        </div>
+        <div className="button-group">
+          <button
+            type="button"
+            onClick={handleUpdate}
+            className="update-button"
+          >
+            변경
+          </button>
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="cancel-button"
+          >
+            취소
+          </button>
+        </div>
       </div>
     </Layout>
   );
