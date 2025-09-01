@@ -4,9 +4,10 @@ export default function CinemaSection({ allRegions = [], cinemas = [], selectedR
     const mapRef = useRef(null);
     const mapInstance = useRef(null);
     const markerInstance = useRef([]);
+    const infowindowInstance = useRef(null);
 
-    // 이 useEffect 훅은 지도가 렌더링될 때 딱 한 번만 실행됩니다.
-    // window.kakao.maps.load()를 사용하여 API가 완전히 준비되었을 때만 지도 인스턴스를 생성합니다.
+    // 이 useEffect 훅은 지도가 렌더링될 때 딱 한 번만 실행됨
+    // window.kakao.maps.load()를 사용하여 API가 완전히 준비되었을 때만 지도 인스턴스를 생성
     useEffect(() => {
         // window.kakao와 지도를 담을 div 요소가 모두 존재할 때만 실행
         if (window.kakao && window.kakao.maps && mapRef.current) {
@@ -26,32 +27,61 @@ export default function CinemaSection({ allRegions = [], cinemas = [], selectedR
         }
     }, []); // 의존성 배열이 비어 있어 컴포넌트 마운트 시 한 번만 실행
 
-    // 이 useEffect 훅은 cinemas 데이터가 변경될 때마다 실행됩니다.
-    // 이미 생성된 지도 인스턴스에 마커를 추가하거나 업데이트하는 역할만 합니다.
-    useEffect(() => {
-        // 지도 인스턴스가 존재하고 cinemas 데이터가 있을 때만 실행
-        if (mapInstance.current && window.kakao && window.kakao.maps) {
-            // 기존 마커 제거
-            markerInstance.current.forEach(marker => marker.setMap(null));
-            markerInstance.current = [];
-            
-            // 새로운 마커 추가
-            if (cinemas.length > 0) {
-                const bounds = new window.kakao.maps.LatLngBounds();
-                const newMarkers = cinemas.map(cinema => {
-                    const position = new window.kakao.maps.LatLng(cinema.x, cinema.y);
-                    bounds.extend(position);
-                    return new window.kakao.maps.Marker({
-                        position: position,
-                        map: mapInstance.current,
-                        title: cinema.name
-                    });
-                });
-                markerInstance.current = newMarkers;
-                mapInstance.current.setBounds(bounds);
+    // -----인포윈도우 추가--------
+    // 이 useEffect 훅은 cinemas 데이터가 변경될 때마다 실행됨
+    // 이미 생성된 지도 인스턴스에 마커를 추가하거나 업데이트하는 역할만 함
+useEffect(() => {
+    if (mapInstance.current && window.kakao && window.kakao.maps) {
+        // 기존 마커 제거
+        markerInstance.current.forEach(marker => marker.setMap(null));
+        markerInstance.current = [];
+
+            // 기존 인포윈도우가 있다면 닫기
+            if (infowindowInstance.current) { 
+                infowindowInstance.current.close(); 
             }
+
+        // 새로운 마커와 인포윈도우 추가
+        if (cinemas.length > 0) {
+            const bounds = new window.kakao.maps.LatLngBounds();
+            const newMarkers = cinemas.map(cinema => {
+                const position = new window.kakao.maps.LatLng(cinema.y, cinema.x);
+                bounds.extend(position);
+                
+                // 1. 마커 생성
+                const marker = new window.kakao.maps.Marker({
+                    position: position,
+                    map: mapInstance.current,
+                    title: cinema.name
+                });
+                
+                // 2. 인포윈도우 생성
+                const infowindow = new window.kakao.maps.InfoWindow({
+                    content: `<div style="padding:5px;font-size:12px;">${cinema.place_name}<br>${cinema.address_name}</div>`
+                });
+                
+                // 3. 마커에 클릭 이벤트 리스너 추가
+                // 클릭하면 인포윈도우를 지도에 표시
+                window.kakao.maps.event.addListener(marker, 'click', function() {
+                    // 새로 열기 전에 기존 인포윈도우 닫기
+                    if (infowindowInstance.current) {
+                        infowindowInstance.current.close(); 
+                    }
+                        
+                    // 현재 인포윈도우 열기
+                    infowindow.open(mapInstance.current, marker);
+
+                    // 현재 열린 인포윈도우를 인스턴스에 저장
+                    infowindowInstance.current = infowindow;
+                });
+
+                return marker;
+            });
+            markerInstance.current = newMarkers;
+            mapInstance.current.setBounds(bounds);
         }
-    }, [cinemas]);
+    }
+}, [cinemas]);
 
     if (error) {
         return (
