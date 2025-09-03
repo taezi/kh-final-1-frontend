@@ -109,10 +109,12 @@
   margin: 18px 0;
 }
 .home-more {
+  width: 150px;
+  margin-top: 15px;
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 8px 14px;
-  background: #eee;
+  background: #fff;
   font-weight: 700;
   cursor: pointer;
 }
