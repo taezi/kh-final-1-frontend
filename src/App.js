@@ -20,7 +20,7 @@ import EventsPage from "./pages/place/EventPage";
 import NoticePage from "./pages/notice/NoticePage";
 import InquiryPage from "./pages/manage/inquiry/InquiryPage";
 import MoviePage from "./pages/place/MoviePage";
-import MoviedetailPage from "./pages/place/MoviedetailPage";
+import MovieDetailPage from "./pages/place/MovieDetailPage";
 import CultureViewPage from "./pages/place/CultureViewPage";
 import EditorEditPage from "./pages/editor/EditorEditPage";
 import NoticeWritePage from "./pages/notice/NoticeWritePage";
@@ -33,7 +33,8 @@ import UpdateNamePage from "./pages/manage/update/UpdateNamePage";
 import UpdateNickPage from "./pages/manage/update/UpdateNickPage";
 import UpdateEmailPage from "./pages/manage/update/UpdateEmailPage";
 import InquiryDetailPage from "./pages/manage/inquiry/InquiryDetailPage";
-import MypageInquiry from "./components/MypageInquiry";
+import MypageInquiry from "./components/mypage/MypageInquiry";
+import InquiryReplyPage from "./pages/manage/inquiry/InquiryReplyPage";
 
 function App() {
   return (
@@ -63,7 +64,7 @@ function App() {
           <Route path="/movie" element={<MoviePage></MoviePage>} />
           <Route
             path="/movie/:id"
-            element={<MoviedetailPage></MoviedetailPage>}
+            element={<MovieDetailPage></MovieDetailPage>}
           />
           <Route path="/notice" element={<NoticePage></NoticePage>} />
           <Route path="/notice/:noticeno" element={<NoticeDetailPage />} />
@@ -109,6 +110,10 @@ function App() {
             />
 
             <Route path="/notice/edit/:noticeno" element={<NoticeEditPage />} />
+            <Route
+              path="/inquiry/reply/:inquiryno"
+              element={<InquiryReplyPage />}
+            />
           </Route>
           {/* 에디터만 체크 */}
           <Route element={<PrivateRoute requiredRole="editor" />}>

@@ -1,6 +1,6 @@
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import AdminInquiry from "../../admin/AdminInquiry";
 import Layout from "../../components/Layout";
 import "../../css/AdminPage.css"; 
 import { fetchUsers } from "../../service/adminAPI"; // 백엔드 통신 함수 import
@@ -103,6 +103,7 @@ export default function AdminPage() {
           )}
         </div>
       </div>
+      <AdminInquiry></AdminInquiry>
     </Layout>
   );
 }
