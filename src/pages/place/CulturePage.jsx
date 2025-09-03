@@ -7,6 +7,12 @@ import { getCalendar, getEventList } from "../../service/placeAPI";
 import "../../css/CulturePage.css";
 import WeatherWidget from "../../components/WeatherWidget";
 import SEOUL_NIGHT from "../../img/seoul-night.jpg";
+import useAuthStore from "../../store/authStore";
+import {
+  addBookmark,
+  getBookmarks,
+  removeBookmark,
+} from "../../service/bookmarkAPI";
 
 dayjs.extend(isBetween);
 
@@ -130,6 +136,7 @@ function makeMonthCells(viewMonth) {
 }
 
 export default function CulturePage() {
+  const user = useAuthStore((state) => state.user);
   const routerLocation = useLocation();
   const navigate = useNavigate();
   const { gu: guQS = "", date: dateQS = "" } = useQueryParam(
@@ -195,13 +202,61 @@ export default function CulturePage() {
     loadList(1);
   }, [selectedDate, gu, q]);
 
+  //북마크 가져오기
+  useEffect(() => {
+    if (!user) return;
+    console.log("북마크 가져오기 : " + user.userno);
+    getBookmarks(user.userno, "event")
+      .then((list) => {
+        // event 타입만 필터링
+        const eventBookmarks = list
+          .filter((b) => b.contenttype === "event")
+          .map((b) => Number(b.contentno));
+
+        setLikes(new Set(eventBookmarks));
+      })
+      .catch((err) => {
+        console.error("북마크 불러오기 실패:", err);
+      });
+  }, [user]);
+
   const searchRef = useRef(null);
-  const toggleLike = (id) =>
-    setLikes((prev) => {
-      const n = new Set(prev);
-      n.has(id) ? n.delete(id) : n.add(id);
-      return n;
-    });
+  //북마크 토클
+  const toggleLike = async (id) => {
+    const userno = user.userno;
+    const bookmarkData = {
+      userno: userno,
+      contentno: id,
+      contenttype: "event",
+    };
+    console.log("북마크 데이터:", bookmarkData);
+
+    try {
+      if (likes.has(id)) {
+        // 현재 찜 상태 -> 찜 해제
+        await removeBookmark(bookmarkData);
+        alert("북마크가 해제되었습니다.");
+        setLikes((prev) => {
+          const newLikes = new Set(prev);
+          newLikes.delete(id);
+          return newLikes;
+        });
+      } else {
+        // 현재 찜하지 않은 상태 -> 찜하기
+        await addBookmark(bookmarkData);
+        alert("북마크에 추가되었습니다.");
+        setLikes((prev) => {
+          const newLikes = new Set(prev);
+          newLikes.add(id);
+          return newLikes;
+        });
+      }
+    } catch (error) {
+      console.error("북마크 기능 처리 실패:", error);
+
+      alert("찜하기 처리에 실패했습니다. 잠시 후 다시 시도해주세요.");
+    }
+  };
 
   const headingGu = gu === "전체" ? "종로구" : gu;
 
