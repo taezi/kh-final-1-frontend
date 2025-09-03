@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../../../components/Layout";
 import { useRef } from "react";
 import { createInquiryReply } from "../../../service/manageAPI";
+import "../../../css/InquiryReplyPage.css";
 
 export default function InquiryReplyPage(params) {
   const { inquiryno } = useParams();

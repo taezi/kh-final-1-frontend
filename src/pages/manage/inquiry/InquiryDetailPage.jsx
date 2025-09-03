@@ -1,3 +1,4 @@
+// src/pages/InquiryDetailPage.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../../../components/Layout";
@@ -28,6 +29,7 @@ export default function InquiryDetailPage() {
         });
     }
   }, [inquiryno]);
+
   const goToReply = () => {
     navigate(`/inquiry/reply/${inquiryDetail.inquiryno}`);
   };
@@ -52,19 +54,11 @@ export default function InquiryDetailPage() {
     );
   }
 
-  // 문의 상세 내용 렌더링
   return (
     <Layout>
-      <div className="detail-container">
+      <div className="detail-container-1">
         <h3>1:1 문의 상세 내역</h3>
-        {user?.role === "admin" ? (
-          <button className="register-btn" onClick={goToReply}>
-            답변
-          </button>
-        ) : (
-          <></>
-        )}
-        <div className="inquiry-info">
+        <div className="inquiry-info-1">
           <p>
             <strong>제목:</strong> {inquiryDetail.inquiryTitle}
           </p>
@@ -81,18 +75,26 @@ export default function InquiryDetailPage() {
           <p>
             <strong>문의 내용:</strong>
           </p>
-          <div className="content-box">{inquiryDetail.inquiryContent}</div>
+          <div className="content-box-1">{inquiryDetail.inquiryContent}</div>
         </div>
-
         {inquiryDetail.status === "replied" && (
-          <div className="reply-info">
+          <div className="reply-info-1">
             <h4>[ 답변 ]</h4>
             <p>
               <strong>답변일:</strong>{" "}
               {new Date(inquiryDetail.repliedAt).toLocaleString()}
             </p>
-            <div className="content-box">{inquiryDetail.replyContent}</div>
+            <div className="content-box-1">{inquiryDetail.replyContent}</div>
           </div>
+        )}
+        {user?.role === "admin" ? (
+          <div className="button-container-1">
+            <button className="register-btn-1" onClick={goToReply}>
+              답변
+            </button>
+          </div>
+        ) : (
+          <></>
         )}
       </div>
     </Layout>
