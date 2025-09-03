@@ -18,7 +18,7 @@ export default function MypagePage() {
         <div className="mypage-menu">
           {/* 나의 문의 버튼 */}
           <button
-            className={activeTab === "update" ? "active" : ""}
+            className={activeTab === "inquiry" ? "active" : ""}
             onClick={() => setActiveTab("inquiry")}
           >
             나의 문의
