@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import useAuthStore from "../store/authStore";
 import { getInquiries } from "../service/manageAPI";
 import { useNavigate } from "react-router-dom";
+import "../css/MypageInquiry.css";
 
 export default function MypageInquiry() {
   const user = useAuthStore((state) => state.user);

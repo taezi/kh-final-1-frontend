@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Layout from "../../../components/Layout";
 import { getInquiryDetail } from "../../../service/manageAPI";
+import "../../../css/InquiryDetailPage.css";
 
 export default function InquiryDetailPage() {
   const { inquiryno } = useParams();
