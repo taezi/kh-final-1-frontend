@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../../../components/Layout";
 import { getInquiryDetail } from "../../../service/manageAPI";
 import "../../../css/InquiryDetailPage.css";
+import useAuthStore from "../../../store/authStore";
 
 export default function InquiryDetailPage() {
   const { inquiryno } = useParams();
   const [inquiryDetail, setInquiryDetail] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const user = useAuthStore((state) => state.user);
+
   console.log("문의글번호 : ", inquiryno);
 
   useEffect(() => {
@@ -24,6 +28,9 @@ export default function InquiryDetailPage() {
         });
     }
   }, [inquiryno]);
+  const goToReply = () => {
+    navigate(`/inquiry/reply/${inquiryDetail.inquiryno}`);
+  };
 
   if (loading) {
     return (
@@ -50,6 +57,13 @@ export default function InquiryDetailPage() {
     <Layout>
       <div className="detail-container">
         <h3>1:1 문의 상세 내역</h3>
+        {user?.role === "admin" ? (
+          <button className="register-btn" onClick={goToReply}>
+            답변
+          </button>
+        ) : (
+          <></>
+        )}
         <div className="inquiry-info">
           <p>
             <strong>제목:</strong> {inquiryDetail.inquiryTitle}

@@ -202,6 +202,12 @@ export default function CulturePage() {
     loadList(1);
   }, [selectedDate, gu, q]);
 
+  useEffect(() => {
+    if (!user) {
+      setLikes(new Set());
+    }
+  }, [user]);
+
   //북마크 가져오기
   useEffect(() => {
     if (!user) return;

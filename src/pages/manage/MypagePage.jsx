@@ -1,11 +1,11 @@
 import Layout from "../../components/Layout";
-import MypageUpdate from "../../components/Mypageupdate";
-import MypageDelete from "../../components/MypageDelete";
+import MypageUpdate from "../../components/mypage/Mypageupdate";
+import MypageDelete from "../../components/mypage/MypageDelete";
 import "../../css/MypagePage.css";
 import useAuthStore from "../../store/authStore";
 import { useState } from "react";
 import InquiryDetailPage from "./inquiry/InquiryDetailPage";
-import MypageInquiry from "../../components/MypageInquiry";
+import MypageInquiry from "../../components/mypage/MypageInquiry";
 
 export default function MypagePage() {
   const user = useAuthStore((state) => state.user);
