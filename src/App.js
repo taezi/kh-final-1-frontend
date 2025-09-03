@@ -20,7 +20,7 @@ import EventsPage from "./pages/place/EventPage";
 import NoticePage from "./pages/notice/NoticePage";
 import InquiryPage from "./pages/manage/inquiry/InquiryPage";
 import MoviePage from "./pages/place/MoviePage";
-import MoviedetailPage from "./pages/place/MoviedetailPage";
+import MovieDetailPage from "./pages/place/MovieDetailPage";
 import CultureViewPage from "./pages/place/CultureViewPage";
 import EditorEditPage from "./pages/editor/EditorEditPage";
 import NoticeWritePage from "./pages/notice/NoticeWritePage";
@@ -63,7 +63,7 @@ function App() {
           <Route path="/movie" element={<MoviePage></MoviePage>} />
           <Route
             path="/movie/:id"
-            element={<MoviedetailPage></MoviedetailPage>}
+            element={<MovieDetailPage></MovieDetailPage>}
           />
           <Route path="/notice" element={<NoticePage></NoticePage>} />
           <Route path="/notice/:noticeno" element={<NoticeDetailPage />} />
