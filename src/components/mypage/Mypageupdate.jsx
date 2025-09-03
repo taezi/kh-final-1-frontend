@@ -1,5 +1,5 @@
 import React from "react";
-import "../css/MypageUpdate.css"; // CSS 파일 import
+import "../../css/MypageUpdate.css"; // CSS 파일 import
 import { useNavigate } from "react-router-dom";
 
 export default function MypageUpdate({ user }) {
