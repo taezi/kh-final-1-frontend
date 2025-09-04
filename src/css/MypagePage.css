@@ -1,53 +1,47 @@
-
 .mypage-content-wrapper {
   display: flex;
-  flex-direction: column; 
-  align-items: center; 
-  padding: 40px 20px; 
-  max-width: 800px; 
-  margin: 0 auto; 
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-
 .mypage-menu {
-  display: flex; 
+  display: flex;
   gap: 15px;
   margin-bottom: 30px;
 }
 
-
 .mypage-menu button {
   padding: 12px 25px;
-  border: 1px solid #ddd; 
-  border-radius: 8px; 
-  background-color: #f9f9f9; 
-  color: #555; 
-  font-size: 16px; 
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  color: #555;
+  font-size: 16px;
   font-weight: 500;
-  cursor: pointer; 
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 
-
 .mypage-menu button:hover {
-  background-color: #e9e9e9; 
-  border-color: #ccc; 
+  background-color: #e9e9e9;
+  border-color: #ccc;
 }
 
-
 .mypage-menu button.active {
-  background-color: #007bff; 
-  color: #fff; 
-  border-color: #007bff; 
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
   font-weight: bold;
 }
 
-
 .mypage-content {
-  width: 100%; 
-  padding: 30px; 
-  border: 1px solid #eee; 
-  border-radius: 10px; 
-  background-color: #fff; 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+  width: 100%;
+  padding: 30px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }

@@ -69,7 +69,6 @@ export default function MovieDetailPage() {
     }
   };
 
-  // 영화 상세 정보 불러오기
   useEffect(() => {
     const getMovieDetail = async () => {
       setLoading(true);
@@ -118,6 +117,9 @@ export default function MovieDetailPage() {
       return;
     }
 
+
+    console.log("JWT 토큰:", accessToken);
+
     const reviewData = {
       userNo: user.userNo,
       commentA: reviewText,
@@ -128,7 +130,7 @@ export default function MovieDetailPage() {
     try {
       await axios.post("http://localhost:9999/api/movie/review", reviewData, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${accessToken}`, // JWT 토큰 추가
         },
       });
 
@@ -140,7 +142,9 @@ export default function MovieDetailPage() {
       fetchReviews();
     } catch (error) {
       console.error("리뷰 등록 중 오류가 발생했습니다:", error);
-      alert(`리뷰 등록에 실패했습니다: ${error.response?.data || error.message}`);
+      alert(
+        `리뷰 등록에 실패했습니다: ${error.response?.data || error.message}`
+      );
     }
   };
 

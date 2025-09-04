@@ -33,7 +33,8 @@ import UpdateNamePage from "./pages/manage/update/UpdateNamePage";
 import UpdateNickPage from "./pages/manage/update/UpdateNickPage";
 import UpdateEmailPage from "./pages/manage/update/UpdateEmailPage";
 import InquiryDetailPage from "./pages/manage/inquiry/InquiryDetailPage";
-import MypageInquiry from "./components/MypageInquiry";
+import MypageInquiry from "./components/mypage/MypageInquiry";
+import InquiryReplyPage from "./pages/manage/inquiry/InquiryReplyPage";
 
 function App() {
   return (
@@ -109,6 +110,10 @@ function App() {
             />
 
             <Route path="/notice/edit/:noticeno" element={<NoticeEditPage />} />
+            <Route
+              path="/inquiry/reply/:inquiryno"
+              element={<InquiryReplyPage />}
+            />
           </Route>
           {/* 에디터만 체크 */}
           <Route element={<PrivateRoute requiredRole="editor" />}>
