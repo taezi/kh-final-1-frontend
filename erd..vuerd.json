@@ -4,8 +4,8 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": -827.1111,
-    "scrollLeft": -29,
+    "scrollTop": -838.6666,
+    "scrollLeft": -60.9286,
     "zoomLevel": 0.91,
     "show": 511,
     "database": 8,
@@ -192,15 +192,15 @@
           "mWmCcT7UKIjeN9qa_ZsNR"
         ],
         "ui": {
-          "x": 1407.5735,
-          "y": 1232.277,
+          "x": 1427.3537,
+          "y": 1269.6396,
           "zIndex": 284,
           "widthName": 60,
           "widthComment": 65,
           "color": ""
         },
         "meta": {
-          "updateAt": 1756258707008,
+          "updateAt": 1756883806998,
           "createAt": 1755654422730
         }
       },
@@ -282,15 +282,15 @@
           "fyDCRAX9SiGt8wVpUhU9A"
         ],
         "ui": {
-          "x": 744.0171,
-          "y": 530.2687,
+          "x": 772.5885,
+          "y": 465.4335,
           "zIndex": 342,
           "widthName": 60,
           "widthComment": 105,
           "color": ""
         },
         "meta": {
-          "updateAt": 1756695682058,
+          "updateAt": 1756883795444,
           "createAt": 1755654927642
         }
       },
@@ -382,15 +382,15 @@
           "naDEPFowS4J8H4n5g3ZzH"
         ],
         "ui": {
-          "x": 566.732,
-          "y": 761.2791,
+          "x": 565.6331,
+          "y": 784.356,
           "zIndex": 1131,
           "widthName": 89,
           "widthComment": 144,
           "color": ""
         },
         "meta": {
-          "updateAt": 1756576346315,
+          "updateAt": 1756883791656,
           "createAt": 1755668133973
         }
       },
@@ -548,15 +548,15 @@
           "r4766zp9gvbasY9snwDrC"
         ],
         "ui": {
-          "x": 1395.4327,
-          "y": 232.3565,
+          "x": 1343.7843,
+          "y": 227.9609,
           "zIndex": 1747,
           "widthName": 60,
           "widthComment": 81,
           "color": ""
         },
         "meta": {
-          "updateAt": 1756695679999,
+          "updateAt": 1756883766227,
           "createAt": 1756694735408
         }
       }
@@ -1589,7 +1589,7 @@
         "comment": "restaurantno, cafeno, eventno, editorno",
         "dataType": "NUMBER",
         "default": "",
-        "options": 12,
+        "options": 8,
         "ui": {
           "keys": 0,
           "widthName": 60,
@@ -1598,7 +1598,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1756863547603,
+          "updateAt": 1756951549019,
           "createAt": 1755658640424
         }
       },
@@ -3291,8 +3291,8 @@
           "columnIds": [
             "AFxeG7Zk6ztHDfWTGea3O"
           ],
-          "x": 744.0171,
-          "y": 630.2687,
+          "x": 772.5885,
+          "y": 565.4335,
           "direction": 1
         },
         "meta": {
@@ -3347,8 +3347,8 @@
           "columnIds": [
             "ngEuxIztgr9Ef6o9t6kqs"
           ],
-          "x": 566.732,
-          "y": 813.2791,
+          "x": 565.6331,
+          "y": 836.356,
           "direction": 1
         },
         "meta": {
@@ -3366,8 +3366,8 @@
           "columnIds": [
             "QDST9RDAJrNDG3PatJPXK"
           ],
-          "x": 1126.0171,
-          "y": 730.2687,
+          "x": 1154.5884999999998,
+          "y": 665.4335,
           "direction": 8
         },
         "end": {
@@ -3375,8 +3375,8 @@
           "columnIds": [
             "naDEPFowS4J8H4n5g3ZzH"
           ],
-          "x": 1065.732,
-          "y": 813.2791,
+          "x": 1064.6331,
+          "y": 836.356,
           "direction": 2
         },
         "meta": {
@@ -3394,8 +3394,8 @@
           "columnIds": [
             "QDST9RDAJrNDG3PatJPXK"
           ],
-          "x": 1508.0171,
-          "y": 630.2687,
+          "x": 1536.5884999999998,
+          "y": 565.4335,
           "direction": 2
         },
         "end": {
@@ -3459,8 +3459,8 @@
           "columnIds": [
             "aCl3GQ9weK6xtMaSjJ0st"
           ],
-          "x": 1395.4327,
-          "y": 368.3565,
+          "x": 1343.7843,
+          "y": 363.96090000000004,
           "direction": 1
         },
         "meta": {
