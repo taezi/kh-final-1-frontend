@@ -59,7 +59,6 @@ export default function NoticePage() {
             <tr>
               <th>번호</th>
               <th>제목</th>
-              <th>내용</th>
               <th>작성일</th>
               <th>조회수</th>
             </tr>
@@ -74,14 +73,6 @@ export default function NoticePage() {
               >
                 <td>{notice.noticeno}</td>
                 <td className="title">{notice.noticetitle}</td>
-                <td
-                  style={{
-                    maxWidth: '300px',
-                    textAlign: 'center',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}>{notice.noticepost}</td>
                 <td>{notice.noticedate}</td>
                 <td>{notice.noticeview}</td>
               </tr>

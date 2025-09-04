@@ -68,9 +68,25 @@
     margin-bottom: 10px;
 }
 
+
+
+
+.content-sections-container {
+    display: flex;
+    flex-direction: column; /* 자식 요소들을 세로로 정렬 */
+    gap: 40px; /* 자식 요소들 사이에 40px의 간격 추가 */
+    margin-top: 30px; /* 전체 섹션의 상단 마진 */
+    width: 80%;
+}
+
+
+
+
+
 /* 예고편 섹션 */
 .trailer-section {
-    margin-top: 30px;
+    /* margin-top: 30px; */
+    width: 100%;
 }
 
 .trailer-video-container {
@@ -93,11 +109,12 @@
 
 /* 리뷰 섹션 */
 .review-section {
-    margin-top: 40px;
+    /* margin-top: 40px; */
     background-color: #fff;
     border-radius: 12px;
     padding: 30px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 .review-toggle-button {

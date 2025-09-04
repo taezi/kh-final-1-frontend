@@ -1,3 +1,4 @@
+// src/pages/mypage/MypagePage.jsx
 import Layout from "../../components/Layout";
 import MypageUpdate from "../../components/mypage/Mypageupdate";
 import MypageDelete from "../../components/mypage/MypageDelete";
@@ -8,8 +9,13 @@ import InquiryDetailPage from "./inquiry/InquiryDetailPage";
 import MypageInquiry from "../../components/mypage/MypageInquiry";
 import MypageBookmark from "../../components/mypage/MypageBookmark";
 
+import HeroStrip from "../../components/HeroStrip";
+// 네가 넣어둔 이미지 그대로 사용
+import MY_PAGE_HERO from "../../img/my-page.jpg";
+
 export default function MypagePage() {
   const user = useAuthStore((state) => state.user);
+
   console.log(user);
   const [activeTab, setActiveTab] = useState("bookmark");
 
@@ -51,6 +57,7 @@ export default function MypagePage() {
           {activeTab === "inquiry" && <MypageInquiry></MypageInquiry>}
           {activeTab === "update" && <MypageUpdate user={user} />}
           {activeTab === "delete" && <MypageDelete />}
+
         </div>
       </div>
     </Layout>

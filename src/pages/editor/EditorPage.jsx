@@ -5,6 +5,8 @@ import "../../css/EditorPage.css";
 import useAuthStore from "../../store/authStore";
 import { getPostList } from "../../service/editorAPI";
 import defaultImage from "../../img/save-image.png";
+import { addBookmark, getBookmarks, removeBookmark } from "../../service/bookmarkAPI";
+
 
 export default function EditorPage() {
   const navigate = useNavigate();
@@ -14,13 +16,15 @@ export default function EditorPage() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
 
+  // 좋아요 상태 Set으로 관리
+  const [likes, setLikes] = useState(new Set());
+
   // 리스트 로드 함수
-  const loadList = async (p = 1) => {
+  const loadList = async (p = 1, keyword = "") => {
     try {
-      const response = await getPostList();
+      const response = await getPostList(keyword);
       const allItems = response.eList.map((editor) => ({
         ...editor,
-        liked: false,
       }));
 
       // 6개씩 잘라서 보여주기
@@ -41,7 +45,7 @@ export default function EditorPage() {
     }
   };
 
-  // ✅ 초기 게시글 로드 (1페이지)
+  // 초기 게시글 로드 (1페이지)
   useEffect(() => {
     loadList(1);
   }, []);
@@ -53,29 +57,79 @@ export default function EditorPage() {
 
   // 검색
   const handleSearch = async (e) => {
-  e.preventDefault(); // 폼 제출 시 새로고침 방지
-  console.log("검색어:", searchKeyword);
+  //   e.preventDefault(); // 폼 제출 시 새로고침 방지
+  //   console.log("검색어:", searchKeyword);
 
+  //   try {
+  //     const res = await getPostList(searchKeyword);
+  //     setEditorList(res.eList.map(x => ({ ...x, liked: false }))); // eList 바로 사용
+  //     setPage(1); // 페이지 초기화
+  //   } catch (err) {
+  //     console.error("검색 실패:", err);
+  //   }
+  // };
+   e.preventDefault();
   try {
-    const res = await getPostList(searchKeyword); 
-    setEditorList(res.eList.map(x => ({ ...x, liked: false }))); // eList 바로 사용
-    setPage(1); // 페이지 초기화
+    await loadList(1, searchKeyword); // 키워드 포함해서 로드
   } catch (err) {
     console.error("검색 실패:", err);
   }
 };
 
-  // 좋아요 토글
-  const toggleLike = (editorno, e) => {
+
+  // 마운트 시 서버에서 좋아요 데이터 가져오기
+  useEffect(() => {
+    if (!user) return;
+
+    // 현재 로그인한 사용자(user.userno) 기준 북마크를 가져옴
+    getBookmarks(user.userno, "editor")
+      .then((list) => {
+        const editorLikes = list
+        // 에디터 콘텐츠만 적용
+          .filter((b) => b.contenttype === "editor")
+          .map((b) => Number(b.contentno));
+          // Set으로 관리해서 각 사용자의 북마크 상태 반영
+        setLikes(new Set(editorLikes));
+      })
+      .catch((err) => console.error("북마크 불러오기 실패:", err));
+  }, [user]);
+
+  // 북마크 좋아요 토글
+  const toggleLike = async (editorno, e) => {
     e.stopPropagation();
-    setEditorList((prev) =>
-      prev.map((editor) =>
-        editor.editorno === editorno
-          ? { ...editor, liked: !editor.liked }
-          : editor
-      )
-    );
+    if (!user) {
+      alert("로그인 후 이용 가능합니다.");
+      return;
+    }
+
+    const bookmarkData = {
+    userno: user.userno,
+    contentno: editorno,
+    contenttype: "editor",
   };
+
+  const currentlyLiked = likes.has(editorno); // 이전 상태 저장
+
+  try {
+    // 서버 호출
+    if (currentlyLiked) {
+      await removeBookmark(bookmarkData);
+    } else {
+      await addBookmark(bookmarkData);
+    }
+
+    // 상태 업데이트
+    setLikes(prev => {
+      const newSet = new Set(prev);
+      currentlyLiked ? newSet.delete(editorno) : newSet.add(editorno);
+      return newSet;
+    });
+  } catch (err) {
+    console.error(err);
+    alert("좋아요 처리에 실패했습니다.");
+  }
+};
+
 
   // 카드 클릭 → 상세 페이지 이동
   const goToDetail = (editorno) => {
@@ -101,7 +155,7 @@ export default function EditorPage() {
         <form className="editor-search" onSubmit={handleSearch}>
           <input
             type="text"
-              className="editor-search-input"
+            className="editor-search-input"
             placeholder="키워드 검색"
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
@@ -124,10 +178,14 @@ export default function EditorPage() {
                   alt={editor.editortitle}
                 />
                 <button
-                  className="like-btn"
-                  onClick={(e) => toggleLike(editor.editorno, e)}
+                  className={`heart ${likes.has(editor.editorno) ? "is-on" : ""}`} 
+                  onClick={(e) => {
+                    e.stopPropagation(); // 카드 클릭 이벤트와 겹치지 않도록
+                    toggleLike(editor.editorno, e);
+                  }}
+                  title="좋아요"
                 >
-                  {editor.liked ? "❤️" : "♡"}
+                  ♡
                 </button>
               </div>
               <div className="editor-info">
