@@ -6,16 +6,24 @@ import useAuthStore from "../../store/authStore";
 import { useState } from "react";
 import InquiryDetailPage from "./inquiry/InquiryDetailPage";
 import MypageInquiry from "../../components/mypage/MypageInquiry";
+import MypageBookmark from "../../components/mypage/MypageBookmark";
 
 export default function MypagePage() {
   const user = useAuthStore((state) => state.user);
   console.log(user);
-  const [activeTab, setActiveTab] = useState("update");
+  const [activeTab, setActiveTab] = useState("bookmark");
 
   return (
     <Layout>
       <div className="mypage-content-wrapper">
         <div className="mypage-menu">
+          {/* 나의 북마크 버튼 */}
+          <button
+            className={activeTab === "bookmark" ? "active" : ""}
+            onClick={() => setActiveTab("bookmark")}
+          >
+            나의 북마크
+          </button>
           {/* 나의 문의 버튼 */}
           <button
             className={activeTab === "inquiry" ? "active" : ""}
@@ -39,6 +47,7 @@ export default function MypagePage() {
           </button>
         </div>
         <div className="mypage-content">
+          {activeTab === "bookmark" && <MypageBookmark />}
           {activeTab === "inquiry" && <MypageInquiry></MypageInquiry>}
           {activeTab === "update" && <MypageUpdate user={user} />}
           {activeTab === "delete" && <MypageDelete />}

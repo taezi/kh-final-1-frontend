@@ -229,6 +229,10 @@ export default function CulturePage() {
   const searchRef = useRef(null);
   //북마크 토클
   const toggleLike = async (id) => {
+    if (!user) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
     const userno = user.userno;
     const bookmarkData = {
       userno: userno,
@@ -278,6 +282,7 @@ export default function CulturePage() {
       )
     );
   }, [items, selectedDate]);
+  console.log(items);
 
   return (
     <div className="page">
