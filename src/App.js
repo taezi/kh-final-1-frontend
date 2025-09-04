@@ -32,6 +32,8 @@ import UpdatePwdPage from "./pages/manage/update/UpdatePwdPage";
 import UpdateNamePage from "./pages/manage/update/UpdateNamePage";
 import UpdateNickPage from "./pages/manage/update/UpdateNickPage";
 import UpdateEmailPage from "./pages/manage/update/UpdateEmailPage";
+import RestViewPage from "./pages/place/RestViewPage";
+import CafeViewPage from "./pages/place/CafeViewPage";
 
 function App() {
   return (
@@ -49,13 +51,15 @@ function App() {
           <Route path="/findid" element={<FindIdPage></FindIdPage>} />
           <Route path="/findpwd" element={<FindPwdPage></FindPwdPage>} />
           <Route path="/culture" element={<CulturePage></CulturePage>} />
-          <Route path="/culture/:id" element={<CultureViewPage />} />
+          <Route path="/culture/:id" element={<CultureViewPage/>} />
           <Route
             path="/restaurants"
             element={<RestaurantPage></RestaurantPage>}
           />
+          <Route path="/restaurants/:restName/:restBranch" element={<RestViewPage/>} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/cafes" element={<CafePage></CafePage>} />
+          <Route path="/cafes/:cafeName/:cafeBranch" element={<CafeViewPage/>} />
 
           <Route path="/editor" element={<EditorPage></EditorPage>} />
           <Route path="/editor/:editorno" element={<EditorDetailPage />} />
