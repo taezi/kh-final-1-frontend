@@ -147,7 +147,7 @@ export default function MovieDetailPage() {
     console.log("JWT 토큰:", accessToken);
 
     const reviewData = {
-      userNo: user?.userNo,
+      userno: user?.userno,
       commentA: reviewText,
       contentType: "movie",
       contentNo: parseInt(id),
@@ -287,16 +287,16 @@ export default function MovieDetailPage() {
                   {reviews.length > 0 ? (
                     reviews.map((review) => {
                       console.log(`리뷰 번호: ${review.reviewNo}`);
-                      console.log(`현재 로그인한 유저의 userNo:`, user?.userNo);
-                      console.log(`리뷰의 userNo:`, review.userNo);
-                      console.log(`일치 여부:`, user?.userNo === review.userNo);
+                      console.log(`현재 로그인한 유저의 userno:`, user?.userno);
+                      console.log(`리뷰의 userno:`, review.userNo);
+                      console.log(`일치 여부:`, user?.userno === review.userNo);
                       console.log(`isLoggedIn 상태:`, isLoggedIn);
                       
                       return (
                         <div key={review.reviewNo} className="review-item">
                           <p className="review-commentA">{review.commentA}</p>
                           <div className="review-meta">
-                            {isLoggedIn && user?.userNo === review.userNo && (
+                            {isLoggedIn && user?.userno === review.userNo && (
                               <div className="review-actions">
                                 <button className="edit-button">수정</button>
                                 <button className="delete-button" onClick={() => handleDeleteReview(review.reviewNo)}>삭제</button>
