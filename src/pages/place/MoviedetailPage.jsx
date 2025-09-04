@@ -44,7 +44,7 @@ export default function MovieDetailPage() {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isReviewOpen, setIsReviewOpen] = useState(true);
+  const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [reviewText, setReviewText] = useState("");
   const [reviews, setReviews] = useState([]);
   const [photo, setPhoto] = useState(null);
@@ -61,20 +61,19 @@ export default function MovieDetailPage() {
         headers.Authorization = `Bearer ${accessToken}`;
       }
 
-      const response = await axios.get(
-        `http://localhost:9999/api/movie/review/${id}`,
-        {
-          headers: headers,
-        }
-      );
-      setReviews(response.data);
-    } catch (error) {
-      console.error("리뷰를 불러오는 중 오류가 발생했습니다:", error);
-    }
-  };
+      const config = accessToken ? { headers } : {};
 
+      const response = await axios.get(`http://localhost:9999/api/movie/review/${id}`, config);
+      setReviews(response.data);
+    } catch (error) {
+      console.error("리뷰를 불러오는 중 오류가 발생했습니다:", error);
+    }
+  };
+
+
+//  영화 상세 정보/리뷰 불러오는 useEffect
   useEffect(() => {
-    const getMovieDetailAndReviews = async () => {
+    const getMovieDetail = async () => {
       setLoading(true);
       const movieData = await fetchMovieDetail(id);
       if (movieData) {
@@ -84,9 +83,9 @@ export default function MovieDetailPage() {
       setLoading(false);
     };
     if (id) {
-      getMovieDetailAndReviews();
+      getMovieDetail();
     }
-  }, [id]);
+  }, [id, accessToken]);
 
   const toggleReview = () => {
     setIsReviewOpen(!isReviewOpen);
@@ -184,6 +183,10 @@ export default function MovieDetailPage() {
           </div>
         </div>
 
+
+
+        <div className="content-sections-container">
+
         {movie.trailer_key && (
           <div className="trailer-section">
             <h3>예고편</h3>
@@ -200,6 +203,9 @@ export default function MovieDetailPage() {
             </div>
           </div>
         )}
+
+
+
 
         <div className="review-section">
           <button onClick={toggleReview} className="review-toggle-button">
@@ -267,7 +273,12 @@ export default function MovieDetailPage() {
             </div>
           )}
         </div>
+
+        </div>
+
+
       </div>
+
     </div>
   );
 }
