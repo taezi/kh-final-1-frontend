@@ -313,7 +313,7 @@ export default function MainPage() {
                 onSwiper={(s) => (swiperRef.current = s)}
                 navigation={{ prevEl: ".ev-prev", nextEl: ".ev-next" }}
                 autoplay={{
-                  delay: 3500,
+                  delay: 2000,
                   disableOnInteraction: false,
                   pauseOnMouseEnter: true,
                 }}

@@ -1,3 +1,4 @@
+// src/pages/culture/CulturePage.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
@@ -58,14 +59,12 @@ function HeroBannerFixed({ title }) {
             inset: 0,
             width: "100%",
             height: "100%",
-            objectFit: "cover", // 꽉 채움
-            objectPosition: "center 70%", // 스카이라인/불꽃 쪽 비중
+            objectFit: "cover",
+            objectPosition: "center 70%",
             filter: "brightness(.9)",
           }}
           loading="eager"
         />
-
-        {/* 상하 그라데이션: 가독성 확보 */}
         <div
           style={{
             position: "absolute",
@@ -75,8 +74,6 @@ function HeroBannerFixed({ title }) {
               "linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0) 35%, rgba(0,0,0,0) 70%, rgba(0,0,0,.3))",
           }}
         />
-
-        {/* 큰 제목 */}
         <div
           style={{
             position: "absolute",
@@ -208,17 +205,14 @@ export default function CulturePage() {
     }
   }, [user]);
 
-  //북마크 가져오기
+  // 북마크 가져오기
   useEffect(() => {
     if (!user) return;
-    console.log("북마크 가져오기 : " + user.userno);
     getBookmarks(user.userno, "event")
       .then((list) => {
-        // event 타입만 필터링
         const eventBookmarks = list
           .filter((b) => b.contenttype === "event")
           .map((b) => Number(b.contentno));
-
         setLikes(new Set(eventBookmarks));
       })
       .catch((err) => {
@@ -227,39 +221,36 @@ export default function CulturePage() {
   }, [user]);
 
   const searchRef = useRef(null);
-  //북마크 토클
+
+  // 북마크 토글
   const toggleLike = async (id) => {
+    if (!user) {
+      alert("로그인 후 이용해주세요.");
+      return;
+    }
     const userno = user.userno;
-    const bookmarkData = {
-      userno: userno,
-      contentno: id,
-      contenttype: "event",
-    };
-    console.log("북마크 데이터:", bookmarkData);
+    const bookmarkData = { userno, contentno: id, contenttype: "event" };
 
     try {
       if (likes.has(id)) {
-        // 현재 찜 상태 -> 찜 해제
         await removeBookmark(bookmarkData);
         alert("북마크가 해제되었습니다.");
         setLikes((prev) => {
-          const newLikes = new Set(prev);
-          newLikes.delete(id);
-          return newLikes;
+          const next = new Set(prev);
+          next.delete(id);
+          return next;
         });
       } else {
-        // 현재 찜하지 않은 상태 -> 찜하기
         await addBookmark(bookmarkData);
         alert("북마크에 추가되었습니다.");
         setLikes((prev) => {
-          const newLikes = new Set(prev);
-          newLikes.add(id);
-          return newLikes;
+          const next = new Set(prev);
+          next.add(id);
+          return next;
         });
       }
     } catch (error) {
       console.error("북마크 기능 처리 실패:", error);
-
       alert("찜하기 처리에 실패했습니다. 잠시 후 다시 시도해주세요.");
     }
   };
@@ -442,7 +433,8 @@ export default function CulturePage() {
               <div className="badge">{ev.place}</div>
               <div className="title">{ev.title}</div>
               <div className="meta">
-                {ev.gu} · {ev.time || ""} · {dayjs(ev.dateStart).format("M.D")}
+                {ev.gu} · {ev.timeText || ev.time || ""} ·{" "}
+                {dayjs(ev.dateStart).format("M.D")}
                 {ev.dateStart !== ev.dateEnd &&
                   `~${dayjs(ev.dateEnd).format("M.D")}`}
               </div>
