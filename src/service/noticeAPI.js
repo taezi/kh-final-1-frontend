@@ -67,3 +67,4 @@ export const getNoticeList = async (page = 1, size = 10) => {
     throw error;
   }
 };
+

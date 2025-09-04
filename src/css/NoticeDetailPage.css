@@ -80,20 +80,18 @@ font-size: 2rem;
 
 
 .notice-detail-info {
-  text-align: left;       /* 왼쪽 정렬 */
+  text-align: center;    
   width: 100%;
-  white-space: pre-line;  /* 엔터/줄바꿈 유지 */
+  white-space: pre-line;  /* 문자열 안의 \n 줄바꿈 유지 */
 }
 
 .notice-detail-info p {
   margin: 5px 0;
-  line-height: 1.4;
+  line-height: 1.5;
   color: #333;
+  font-size: 20px;  
 }
 
-.notice-detail-info strong {
-  color: #333;
-}
 
 .btnEdit,
 .btnDelete,

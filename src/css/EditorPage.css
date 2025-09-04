@@ -64,6 +64,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: #4a90e2;
 }
 
 /* 게시글 카드 리스트 */
@@ -101,25 +102,25 @@
   object-fit: cover;
 }
 
-.like-btn {
+.heart {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-  color: #ff0000; /* 더 진한 빨강 */
-  font-weight: 900; /* 글자 굵기 최대 */
-  transition: transform 0.2s, color 0.2s;
-  
+  right: 14px;
+  bottom: 14px;
+  border: 2px solid #ff6b88;
+  background: #ffffff;
+  border-radius: 9999px;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #ff6b88;
 }
-
-.like-btn:hover {
-  color: #ff7875;
-  /* 마우스 올렸을 때 밝은 빨강 */
-  transform: scale(1.2);
-  /* 살짝 커지게 */
+.heart.is-on {
+  background: #ff2f6e;
+  color: #fff;
+  border-color: #ff2f6e;
 }
 
 .editor-info {

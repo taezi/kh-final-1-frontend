@@ -6,6 +6,7 @@ import "@toast-ui/editor/toastui-editor.css";
 import "../../css/EditorWritePage.css";
 import useAuthStore from "../../store/authStore";
 
+
 export default function EditorWritePage() {
   const user = useAuthStore((state) => state.user);
   const titleRef = useRef(null);

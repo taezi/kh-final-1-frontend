@@ -74,26 +74,60 @@
 
 .editor-title {
   font-size: 2rem;
-  text-align: center;
-  padding-bottom: 20px;
+  padding-bottom: 0px;
+    margin-top: 0;
+  margin-bottom: 0;
+}
+.editor-title-container {
+  display: flex; 
+  justify-content: center;
+  gap: 10px; 
+  padding-bottom: 20px; 
+  align-items: center;
+}
+.editor-detail-heart {
+    position: static; 
+    border-radius: 9999px;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+     flex-shrink: 0;
 }
 
+.heart {
+  border: 2px solid #ff6b88;
+  background: #ffffff;
+  border-radius: 9999px;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #ff6b88;
+}
+.heart.is-on {
+  background: #ff2f6e;
+  color: #fff;
+  border-color: #ff2f6e;
+}
 .editor-detail-image img {
-
-
-  /* 원본살리기 */
   width: 100%;
-  /* 최대 폭 맞춤 */
   max-width: 800px;
-  /* 상세페이지에서 너무 커지지 않도록 제한 */
   height: auto;
-  /* 세로 비율 유지 */
   object-fit: contain;
-  /* 전체 이미지 보임 */
   border-radius: 8px;
   display: block;
   margin: 0 auto;
+}
 
+.editor-detail-info {
+  white-space: pre-line;
+  word-break: break-word;
+  line-height: 1.4;
 }
 
 .editor-detail-info p {
