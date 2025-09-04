@@ -173,7 +173,7 @@ export default function RestPage() {
   return (
     <div className="page">
       {/* ===== 고정 야경 배너 (캐러셀/랜덤 없음) ===== */}
-      <HeroBannerFixed title="전시/공연/축제/행사" />
+      <HeroBannerFixed title="서울 맛집" />
 
       {/* ===== 본문 ===== */}
       <div className="section pg24"> {/* <--- 이 div 태그를 추가하여 전체를 감쌌습니다. */}
@@ -260,9 +260,9 @@ export default function RestPage() {
                   })`,
                 }}
               />
-              <div className="badge">{rest.restName}</div>
-              <div className="title">{rest.restBranch}</div>
-              <div className="meta">{rest.restRegion}</div>
+              <div className="badge">{rest.restRegion}</div>
+              <div className="title">{rest.restName}</div>
+              <div className="meta">{rest.restBranch}</div>
               <button
                 className={`heart ${likes.has(rest.restNo) ? "is-on" : ""}`}
                 onClick={(e) => {

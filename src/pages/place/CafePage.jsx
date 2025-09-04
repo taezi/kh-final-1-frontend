@@ -173,7 +173,7 @@ export default function CafePage() {
   return (
     <div className="page">
       {/* ===== 고정 야경 배너 (캐러셀/랜덤 없음) ===== */}
-      <HeroBannerFixed title="전시/공연/축제/행사" />
+      <HeroBannerFixed title="서울 카페" />
 
       {/* ===== 본문 ===== */}
       <div className="section pg24"> {/* <--- 이 div 태그를 추가하여 전체를 감쌌습니다. */}
@@ -247,8 +247,8 @@ export default function CafePage() {
               key={cafe.cafeNo}
               className="ev-card"
               onClick={() =>
-                navigate(`/cafe/${cafe.cafeNo}`, { state: cafe })
-              }
+                navigate(`/cafes/${cafe.cafeName}/${cafe.cafeBranch}`, { state: cafe })
+              }state={{ cafeDetail: cafe }}
               style={{ cursor: "pointer" }}
             >
               <div
@@ -260,9 +260,9 @@ export default function CafePage() {
                   })`,
                 }}
               />
-              <div className="badge">{cafe.cafeName}</div>
-              <div className="title">{cafe.cafeBranch}</div>
-              <div className="meta">{cafe.cafeRegion}</div>
+              <div className="badge">{cafe.cafeRegion}</div>
+              <div className="title">{cafe.cafeName}</div>
+              <div className="meta">{cafe.cafeBranch}</div>
               <button
                 className={`heart ${likes.has(cafe.cafeNo) ? "is-on" : ""}`}
                 onClick={(e) => {
