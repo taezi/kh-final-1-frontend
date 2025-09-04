@@ -202,29 +202,68 @@
 }
 
 .review-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-    background-color: #f0f0f0; 
-    border-radius: 8px;
-    padding: 15px;
+    display: flex; /* flexbox를 사용해 내부 요소 정렬 */
+    flex-direction: column; /* 세로 방향으로 정렬 */
+    background-color: #f8f9fa; /* 배경색을 약간 더 밝게 변경 */
+    border: 1px solid #e9ecef; /* 경계선 추가 */
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* 그림자 효과를 부드럽게 변경 */
 }
 
-.review-header {
-    flex-grow: 1;
+.review-commentA {
+    font-size: 1em; /* 리뷰 내용 폰트 크기 조정 */
+    color: #495057; /* 텍스트 색상을 더 부드럽게 변경 */
+    line-height: 1.6;
+    margin: 0 0 15px; /* 아래쪽 여백 추가 */
+    text-align: left; /* 리뷰 내용을 왼쪽으로 정렬 */
+}
+
+.review-meta {
+    display: flex;
+    justify-content: flex-end; /* 작성자 정보를 오른쪽 끝으로 정렬 */
+    align-items: center;
+    width: 100%; /* 부모 컨테이너의 전체 너비 사용 */
+    gap: 15px; /* 작성자와 날짜 사이의 간격 조정 */
+    font-size: 0.9em;
+    color: #868e96;
+}
+
+.review-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-button,
+.delete-button {
+    background-color: transparent;
+    color: #495057;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.edit-button:hover {
+    background-color: #ffe066;
+    color: #333;
+}
+
+.delete-button:hover {
+    background-color: #ff6b6b;
+    color: #fff;
+}
+
+.user-info, .date {
+    display: inline-block; /* 한 줄에 표시 */
+    margin: 0;
 }
 
 .user-info {
     font-weight: bold;
-    color: #444; 
-    display: block;
-    margin-bottom: 5px;
-}
-
-.review-item p {
-    font-size: 0.9em;
-    color: #666; 
-    margin: 0;
+    color: #212529; /* 작성자 이름을 더 눈에 띄게 */
 }
 
 
