@@ -41,7 +41,7 @@ export default function AdminInquiry() {
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="inquiry-select"
+          className="inquiry-select-1"
         >
           <option value="all">전체</option>
           <option value="pending">처리중</option>

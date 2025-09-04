@@ -1,15 +1,20 @@
-// src/admin/AdminMembers.jsx
 import React, { useState, useEffect } from "react";
 import { deleteAdminUser, getUserData } from "../service/adminAPI";
+// CSS 파일 import
+import "../css/AdminMember.css";
 
 export default function AdminMembers() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchFilter, setSearchFilter] = useState("userid");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     getUserData()
       .then((data) => {
-        console.log(data);
         setUsers(data);
         setLoading(false);
       })
@@ -39,6 +44,48 @@ export default function AdminMembers() {
     }
   };
 
+  const getFilteredUsers = () => {
+    if (!searchTerm) {
+      return users;
+    }
+
+    return users.filter((user) => {
+      const searchValue = user[searchFilter];
+      if (typeof searchValue === "string") {
+        return searchValue.toLowerCase().includes(searchTerm.toLowerCase());
+      }
+      return false;
+    });
+  };
+
+  const filteredUsers = getFilteredUsers();
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+
+  const renderPaginationButtons = () => {
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(
+        <button
+          key={i}
+          onClick={() => setCurrentPage(i)}
+          style={{
+            margin: "0 5px",
+            padding: "5px 10px",
+            backgroundColor: currentPage === i ? "#e6f2ff" : "#fff",
+            border: "1px solid #ccc",
+            cursor: "pointer",
+          }}
+        >
+          {i}
+        </button>
+      );
+    }
+    return pages;
+  };
+
   if (loading) {
     return <div className="admin-loading">로딩 중...</div>;
   }
@@ -47,8 +94,23 @@ export default function AdminMembers() {
     <div className="member-management-section">
       <h2 className="section-title">회원 관리</h2>
       <div className="search-bar">
-        <input type="text" placeholder="회원 검색" />
-        <button>검색</button>
+        <select
+          value={searchFilter}
+          onChange={(e) => setSearchFilter(e.target.value)}
+        >
+          <option value="userid">회원 ID</option>
+          <option value="username">이름</option>
+          <option value="email">이메일</option>
+        </select>
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요"
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setCurrentPage(1);
+          }}
+        />
       </div>
       <table className="user-table">
         <thead>
@@ -61,33 +123,38 @@ export default function AdminMembers() {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
-            <tr key={user.userno}>
-              <td>{user.userid}</td>
-              <td>{user.username}</td>
-              <td>{user.email}</td>
-              <td>{user.joindate}</td>
-              <td>
-                <button className="action-button update-button">수정</button>
-                <button
-                  className="action-button delete-button"
-                  onClick={() => handleDelete(user.userno)}
-                >
-                  삭제
-                </button>
+          {currentItems.length > 0 ? (
+            currentItems.map((user) => (
+              <tr key={user.userno}>
+                <td>{user.userid}</td>
+                <td>{user.username}</td>
+                <td>{user.email}</td>
+                <td>{user.joindate}</td>
+                <td>
+                  <div className="action-buttons-container">
+                    <button className="action-button update-button">
+                      수정
+                    </button>
+                    <button
+                      className="action-button delete-button"
+                      onClick={() => handleDelete(user.userno)}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="5" style={{ textAlign: "center" }}>
+                검색된 회원이 없습니다.
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
-      <div className="pagination">
-        <span>1</span>
-        <span>2</span>
-        <span>3</span>
-        <span>4</span>
-        <span>5</span>
-        <span>6</span>
-      </div>
+      <div className="pagination">{renderPaginationButtons()}</div>
     </div>
   );
 }
