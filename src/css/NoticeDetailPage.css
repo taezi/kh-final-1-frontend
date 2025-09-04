@@ -82,7 +82,8 @@ font-size: 2rem;
 .notice-detail-info {
   text-align: center;    
   width: 100%;
-  white-space: pre-line;  /* 문자열 안의 \n 줄바꿈 유지 */
+  white-space: pre-line;  
+   margin-bottom: 80px;
 }
 
 .notice-detail-info p {
