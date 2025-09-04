@@ -14,7 +14,7 @@ const fetchMovieDetail = async (movieId) => {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    const data = await response.json();
+    const data = await await response.json();
 
     const trailerUrl = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${TMDB_API_KEY}`;
     const trailerResponse = await fetch(trailerUrl);
@@ -50,9 +50,8 @@ export default function MovieDetailPage() {
   const [photo, setPhoto] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
 
-  // Zustand 스토어에서 로그인 상태와 유저 정보 가져오기
-  const { user, accessToken } = useAuthStore(); // accessToken 추가
-  const isLoggedIn = !!user; // user 객체가 존재하면 true
+  const { user, accessToken } = useAuthStore();
+  const isLoggedIn = !!user;
 
   const fetchReviews = async () => {
     try {
@@ -63,29 +62,34 @@ export default function MovieDetailPage() {
 
       const config = accessToken ? { headers } : {};
 
-      const response = await axios.get(`http://localhost:9999/api/movie/review/${id}`, config);
-      setReviews(response.data);
-    } catch (error) {
-      console.error("리뷰를 불러오는 중 오류가 발생했습니다:", error);
-    }
-  };
+      const response = await axios.get(`http://localhost:9999/api/movie/review/${id}`, config);
+      setReviews(response.data);
+    } catch (error) {
+      console.error("리뷰를 불러오는 중 오류가 발생했습니다:", error);
+    }
+  };
 
-
-//  영화 상세 정보/리뷰 불러오는 useEffect
   useEffect(() => {
     const getMovieDetail = async () => {
       setLoading(true);
       const movieData = await fetchMovieDetail(id);
       if (movieData) {
         setMovie(movieData);
-        fetchReviews();
       }
       setLoading(false);
     };
+
     if (id) {
       getMovieDetail();
     }
-  }, [id, accessToken]);
+  }, [id]);
+
+  // 로그인 상태 또는 영화 ID가 변경될 때마다 리뷰 불러오기
+  useEffect(() => {
+    if (id) {
+      fetchReviews();
+    }
+  }, [id, accessToken, user]);
 
   const toggleReview = () => {
     setIsReviewOpen(!isReviewOpen);
@@ -103,7 +107,6 @@ export default function MovieDetailPage() {
   };
 
   const handleReviewSubmit = async () => {
-    // 1. 로그인 상태 확인 (이제 useAuthStore의 user 상태를 사용)
     if (!isLoggedIn) {
       alert("로그인해야 리뷰를 등록하실 수 있습니다.");
       return;
@@ -114,12 +117,12 @@ export default function MovieDetailPage() {
       return;
     }
 
+
     console.log("JWT 토큰:", accessToken);
 
-    // 2. 로그인된 사용자의 userNo를 사용
     const reviewData = {
       userNo: user.userNo,
-      comment: reviewText,
+      commentA: reviewText,
       contentType: "movie",
       contentNo: parseInt(id),
     };
@@ -142,6 +145,24 @@ export default function MovieDetailPage() {
       alert(
         `리뷰 등록에 실패했습니다: ${error.response?.data || error.message}`
       );
+    }
+  };
+
+  const handleDeleteReview = async (reviewNo) => {
+    if (!window.confirm("정말 리뷰를 삭제하시겠습니까?")) {
+      return;
+    }
+
+    try {
+      const headers = {
+        Authorization: `Bearer ${accessToken}`,
+      };
+      await axios.delete(`http://localhost:9999/api/movie/review/${reviewNo}`, { headers });
+      alert("리뷰가 삭제되었습니다.");
+      fetchReviews();
+    } catch (error) {
+      console.error("리뷰 삭제 중 오류 발생:", error);
+      alert(`리뷰 삭제에 실패했습니다: ${error.response?.data || error.message}`);
     }
   };
 
@@ -183,102 +204,85 @@ export default function MovieDetailPage() {
           </div>
         </div>
 
-
-
         <div className="content-sections-container">
-
-        {movie.trailer_key && (
-          <div className="trailer-section">
-            <h3>예고편</h3>
-            <div className="trailer-video-container">
-              <iframe
-                width="100%"
-                height="100%"
-                src={`https://www.youtube.com/embed/${movie.trailer_key}`}
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
-          </div>
-        )}
-
-
-
-
-        <div className="review-section">
-          <button onClick={toggleReview} className="review-toggle-button">
-            리뷰 <span className="toggle-icon">{isReviewOpen ? "▲" : "▼"}</span>
-          </button>
-          {isReviewOpen && (
-            <div className="review-content-container">
-              <div className="review-input-box">
-                <textarea
-                  placeholder="리뷰를 작성하세요. . . . . ."
-                  value={reviewText}
-                  onChange={(e) => setReviewText(e.target.value)}
-                ></textarea>
-                <div className="input-buttons">
-                  <label htmlFor="photo-upload" className="photo-upload-label">
-                    사진
-                  </label>
-                  <input
-                    type="file"
-                    id="photo-upload"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    style={{ display: "none" }}
-                  />
-                  {photoPreview && (
-                    <img
-                      src={photoPreview}
-                      alt="미리보기"
-                      className="photo-preview-thumbnail"
-                    />
-                  )}
-                  <button
-                    onClick={handleReviewSubmit}
-                    className="review-submit-button"
-                  >
-                    등록
-                  </button>
-                </div>
-              </div>
-              <div className="review-list">
-                               {" "}
-                {reviews.length > 0 ? (
-                  reviews.map((review) => (
-                    <div key={review.reviewNo} className="review-item">
-                                           {" "}
-                      <div className="review-header">
-                                               {" "}
-                        <span className="user-info">
-                          작성자: {review.userNo}
-                        </span>
-                                               {" "}
-                        <span className="date">작성일: {review.createDat}</span>
-                                             {" "}
-                      </div>
-                                           {" "}
-                      <p className="review-comment">{review.comment}</p>       
-                                 {" "}
-                    </div>
-                  ))
-                ) : (
-                  <p className="no-reviews">아직 작성된 리뷰가 없습니다.</p>
-                )}
-                             {" "}
+          {movie.trailer_key && (
+            <div className="trailer-section">
+              <h3>예고편</h3>
+              <div className="trailer-video-container">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={`https://www.youtube.com/embed/${movie.trailer_key}`}
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
               </div>
             </div>
           )}
+
+          <div className="review-section">
+            <button onClick={toggleReview} className="review-toggle-button">
+              리뷰 <span className="toggle-icon">{isReviewOpen ? "▲" : "▼"}</span>
+            </button>
+            {isReviewOpen && (
+              <div className="review-content-container">
+                <div className="review-input-box">
+                  <textarea
+                    placeholder="리뷰를 작성하세요. . . . . ."
+                    value={reviewText}
+                    onChange={(e) => setReviewText(e.target.value)}
+                  ></textarea>
+                  <div className="input-buttons">
+                    <label htmlFor="photo-upload" className="photo-upload-label">
+                      사진
+                    </label>
+                    <input
+                      type="file"
+                      id="photo-upload"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      style={{ display: "none" }}
+                    />
+                    {photoPreview && (
+                      <img
+                        src={photoPreview}
+                        alt="미리보기"
+                        className="photo-preview-thumbnail"
+                      />
+                    )}
+                    <button onClick={handleReviewSubmit} className="review-submit-button">
+                      등록
+                    </button>
+                  </div>
+                </div>
+                <div className="review-list">
+                  {reviews.length > 0 ? (
+                    reviews.map((review) => (
+                      <div key={review.reviewNo} className="review-item">
+                        <p className="review-commentA">{review.commentA}</p>
+                        <div className="review-meta">
+                          {isLoggedIn && user.userNo === review.userNo && (
+                            <div className="review-actions">
+                              <button className="edit-button">수정</button>
+                              <button className="delete-button" onClick={() => handleDeleteReview(review.reviewNo)}>삭제</button>
+                            </div>
+                          )}
+                          <span className="user-info">작성자: {review.username}</span>
+                          <span className="date">작성일: {review.createDat}</span>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="no-reviews">아직 작성된 리뷰가 없습니다.</p>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-
-        </div>
-
-
       </div>
-
     </div>
   );
 }
