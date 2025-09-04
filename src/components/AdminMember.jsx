@@ -1,14 +1,15 @@
 // src/admin/AdminMembers.jsx
 import React, { useState, useEffect } from "react";
-import { fetchUsers } from "../service/adminAPI";
+import { deleteAdminUser, getUserData } from "../service/adminAPI";
 
 export default function AdminMembers() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchUsers()
+    getUserData()
       .then((data) => {
+        console.log(data);
         setUsers(data);
         setLoading(false);
       })
@@ -17,6 +18,26 @@ export default function AdminMembers() {
         setLoading(false);
       });
   }, []);
+
+  const handleDelete = async (userno) => {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      try {
+        const response = await deleteAdminUser({
+          userno: userno,
+        });
+        console.log(response);
+        alert(response.msg);
+        setUsers((prevUsers) =>
+          prevUsers.filter((user) => user.userno !== userno)
+        );
+      } catch (error) {
+        console.log(error);
+        alert("삭제가 실패되었습니다.");
+      }
+    } else {
+      alert("취소되었습니다.");
+    }
+  };
 
   if (loading) {
     return <div className="admin-loading">로딩 중...</div>;
@@ -41,14 +62,19 @@ export default function AdminMembers() {
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.userId}</td>
-              <td>{user.name}</td>
+            <tr key={user.userno}>
+              <td>{user.userid}</td>
+              <td>{user.username}</td>
               <td>{user.email}</td>
-              <td>{user.joinDate}</td>
+              <td>{user.joindate}</td>
               <td>
                 <button className="action-button update-button">수정</button>
-                <button className="action-button delete-button">삭제</button>
+                <button
+                  className="action-button delete-button"
+                  onClick={() => handleDelete(user.userno)}
+                >
+                  삭제
+                </button>
               </td>
             </tr>
           ))}

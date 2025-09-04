@@ -20,7 +20,7 @@ import EventsPage from "./pages/place/EventPage";
 import NoticePage from "./pages/notice/NoticePage";
 import InquiryPage from "./pages/manage/inquiry/InquiryPage";
 import MoviePage from "./pages/place/MoviePage";
-import MovieDetailPage from "./pages/place/MovieDetailPage";
+import MovieDetailPage from "./pages/place/MoviedetailPage";
 import CultureViewPage from "./pages/place/CultureViewPage";
 import EditorEditPage from "./pages/editor/EditorEditPage";
 import NoticeWritePage from "./pages/notice/NoticeWritePage";
