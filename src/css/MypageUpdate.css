@@ -1,80 +1,68 @@
-/* src/css/MypageUpdate.css */
-
+/* 전체 컨테이너 스타일 */
 .mypage-update-container {
-  width: 100%;
-  max-width: 600px; /* 컨테이너 최대 너비 설정 */
-  margin: 20px auto; /* 중앙 정렬 */
-  padding: 30px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.mypage-update-container h3 {
-  text-align: center;
-  color: #333;
-  margin-bottom: 25px;
-  font-size: 1.8em;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 8px;
-  color: #555;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-sizing: border-box;
-  font-size: 1em;
-}
-
-.button-group {
   display: flex;
-  justify-content: flex-end;
-  gap: 15px;
-  margin-top: 30px;
+  flex-direction: column;
+  padding: 20px;
+  width: 100%;
 }
 
-.update-button,
-.cancel-button {
-  padding: 12px 25px;
-  border: none;
+/* 제목 스타일 */
+.mypage-update-container h3 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+/* 프로필 항목 컨테이너 */
+.profile-item {
+  display: flex;
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: space-between; /* 양쪽 끝 정렬 */
+  padding: 15px;
+  border-bottom: 1px solid #eee; /* 하단 경계선 */
+}
+
+/* 마지막 프로필 항목에는 경계선 제거 */
+.profile-item:last-child {
+  border-bottom: none;
+}
+
+/* 항목 레이블과 값 컨테이너 */
+.item-label {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+/* 레이블 (ID, 이름 등) 스타일 */
+.item-label label {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+/* 값 (실제 데이터) 스타일 */
+.item-label .item-value {
+  font-size: 18px;
+  color: #333;
+  font-weight: 500;
+}
+
+/* 변경 버튼 스타일 */
+.change-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #007bff;
+  background-color: #f0f8ff;
+  border: 1px solid #007bff;
   border-radius: 5px;
-  font-size: 1em;
-  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.update-button {
+/* 버튼 마우스 오버 시 스타일 */
+.change-button:hover {
   background-color: #007bff;
-  color: white;
-}
-
-.update-button:hover {
-  background-color: #0056b3;
-}
-
-.cancel-button {
-  background-color: #6c757d;
-  color: white;
-}
-
-.cancel-button:hover {
-  background-color: #5a6268;
-}
-
-.item-value {
-  font-size: 2em;
-  color: blue;
-  font-weight: bold;
+  color: #fff;
 }

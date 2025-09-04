@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // 영화관 API의 기본 URL
-const CINEMA_URL = "/api/cinemas";
+const CINEMA_URL = "/api/cinemas/region";
 
 // 영화관 데이터를 가져오는 함수
 export const fetchCinemas = async (region) => {

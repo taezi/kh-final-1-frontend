@@ -4,9 +4,10 @@
   padding: 20px;
 }
 
-.editor-detail-page h2 {
+.editor-detail-page h4 {
   text-align: center;
   margin-bottom: 20px;
+  color: #4a90e2;
 }
 
 .editor-action-wrapper {
@@ -22,10 +23,43 @@
 }
 
 .editor-meta {
-  margin-bottom: 30px; /* 게시글 정보와 상세 내용 사이 간격 */
+  text-align: center;
+  padding-bottom: 40px;
+  margin-top: 10px;
 }
 
-.editor-detail-item {
+.date-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: #888;
+  position: relative;
+  /* 가상 요소 위치 지정을 위해 추가 */
+  margin: 0 20px;
+  /* 가로선이 내용과 겹치지 않도록 좌우 여백 추가 */
+}
+
+.date-info::before,
+.date-info::after {
+  content: '';
+  /* 가상 요소에 필수 */
+  flex-grow: 1;
+  /* 가용 공간을 채우도록 늘어남 */
+  height: 1px;
+  /* 가로선 두께 */
+  background-color: #ccc;
+  /* 가로선 색상 */
+  margin: 0 10px;
+  /* 가로선과 텍스트 사이 여백 */
+}
+
+.separator {
+  margin: 0 10px;
+  color: #aaa;
+}
+
+.editor-item {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -33,39 +67,76 @@
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 15px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   align-items: center;
   text-align: center;
 }
 
 .editor-title {
-  font-size: 1.5rem; /* 제목 폰트 키움 */
+  font-size: 2rem;
+  padding-bottom: 0px;
+    margin-top: 0;
+  margin-bottom: 0;
+}
+.editor-title-container {
+  display: flex; 
+  justify-content: center;
+  gap: 10px; 
+  padding-bottom: 20px; 
+  align-items: center;
+}
+.editor-detail-heart {
+    position: static; 
+    border-radius: 9999px;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+     flex-shrink: 0;
 }
 
+.heart {
+  border: 2px solid #ff6b88;
+  background: #ffffff;
+  border-radius: 9999px;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #ff6b88;
+}
+.heart.is-on {
+  background: #ff2f6e;
+  color: #fff;
+  border-color: #ff2f6e;
+}
 .editor-detail-image img {
-
-  
-  /* width: 300px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px; */
-
-  /* 원본살리기 */
-  width: 100%;         /* 최대 폭 맞춤 */
-  max-width: 800px;    /* 상세페이지에서 너무 커지지 않도록 제한 */
-  height: auto;        /* 세로 비율 유지 */
-  object-fit: contain; /* 전체 이미지 보임 */
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  object-fit: contain;
   border-radius: 8px;
   display: block;
-  margin: 0 auto;     
+  margin: 0 auto;
+}
 
+.editor-detail-info {
+  white-space: pre-line;
+  word-break: break-word;
+  line-height: 1.4;
 }
 
 .editor-detail-info p {
   margin: 5px 0;
   line-height: 1.4;
-  text-align: left;       /* 왼쪽 정렬 */
-  white-space: pre-line;  /* 엔터/줄바꿈 유지 */
+  text-align: left;
+  /* 왼쪽 정렬 */
+  white-space: pre-line;
+  /* 엔터/줄바꿈 유지 */
 }
 
 .editor-detail-info strong {

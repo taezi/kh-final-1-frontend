@@ -18,9 +18,9 @@ import EditorWritePage from "./pages/editor/EditorWritePage";
 import EditorDetailPage from "./pages/editor/EditorDetailPage";
 import EventsPage from "./pages/place/EventPage";
 import NoticePage from "./pages/notice/NoticePage";
-import InquiryPage from "./pages/manage/InquiryPage";
+import InquiryPage from "./pages/manage/inquiry/InquiryPage";
 import MoviePage from "./pages/place/MoviePage";
-import MoviedetailPage from "./pages/place/MoviedetailPage";
+import MovieDetailPage from "./pages/place/MoviedetailPage";
 import CultureViewPage from "./pages/place/CultureViewPage";
 import EditorEditPage from "./pages/editor/EditorEditPage";
 import NoticeWritePage from "./pages/notice/NoticeWritePage";
@@ -32,8 +32,13 @@ import UpdatePwdPage from "./pages/manage/update/UpdatePwdPage";
 import UpdateNamePage from "./pages/manage/update/UpdateNamePage";
 import UpdateNickPage from "./pages/manage/update/UpdateNickPage";
 import UpdateEmailPage from "./pages/manage/update/UpdateEmailPage";
+
 import RestViewPage from "./pages/place/RestViewPage";
 import CafeViewPage from "./pages/place/CafeViewPage";
+import InquiryDetailPage from "./pages/manage/inquiry/InquiryDetailPage";
+import MypageInquiry from "./components/mypage/MypageInquiry";
+import InquiryReplyPage from "./pages/manage/inquiry/InquiryReplyPage";
+
 
 function App() {
   return (
@@ -59,24 +64,34 @@ function App() {
           <Route path="/restaurants/:restName/:restBranch" element={<RestViewPage/>} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/cafes" element={<CafePage></CafePage>} />
+
           <Route path="/cafes/:cafeName/:cafeBranch" element={<CafeViewPage/>} />
+
 
           <Route path="/editor" element={<EditorPage></EditorPage>} />
           <Route path="/editor/:editorno" element={<EditorDetailPage />} />
-
           <Route path="/movie" element={<MoviePage></MoviePage>} />
           <Route
             path="/movie/:id"
-            element={<MoviedetailPage></MoviedetailPage>}
+            element={<MovieDetailPage></MovieDetailPage>}
           />
-
           <Route path="/notice" element={<NoticePage></NoticePage>} />
-
+          <Route path="/notice/:noticeno" element={<NoticeDetailPage />} />
           {/* 로그인만 체크 */}
           <Route element={<PrivateRoute />}>
             <Route path="/mypage" element={<MypagePage></MypagePage>} />
             <Route path="/dateai" element={<DateaiPage></DateaiPage>} />
+
             <Route path="/inquiry" element={<InquiryPage></InquiryPage>} />
+            <Route
+              path="/inquiry/detail/:inquiryno"
+              element={<InquiryDetailPage></InquiryDetailPage>}
+            />
+            <Route
+              path="/myinquiry"
+              element={<MypageInquiry></MypageInquiry>}
+            />
+
             <Route path="/update-id" element={<UpdateIdPage></UpdateIdPage>} />
             <Route
               path="/update-pwd"
@@ -102,10 +117,13 @@ function App() {
               path="/noticeWrite"
               element={<NoticeWritePage></NoticeWritePage>}
             />
-            <Route path="/notice/:noticeno" element={<NoticeDetailPage />} />
-            <Route path="/notice/edit/:noticeno" element={<NoticeEditPage />} />
-          </Route>
 
+            <Route path="/notice/edit/:noticeno" element={<NoticeEditPage />} />
+            <Route
+              path="/inquiry/reply/:inquiryno"
+              element={<InquiryReplyPage />}
+            />
+          </Route>
           {/* 에디터만 체크 */}
           <Route element={<PrivateRoute requiredRole="editor" />}>
             <Route
@@ -114,7 +132,6 @@ function App() {
             />
             <Route path="/editor/edit/:editorno" element={<EditorEditPage />} />
           </Route>
-
           {/* 그외의 주소 404 */}
           <Route path="*" element={<h1>404 Not Found</h1>} />
         </Routes>

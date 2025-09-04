@@ -4,10 +4,12 @@ import dayjs from "dayjs";
 import TiltSeoulMap from "../components/TiltSeoulMap";
 import { getEventList } from "../service/placeAPI";
 import "../css/MainPage.css";
+import { getPostList } from "../service/editorAPI";
+
 
 /* Swiper */
 import { Swiper, SwiperSlide } from "swiper/react";
-// import { Navigation, Autoplay, Keyboard, A11y } from "swiper/modules";
+import { Navigation, Autoplay, Keyboard, A11y } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -73,9 +75,8 @@ function DateRail({ start, selected, onChange, onPrev, onNext }) {
             return (
               <button
                 key={d.format("YYYY-MM-DD")}
-                className={`home-tick ${isSel ? "is-sel" : ""} ${
-                  isToday ? "is-today" : ""
-                }`}
+                className={`home-tick ${isSel ? "is-sel" : ""} ${isToday ? "is-today" : ""
+                  }`}
                 onClick={() => onChange(d)}
                 aria-label={d.format("YYYY-MM-DD")}
               >
@@ -152,7 +153,7 @@ function alignSlidesSafe(swiper) {
       if (isShort) wrap.style.transform = "translate3d(0px,0px,0px)";
       else wrap.style.removeProperty("transform");
     });
-  } catch {}
+  } catch { }
 }
 
 const alignSlides = alignSlidesSafe;
@@ -225,6 +226,21 @@ export default function MainPage() {
     if (swiperRef.current) alignSlides(swiperRef.current);
   }, [events]); // 데이터 바뀔 때 1회 재정렬
 
+  //에디터 추천 데이트 코스
+  const [editorList, setEditorList] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await getPostList(""); // 키워드 없이 전체 불러오기
+        const latest = res.eList.slice(0, 6); // 최신 6개
+        setEditorList(latest);
+      } catch (err) {
+        console.error("에디터 추천 불러오기 실패:", err);
+      }
+    })();
+  }, []);
+console.log("에디터 리스트 데이터:", editorList);
   return (
     <div className="home">
       {/* ===== HERO ===== */}
@@ -307,7 +323,7 @@ export default function MainPage() {
                 ‹
               </button>
 
-              {/* <Swiper
+              <Swiper
                 className="home-swiper"
                 modules={[Navigation, Autoplay, Keyboard, A11y]}
                 onSwiper={(s) => (swiperRef.current = s)}
@@ -319,7 +335,6 @@ export default function MainPage() {
                 }}
                 keyboard={{ enabled: true }}
                 a11y={{ enabled: true }}
-                
                 effect="slide"
                 centeredSlides={false}
                 centeredSlidesBounds={false}
@@ -376,7 +391,7 @@ export default function MainPage() {
                     </SwiperSlide>
                   );
                 })}
-              </Swiper> */}
+              </Swiper>
 
               <button className="home-arrow ev-next" aria-label="오른쪽으로">
                 ›
@@ -403,7 +418,7 @@ export default function MainPage() {
           </div>
         )}
 
-        {/* 에디터 추천(샘플) */}
+        {/* 에디터 데이트 코스추천 */}
         <section className="home-section">
           <h3 className="home-edTitle">에디터 추천 데이트 코스</h3>
           <div className="home-edWrap">
@@ -420,20 +435,23 @@ export default function MainPage() {
             </button>
 
             <div className="home-edCarousel">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <article key={i} className="home-edCard">
+              {editorList.map((editor) => (
+                <article
+                  key={editor.editorno}
+                  className="home-edCard"
+                  onClick={() => navigate(`/editor/${editor.editorno}`)}
+                >
                   <div
                     className="thumb"
                     style={{
                       aspectRatio: "4/3",
-                      backgroundImage:
-                        "url(https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1600&auto=format&fit=crop&fm=jpg)",
+                      backgroundImage: `url(${editor.thumbnailUrl})`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                     }}
                   />
-                  <div className="title center">영등포 베스트 데이트</div>
-                  <div className="meta center">산책 · 카페 · 전시</div>
+                  <div className="title center">{editor.editortitle}</div>
+                  <div className="meta center">{editor.editorintro || "에디터 추천"}</div>
                 </article>
               ))}
             </div>

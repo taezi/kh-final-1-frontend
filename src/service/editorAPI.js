@@ -16,9 +16,12 @@ export const createPost = async (postData) => {
   return response.data;
 };
 
-// 게시글 전체 조회
-export const getPostList = async () => {
-  const response = await editorAPI.get(""); // GET /api/editors
+// 게시글 전체 조회 + 검색
+export const getPostList = async (search = "") => {
+  // GET /api/editors
+  const response = await editorAPI.get("/editor", {
+    params: { search },
+  });
   return response.data;
 };
 
@@ -40,6 +43,7 @@ export const deletePost = async (editorno) => {
   return response.data;
 };
 
+
 // 이미지 업로드
 export const uploadImageToS3 = async (blob) => {
   const presignedRes = await editorAPI.get("/s3/presigned", {
@@ -58,4 +62,6 @@ export const uploadImageToS3 = async (blob) => {
   });
 
   return fileUrl;
+
+
 };

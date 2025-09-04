@@ -12,16 +12,11 @@ export const manageAPI = axios.create({
 
 setupInterceptors(manageAPI);
 
-/**
- * 새로운 문의를 등록하는 함수
- * @param {object} inquiryData - 등록할 문의 데이터 (이름, 전화번호, 제목, 내용, userno 등)
- * @returns {Promise<object>} - 서버 응답 데이터
- */
+// 문의 등록
 export const createInquiry = async (inquiryData) => {
   console.log("전송 데이터:", inquiryData);
   try {
-    // POST 요청을 보냅니다.
-    const response = await manageAPI.post("/inquiry/submit", inquiryData);
+    const response = await manageAPI.post("/inquiry", inquiryData);
     console.log("서버 응답:", response);
     return response.data;
   } catch (error) {
@@ -30,17 +25,27 @@ export const createInquiry = async (inquiryData) => {
   }
 };
 
-// 필요한 경우, 문의 목록 조회, 수정, 삭제 등의 함수를 여기에 추가할 수 있습니다.
-// 예시:
-// export const getInquiries = async () => {
-//   try {
-//     const response = await manageAPI.get("/list");
-//     return response.data;
-//   } catch (error) {
-//     console.error("문의 목록 조회 에러:", error);
-//     throw error;
-//   }
-// };
+export const getInquiries = async (userno) => {
+  try {
+    const response = await manageAPI.get(`/inquiry/list/${userno}`);
+    return response.data;
+  } catch (error) {
+    console.error("문의 목록 조회 에러:", error);
+    throw error;
+  }
+};
+
+export const getInquiryDetail = async (inquiryno) => {
+  try {
+    console.log("문의글 번호 : ", inquiryno);
+    const response = await manageAPI.get(`/inquiry/detail/${inquiryno}`);
+    console.log("문의 상세 정보:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("문의 상세 정보 조회 에러:", error);
+    throw error;
+  }
+};
 
 export const deleteUser = async (data) => {
   console.log("회원 탈퇴 데이터 : ", data);
@@ -100,6 +105,26 @@ export const updatePassword = async (userid, before, after) => {
       before,
       after,
     });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getAllInquiries = async () => {
+  try {
+    const response = await manageAPI.get("/inquiry/list");
+    console.log("모든1:1문의내역 : ", response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createInquiryReply = async (replyData) => {
+  try {
+    console.log("전송 데이터(답변) :", replyData);
+    const response = await manageAPI.post("/inquiry/reply", replyData);
     return response.data;
   } catch (error) {
     console.log(error);
