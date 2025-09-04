@@ -110,3 +110,23 @@ export const updatePassword = async (userid, before, after) => {
     console.log(error);
   }
 };
+
+export const getAllInquiries = async () => {
+  try {
+    const response = await manageAPI.get("/inquiry/list");
+    console.log("모든1:1문의내역 : ", response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createInquiryReply = async (replyData) => {
+  try {
+    console.log("전송 데이터(답변) :", replyData);
+    const response = await manageAPI.post("/inquiry/reply", replyData);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

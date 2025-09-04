@@ -1,9 +1,9 @@
 // src/components/MypageInquiry.jsx
 import { useEffect, useState } from "react";
-import useAuthStore from "../store/authStore";
-import { getInquiries } from "../service/manageAPI";
+import useAuthStore from "../../store/authStore";
+import { getInquiries } from "../../service/manageAPI";
 import { useNavigate } from "react-router-dom";
-import "../css/MypageInquiry.css";
+import "../../css/MypageInquiry.css";
 
 export default function MypageInquiry() {
   const user = useAuthStore((state) => state.user);
@@ -25,6 +25,7 @@ export default function MypageInquiry() {
   return (
     <div className="inquiry-list-container">
       <h3>나의 문의 내역</h3>
+
       <table className="inquiry-table">
         <thead>
           <tr>
@@ -38,8 +39,8 @@ export default function MypageInquiry() {
             inquiries.map((inq) => (
               <tr
                 key={inq.inquiryno}
-                onClick={() => goToDetail(inq.inquiryno)} // ✅ 수정됨
-                style={{ cursor: "pointer" }} // UX 개선 (클릭 가능 표시)
+                onClick={() => goToDetail(inq.inquiryno)} //
+                style={{ cursor: "pointer" }} //
               >
                 <td>{inq.status === "pending" ? "처리중" : "답변완료"}</td>
                 <td>{inq.inquiryTitle}</td>

@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
-import "../css/MypageDelete.css";
+import "../../css/MypageDelete.css";
 import { useNavigate } from "react-router-dom";
-import useAuthStore from "../store/authStore";
-import { deleteUser } from "../service/manageAPI";
+import useAuthStore from "../../store/authStore";
+import { deleteUser } from "../../service/manageAPI";
 
 export default function MypageDelete() {
   const password = useRef(null);

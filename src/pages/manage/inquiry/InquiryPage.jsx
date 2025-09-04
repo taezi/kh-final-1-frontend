@@ -107,13 +107,13 @@ export default function InquiryPage() {
               required
             ></textarea>
           </div>
-          <div className="button-group">
-            <button type="submit" className="submit-button">
+          <div className="button-group-1">
+            <button type="submit" className="submit-button-1">
               등록
             </button>
             <button
               type="button"
-              className="cancel-button"
+              className="cancel-button-1"
               onClick={handleCancel}
             >
               취소

@@ -56,10 +56,10 @@ export default function MovieDetailPage() {
 
   const fetchReviews = async () => {
     try {
-      const headers = {};
-      if (accessToken) {
-        headers.Authorization = `Bearer ${accessToken}`;
-      }
+      const headers = {};
+      if (accessToken) {
+        headers.Authorization = `Bearer ${accessToken}`;
+      }
 
       const config = accessToken ? { headers } : {};
 
@@ -69,6 +69,7 @@ export default function MovieDetailPage() {
       console.error("리뷰를 불러오는 중 오류가 발생했습니다:", error);
     }
   };
+
 
 //  영화 상세 정보/리뷰 불러오는 useEffect
   useEffect(() => {
@@ -113,24 +114,22 @@ export default function MovieDetailPage() {
       return;
     }
 
-    console.log("JWT 토큰:", accessToken)
+    console.log("JWT 토큰:", accessToken);
 
     // 2. 로그인된 사용자의 userNo를 사용
     const reviewData = {
       userNo: user.userNo,
       comment: reviewText,
       contentType: "movie",
-      contentNo: parseInt(id)
+      contentNo: parseInt(id),
     };
 
     try {
-      await axios.post("http://localhost:9999/api/movie/review", reviewData, 
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`, // JWT 토큰 추가
-          },
-        }
-      );
+      await axios.post("http://localhost:9999/api/movie/review", reviewData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`, // JWT 토큰 추가
+        },
+      });
 
       alert("리뷰 등록을 완료했습니다.");
 
@@ -140,7 +139,9 @@ export default function MovieDetailPage() {
       fetchReviews();
     } catch (error) {
       console.error("리뷰 등록 중 오류가 발생했습니다:", error);
-      alert(`리뷰 등록에 실패했습니다: ${error.response?.data || error.message}`);
+      alert(
+        `리뷰 등록에 실패했습니다: ${error.response?.data || error.message}`
+      );
     }
   };
 
@@ -245,20 +246,30 @@ export default function MovieDetailPage() {
                 </div>
               </div>
               <div className="review-list">
-                {reviews.length > 0 ? (
-                  reviews.map((review) => (
-                    <div key={review.reviewNo} className="review-item">
-                      <div className="review-header">
-                        <span className="user-info">작성자: {review.userNo}</span>
-                        <span className="date">작성일: {review.createDat}</span>
-                      </div>
-                      <p className="review-comment">{review.comment}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="no-reviews">아직 작성된 리뷰가 없습니다.</p>
-                )}
-              </div>
+                               {" "}
+                {reviews.length > 0 ? (
+                  reviews.map((review) => (
+                    <div key={review.reviewNo} className="review-item">
+                                           {" "}
+                      <div className="review-header">
+                                               {" "}
+                        <span className="user-info">
+                          작성자: {review.userNo}
+                        </span>
+                                               {" "}
+                        <span className="date">작성일: {review.createDat}</span>
+                                             {" "}
+                      </div>
+                                           {" "}
+                      <p className="review-comment">{review.comment}</p>       
+                                 {" "}
+                    </div>
+                  ))
+                ) : (
+                  <p className="no-reviews">아직 작성된 리뷰가 없습니다.</p>
+                )}
+                             {" "}
+              </div>
             </div>
           )}
         </div>
