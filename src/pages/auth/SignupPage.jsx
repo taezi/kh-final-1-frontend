@@ -25,10 +25,25 @@ export default function SignupPage() {
   };
 
   const handleRegister = async () => {
+    const koreanRegex = /^[가-힣]+$/;
+    if (!koreanRegex.test(formData.username)) {
+      alert("이름은 한글만 입력 가능합니다.");
+      return;
+    }
+
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      alert("올바른 이메일 양식을 입력해주세요.");
+      return;
+    }
+
+
     if (formData.password !== formData.repassword) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
+
 
     try {
       const response = await signup(
