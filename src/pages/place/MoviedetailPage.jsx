@@ -50,6 +50,10 @@ export default function MovieDetailPage() {
   const [photo, setPhoto] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
 
+  // 수정 기능 관련 상태 추가
+  const [editingReviewId, setEditingReviewId] = useState(null);
+  const [editingReviewText, setEditingReviewText] = useState("");
+
   const { user, accessToken, setUser } = useAuthStore(); // setUser 함수 추가
   const isLoggedIn = !!user;
 
@@ -147,7 +151,7 @@ export default function MovieDetailPage() {
     console.log("JWT 토큰:", accessToken);
 
     const reviewData = {
-      userno: user?.userno,
+      userNo: user?.userno,
       commentA: reviewText,
       contentType: "movie",
       contentNo: parseInt(id),
@@ -189,6 +193,30 @@ export default function MovieDetailPage() {
     } catch (error) {
       console.error("리뷰 삭제 중 오류 발생:", error);
       alert(`리뷰 삭제에 실패했습니다: ${error.response?.data || error.message}`);
+    }
+  };
+
+  const handleUpdateReview = async (reviewNo) => {
+    if (!editingReviewText.trim()) {
+      alert("수정할 내용을 입력해주세요.");
+      return;
+    }
+    try {
+      const updatedReviewData = {
+        commentA: editingReviewText,
+      };
+      await axios.put(`http://localhost:9999/api/movie/review/${reviewNo}`, updatedReviewData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      alert("리뷰가 성공적으로 수정되었습니다.");
+      setEditingReviewId(null);
+      setEditingReviewText("");
+      fetchReviews();
+    } catch (error) {
+      console.error("리뷰 수정 중 오류 발생:", error);
+      alert(`리뷰 수정에 실패했습니다: ${error.response?.data || error.message}`);
     }
   };
 
@@ -285,29 +313,60 @@ export default function MovieDetailPage() {
                 </div>
                 <div className="review-list">
                   {reviews.length > 0 ? (
-                    reviews.map((review) => {
-                      console.log(`리뷰 번호: ${review.reviewNo}`);
-                      console.log(`현재 로그인한 유저의 userno:`, user?.userno);
-                      console.log(`리뷰의 userno:`, review.userNo);
-                      console.log(`일치 여부:`, user?.userno === review.userNo);
-                      console.log(`isLoggedIn 상태:`, isLoggedIn);
-                      
-                      return (
-                        <div key={review.reviewNo} className="review-item">
-                          <p className="review-commentA">{review.commentA}</p>
-                          <div className="review-meta">
-                            {isLoggedIn && user?.userno === review.userNo && (
-                              <div className="review-actions">
-                                <button className="edit-button">수정</button>
-                                <button className="delete-button" onClick={() => handleDeleteReview(review.reviewNo)}>삭제</button>
-                              </div>
-                            )}
-                            <span className="user-info">작성자: {review.username}</span>
-                            <span className="date">작성일: {review.createDat}</span>
+                    reviews.map((review) => (
+                      <div key={review.reviewNo} className="review-item">
+                        {editingReviewId === review.reviewNo ? (
+                          <div className="review-edit-box">
+                            <textarea
+                              value={editingReviewText}
+                              onChange={(e) => setEditingReviewText(e.target.value)}
+                              className="edit-textarea"
+                            ></textarea>
+                            <div className="review-actions">
+                              <button
+                                className="complete-button"
+                                onClick={() => handleUpdateReview(review.reviewNo)}
+                              >
+                                수정 완료
+                              </button>
+                              <button
+                                className="cancel-button"
+                                onClick={() => setEditingReviewId(null)}
+                              >
+                                취소
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })
+                        ) : (
+                          <>
+                            <p className="review-commentA">{review.commentA}</p>
+                            <div className="review-meta">
+                              {isLoggedIn && user?.userno === review.userNo && (
+                                <div className="review-actions">
+                                  <button
+                                    className="edit-button"
+                                    onClick={() => {
+                                      setEditingReviewId(review.reviewNo);
+                                      setEditingReviewText(review.commentA);
+                                    }}
+                                  >
+                                    수정
+                                  </button>
+                                  <button
+                                    className="delete-button"
+                                    onClick={() => handleDeleteReview(review.reviewNo)}
+                                  >
+                                    삭제
+                                  </button>
+                                </div>
+                              )}
+                              <span className="user-info">작성자: {review.username}</span>
+                              <span className="date">작성일: {review.createDat}</span>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    ))
                   ) : (
                     <p className="no-reviews">아직 작성된 리뷰가 없습니다.</p>
                   )}
