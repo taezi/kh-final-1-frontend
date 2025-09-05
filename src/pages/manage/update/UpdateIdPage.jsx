@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../../store/authStore";
 import { useRef } from "react";
 import { updateUserid } from "../../../service/manageAPI";
-import "../../../css/UpdateIdPage.css"; 
+import "../../../css/UpdateIdPage.css";
 
 export default function UpdateIdPage(params) {
   const user = useAuthStore((state) => state.user);
@@ -24,6 +24,7 @@ export default function UpdateIdPage(params) {
           alert(response.msg);
 
           updateUser({ userid: userid.current.value });
+          navigate(-1);
         } else {
           alert(response.msg);
         }

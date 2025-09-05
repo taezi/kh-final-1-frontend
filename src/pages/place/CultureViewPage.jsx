@@ -1,51 +1,182 @@
+// src/pages/culture/CultureViewPage.jsx
 import React, { useEffect, useMemo, useState } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import dayjs from "dayjs";
-import "../../css/CulturePage.css"; // 공통 버튼/폰트
-import "../../css/CultureViewPage.css"; // 상세 전용
+import "../../css/CulturePage.css";
+import "../../css/CultureViewPage.css";
 import { getEventDetail } from "../../service/placeAPI";
-import { normalizeEvent } from "../../utils/eventNormalizer";
+import {
+  normalizeEvent,
+  mergeEvent,
+  sanitizeDeep,
+} from "../../utils/eventNormalizer";
+
+// ✅ 댓글 API & 로그인 유저
+import useAuthStore from "../../store/authStore";
+import {
+  getComments,
+  addComment,
+  updateComment,
+  removeComment,
+} from "../../service/reviewAPI";
+
+/** 설명 추출: HTML 우선, 없으면 텍스트 후보 순회 */
+function pickDescription(data) {
+  if (!data) return { html: "", text: "" };
+
+  const html = (data.descriptionHtml || "").trim();
+  if (html) return { html, text: "" };
+
+  const candidates = [
+    data.summary,
+    data.description,
+    data._csv?.description,
+    data._raw?.description,
+    data._raw?.overview,
+    data._raw?.content,
+  ];
+
+  const text = (
+    candidates.find((v) => typeof v === "string" && v.trim()) || ""
+  ).trim();
+  return { html: "", text };
+}
 
 export default function CultureViewPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const loc = useLocation();
 
-  // 목록에서 넘겨준 row 즉시 사용, 없으면 API 호출
+  // ✅ 로그인 유저
+  const currentUser = useAuthStore((s) => s.user);
+
+  // 목록에서 넘어온 row 즉시 사용(여기도 sanitize + normalize)
   const rowFromList =
     loc.state && typeof loc.state === "object" ? loc.state : null;
   const [data, setData] = useState(
-    rowFromList ? normalizeEvent(rowFromList) : null
+    rowFromList ? normalizeEvent(sanitizeDeep(rowFromList)) : null
   );
-  const [loading, setLoading] = useState(!rowFromList);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // ✅ 댓글 상태
+  const CONTENT_TYPE = "culture"; // 백엔드에서 다른 키(예: "event")면 바꿔주세요.
+  const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState("");
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editingText, setEditingText] = useState("");
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [id]);
 
   useEffect(() => {
-    if (rowFromList) return;
+    const initial = rowFromList
+      ? normalizeEvent(sanitizeDeep(rowFromList))
+      : null;
+    setData(initial);
+    setError("");
+
     let alive = true;
     (async () => {
       try {
         setLoading(true);
-        const raw = await getEventDetail({ id }); // 백엔드 준비되면 사용
+        const raw = await getEventDetail({ id }); // 상세 호출
         if (!alive) return;
-        setData(normalizeEvent(raw));
-        setError("");
+
+        const detailed = normalizeEvent(raw); // 내부에서 sanitizeDeep 수행
+        setData((prev) => mergeEvent(prev, detailed));
       } catch (e) {
         if (!alive) return;
-        setError("상세 정보를 불러오지 못했어요.");
+        if (!rowFromList) setError("상세 정보를 불러오지 못했어요.");
       } finally {
         if (alive) setLoading(false);
       }
     })();
+
     return () => {
       alive = false;
     };
-  }, [id, rowFromList]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
+  // ✅ 댓글 불러오기
+  useEffect(() => {
+    if (!id) return;
+    (async () => {
+      try {
+        const list = await getComments(CONTENT_TYPE, id);
+        setComments(Array.isArray(list) ? list : []);
+      } catch (err) {
+        console.error("댓글 불러오기 실패:", err);
+      }
+    })();
+  }, [id]);
+
+  // ✅ 댓글 등록
+  const handleAddComment = async () => {
+    if (!commentText.trim()) return;
+    if (!currentUser) {
+      alert("로그인 후 이용 가능합니다.");
+      return;
+    }
+
+    const newComment = {
+      userno: currentUser.userno,
+      commenta: commentText,
+    };
+
+    try {
+      const saved = await addComment(CONTENT_TYPE, id, newComment);
+      setComments((prev) => [
+        { ...saved, reviewno: Number(saved.reviewno) },
+        ...prev,
+      ]);
+      setCommentText("");
+      setEditingCommentId(null);
+      setEditingText("");
+    } catch (err) {
+      console.error(err);
+      alert("댓글 등록 실패");
+    }
+  };
+
+  // ✅ 댓글 삭제
+  const handleDeleteComment = async (reviewno) => {
+    const ok = window.confirm("정말 삭제하시겠습니까?");
+    if (!ok) return;
+    try {
+      await removeComment(reviewno, CONTENT_TYPE);
+      setComments((prev) => prev.filter((c) => c.reviewno !== reviewno));
+      alert("댓글이 삭제되었습니다.");
+    } catch (err) {
+      console.error(err);
+      alert("댓글 삭제 실패");
+    }
+  };
+
+  // ✅ 댓글 수정
+  const startEditingComment = (reviewno, currentText) => {
+    setEditingCommentId(reviewno);
+    setEditingText(currentText || "");
+  };
+
+  const submitEditComment = async (reviewno) => {
+    try {
+      await updateComment(reviewno, editingText);
+      setComments((prev) =>
+        prev.map((c) =>
+          c.reviewno === reviewno ? { ...c, commenta: editingText } : c
+        )
+      );
+      setEditingCommentId(null);
+      setEditingText("");
+    } catch (err) {
+      console.error(err);
+      alert("댓글 수정 실패");
+    }
+  };
+
+  // 이미지
   const imgs = useMemo(() => {
     const list = data?.images?.length
       ? data.images
@@ -55,7 +186,7 @@ export default function CultureViewPage() {
     return list.length ? list : ["https://picsum.photos/1200/800?blur=2"];
   }, [data]);
 
-  // 행사 기간: 파싱 성공/실패 모두 커버
+  // 기간 텍스트
   const periodText = useMemo(() => {
     if (!data) return "";
     const s = data.dateStart
@@ -68,14 +199,15 @@ export default function CultureViewPage() {
     return `${s || ""}${s && e ? " ~ " : ""}${e || ""}`;
   }, [data]);
 
-  const website = data?.website || data?._csv?.portalurl || "";
+  // 요금/웹/장소/주소
+  const fee = (data?.feeText || "").trim();
+  const website = (data?.website || data?._csv?.portalurl || "").trim();
   const address = (data?.address || "").trim();
   const placeRaw = (data?.place || "").trim();
   const orgRaw = (data?._csv?.organizationname || "").trim();
-
   const hasMapTarget = Boolean(address || placeRaw || orgRaw);
 
-  // 지도: 안정적인 렌더를 위해 구글 임베드 사용(네이버는 보조링크)
+  // 지도
   const gmapEmbedUrl = useMemo(() => {
     const q = encodeURIComponent(address || placeRaw || orgRaw || "서울");
     return `https://www.google.com/maps?q=${q}&hl=ko&z=16&output=embed`;
@@ -86,7 +218,8 @@ export default function CultureViewPage() {
     return `https://map.naver.com/v5/search/${q}`;
   }, [address, placeRaw]);
 
-  if (loading) {
+  // 로딩 스켈레톤
+  if (!data && loading) {
     return (
       <div className="page cv-wrap">
         <div className="cv-skel hero" />
@@ -94,6 +227,8 @@ export default function CultureViewPage() {
       </div>
     );
   }
+
+  // 에러
   if (error || !data) {
     return (
       <div className="page cv-wrap">
@@ -107,7 +242,9 @@ export default function CultureViewPage() {
     );
   }
 
-  // ===== 상단(VisitSeoul 톤) =====
+  // 설명 후보 추출 (HTML 우선)
+  const { html: descHtml, text: descText } = pickDescription(data);
+
   return (
     <div className="page cv-wrap">
       <div className="cv-topline center">
@@ -119,7 +256,7 @@ export default function CultureViewPage() {
 
       <h1 className="cv-title center">{data.title}</h1>
 
-      {/* 큰 이미지 */}
+      {/* Hero 이미지 */}
       <div className="cv-heroimg">
         <img src={imgs[0]} alt={data.title} />
       </div>
@@ -131,7 +268,7 @@ export default function CultureViewPage() {
         </div>
       )}
 
-      {/* 정보 카드: 중복 제거 규칙 */}
+      {/* 정보 카드 */}
       <section className="cv-card">
         <dl className="cv-dl">
           {periodText && (
@@ -141,7 +278,6 @@ export default function CultureViewPage() {
             </>
           )}
 
-          {/* 장소(organizationname > place), 구 표시 */}
           {(() => {
             const venue = orgRaw || placeRaw;
             return venue ? (
@@ -155,7 +291,6 @@ export default function CultureViewPage() {
             ) : null;
           })()}
 
-          {/* 기관명: 장소와 다를 때만 */}
           {orgRaw && orgRaw !== placeRaw && (
             <>
               <dt>기관명</dt>
@@ -163,7 +298,6 @@ export default function CultureViewPage() {
             </>
           )}
 
-          {/* 분류/대상/요금 */}
           {data._csv?.category && (
             <>
               <dt>분류</dt>
@@ -176,14 +310,14 @@ export default function CultureViewPage() {
               <dd>{data._csv.targetaudience}</dd>
             </>
           )}
-          {(data.feeText || data._csv?.isfree) && (
+
+          {fee && (
             <>
               <dt>이용 요금</dt>
-              <dd>{data.feeText || data._csv?.isfree}</dd>
+              <dd>{fee}</dd>
             </>
           )}
 
-          {/* 주소: 장소/기관명과 동일하면 숨김 */}
           {address && address !== orgRaw && address !== placeRaw && (
             <>
               <dt>주소</dt>
@@ -191,7 +325,6 @@ export default function CultureViewPage() {
             </>
           )}
 
-          {/* 전화/운영시간/휴무일 */}
           {data.phone && (
             <>
               <dt>전화번호</dt>
@@ -211,7 +344,6 @@ export default function CultureViewPage() {
             </>
           )}
 
-          {/* 웹사이트 */}
           {website && (
             <>
               <dt>웹사이트</dt>
@@ -229,7 +361,7 @@ export default function CultureViewPage() {
           )}
         </dl>
 
-        {/* 지도 박스(임베드) + 네이버 링크 */}
+        {/* 지도 */}
         {hasMapTarget && (
           <div className="cv-mapbox">
             <iframe
@@ -256,22 +388,22 @@ export default function CultureViewPage() {
         )}
       </section>
 
-      {/* 원문 설명: 더 아래로 내려 배치 + 여백 강화 */}
-      {(data._csv?.description || data.summary || data.descriptionHtml) && (
+      {/* 소개 섹션: HTML > TEXT 순 */}
+      {(descHtml || descText) && (
         <section className="cv-card cv-desccard cv-desccard--lower">
           <h2 className="cv-h2">소개</h2>
-          {data.descriptionHtml ? (
+          {descHtml ? (
             <div
               className="cv-desc"
-              dangerouslySetInnerHTML={{ __html: data.descriptionHtml }}
+              dangerouslySetInnerHTML={{ __html: descHtml }}
             />
           ) : (
-            <p className="cv-desc">{data._csv?.description || data.summary}</p>
+            <p className="cv-desc">{descText}</p>
           )}
         </section>
       )}
 
-      {/* 태그(있으면) */}
+      {/* 태그 */}
       {Array.isArray(data.tags) && data.tags.length > 0 && (
         <section className="cv-card">
           <div className="cv-tags">
@@ -284,7 +416,106 @@ export default function CultureViewPage() {
         </section>
       )}
 
-      {/* 하단: 목록만 남김 */}
+      {/* ✅ 댓글 섹션 */}
+      <section className="cv-card cv-comment-section">
+        <h2 className="cv-h2">댓글</h2>
+
+        <div className="cv-comment-input">
+          <textarea
+            placeholder={
+              currentUser
+                ? "댓글을 입력하세요..."
+                : "로그인 후 댓글을 작성할 수 있어요."
+            }
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+            disabled={!currentUser}
+          />
+          <button
+            onClick={handleAddComment}
+            disabled={!currentUser || !commentText.trim()}
+          >
+            등록
+          </button>
+        </div>
+
+        <ul className="cv-comment-list">
+          {comments.map((comment) => {
+            const isEditing =
+              Number(editingCommentId) === Number(comment.reviewno);
+            const isOwner =
+              currentUser && currentUser.userno === comment.userno;
+            return (
+              <li key={comment.reviewno} className="cv-comment-item">
+                <div className="cv-comment-header">
+                  <span className="cv-comment-username">
+                    {comment.username}
+                  </span>
+                  <span className="cv-comment-createdat">
+                    {comment.createdat}
+                  </span>
+                </div>
+
+                <div className="cv-comment-content">
+                  {isEditing ? (
+                    <textarea
+                      value={editingText}
+                      onChange={(e) => setEditingText(e.target.value)}
+                    />
+                  ) : (
+                    comment.commenta || ""
+                  )}
+                </div>
+
+                {isOwner && (
+                  <div className="cv-comment-actions">
+                    {isEditing ? (
+                      <>
+                        <button
+                          onClick={() => submitEditComment(comment.reviewno)}
+                          className="btnEditComment"
+                        >
+                          완료
+                        </button>
+                        <button
+                          onClick={() => {
+                            setEditingCommentId(null);
+                            setEditingText("");
+                          }}
+                          className="btnDeleteComment"
+                        >
+                          취소
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() =>
+                            startEditingComment(
+                              comment.reviewno,
+                              comment.commenta
+                            )
+                          }
+                          className="btnEditComment"
+                        >
+                          수정
+                        </button>
+                        <button
+                          onClick={() => handleDeleteComment(comment.reviewno)}
+                          className="btnDeleteComment"
+                        >
+                          삭제
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+
       <div className="cv-footnav">
         <Link to="/culture" className="cv-btn">
           목록으로

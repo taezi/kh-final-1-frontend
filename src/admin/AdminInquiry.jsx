@@ -35,13 +35,13 @@ export default function AdminInquiry() {
   const filteredList = getFilteredInquiries();
 
   return (
-    <div className="inquiry-list-container">
-      <div className="inquiry-header">
+    <div className="inquiry-list-container-1">
+      <div className="inquiry-header-1">
         <h3>1:1 문의 내역 (관리자 전용)</h3>
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="inquiry-select"
+          className="inquiry-select-1"
         >
           <option value="all">전체</option>
           <option value="pending">처리중</option>
@@ -49,7 +49,7 @@ export default function AdminInquiry() {
         </select>
       </div>
 
-      <table className="inquiry-table">
+      <table className="inquiry-table-1">
         <thead>
           <tr>
             <th>번호</th>
@@ -80,7 +80,7 @@ export default function AdminInquiry() {
             ))
           ) : (
             <tr>
-              <td colSpan="5" className="empty-message">
+              <td colSpan="5" className="empty-message-1">
                 등록된 1:1 문의가 없습니다.
               </td>
             </tr>

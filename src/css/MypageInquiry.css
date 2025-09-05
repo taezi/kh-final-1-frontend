@@ -31,3 +31,13 @@
 .inquiry-table tbody tr:hover {
   background-color: #f9f9f9;
 }
+
+.status-pending-1 {
+  color: #f5c50c; /* 노란색 */
+  font-weight: bold;
+}
+
+.status-replied-1 {
+  color: #27ae60; /* 초록색 */
+  font-weight: bold;
+}

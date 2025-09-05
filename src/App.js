@@ -32,17 +32,19 @@ import UpdatePwdPage from "./pages/manage/update/UpdatePwdPage";
 import UpdateNamePage from "./pages/manage/update/UpdateNamePage";
 import UpdateNickPage from "./pages/manage/update/UpdateNickPage";
 import UpdateEmailPage from "./pages/manage/update/UpdateEmailPage";
+import AdminUserUpdatePage from "./pages/manage/AdminUserUpdatePage";
 
 import RestViewPage from "./pages/place/RestViewPage";
 import CafeViewPage from "./pages/place/CafeViewPage";
 import InquiryDetailPage from "./pages/manage/inquiry/InquiryDetailPage";
 import MypageInquiry from "./components/mypage/MypageInquiry";
 import InquiryReplyPage from "./pages/manage/inquiry/InquiryReplyPage";
-
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop></ScrollToTop>
       <Navbar></Navbar>
       <div>
         <Routes>
@@ -56,11 +58,12 @@ function App() {
           <Route path="/findid" element={<FindIdPage></FindIdPage>} />
           <Route path="/findpwd" element={<FindPwdPage></FindPwdPage>} />
           <Route path="/culture" element={<CulturePage></CulturePage>} />
-          <Route path="/culture/:id" element={<CultureViewPage/>} />
+          <Route path="/culture/:id" element={<CultureViewPage />} />
           <Route
             path="/restaurants"
             element={<RestaurantPage></RestaurantPage>}
           />
+
           <Route path="/restaurants/:restNo" element={<RestViewPage/>} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/cafes" element={<CafePage></CafePage>} />
@@ -91,7 +94,6 @@ function App() {
               path="/myinquiry"
               element={<MypageInquiry></MypageInquiry>}
             />
-
             <Route path="/update-id" element={<UpdateIdPage></UpdateIdPage>} />
             <Route
               path="/update-pwd"
@@ -110,6 +112,7 @@ function App() {
               element={<UpdateEmailPage></UpdateEmailPage>}
             />
           </Route>
+            <Route path="/admin/update/:userno" element={<AdminUserUpdatePage />} />
           {/* 관리자만 체크 */}
           <Route element={<PrivateRoute requiredRole="admin" />}>
             <Route path="/admin" element={<AdminPage></AdminPage>} />
