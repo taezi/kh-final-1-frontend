@@ -143,7 +143,7 @@ export default function AdminMembers() {
                       수정
                     </button>
                     <button
-                      className="action-button delete-button"
+                      className="action-button-1 delete-button-1"
                       onClick={() => handleDelete(user.userno)}
                     >
                       삭제

@@ -1,89 +1,98 @@
-
-.reply-container {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 30px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+.inquiry-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 이 부분을 추가하면 자식 요소들이 가로 중앙에 정렬됩니다. */
 }
 
+.reply-container {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 40px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
 .reply-container h3 {
   text-align: center;
-  color: #333;
-  margin-bottom: 25px;
-  font-size: 28px;
-  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 2.2rem;
+  font-weight: 700;
+  border-bottom: 3px solid #3498db;
+  padding-bottom: 10px;
 }
 
-
 .inquiry-form .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .inquiry-form label {
   display: block;
-  font-size: 16px;
-  color: #555;
-  margin-bottom: 8px;
+  font-size: 1.1rem;
+  color: #34495e;
+  margin-bottom: 10px;
   font-weight: 600;
 }
 
-
 .inquiry-form textarea {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 15px;
-  box-sizing: border-box; 
-  resize: vertical; 
-  min-height: 250px; 
+  padding: 15px;
+  border: 1px solid #bdc3c7;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  resize: vertical;
+  min-height: 280px;
+  background-color: #ecf0f1;
+  transition: all 0.3s ease;
 }
 
 .inquiry-form textarea:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  border-color: #3498db;
+  box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+  background-color: #ffffff;
 }
 
-
-.button-group {
+.button-group-1 {
   display: flex;
-  justify-content: center; 
-  gap: 10px; 
-  margin-top: 25px;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
 }
 
-
-.button-group button {
-  padding: 12px 25px;
-  font-size: 16px;
-  font-weight: bold;
+.button-group-1 button-1 {
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
   border: none;
-  border-radius: 6px;
-  transition: background-color 0.3s ease;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.submit-button {
-  background-color: #007bff;
+.submit-button-1 {
+  background-color: #3498db;
   color: #fff;
 }
 
-.submit-button:hover {
-  background-color: #0056b3;
+.submit-button-1:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
-
-.cancel-button {
-  background-color: #a6adb3;
+.cancel-button-1 {
+  background-color: #95a5a6;
   color: #fff;
 }
 
-.cancel-button:hover {
-  background-color: #5a6268;
+.cancel-button-1:hover {
+  background-color: #7f8c8d;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }

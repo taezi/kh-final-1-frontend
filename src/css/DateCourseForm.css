@@ -1,4 +1,5 @@
 /* DateCourseForm.css */
+
 .form-card {
   max-width: 1024px;
   margin: 0 auto;
@@ -79,6 +80,11 @@
   outline: none;
   border-color: hsl(16, 100%, 60%);
   box-shadow: 0 0 0 3px hsla(16, 100%, 60%, 0.1);
+}
+
+/* DateaiPage.css */
+.date-course-page {
+  margin-top: 50px; /* ✅ 히어로 밑 여백 */
 }
 
 /* 날짜/시간 그룹 */
