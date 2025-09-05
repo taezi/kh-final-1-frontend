@@ -23,8 +23,8 @@ export const addComment = async (contentType, contentNo, commentData) => {
 };
 
 // 댓글 수정
-export const updateComment = async (reviewNo, commenta) => {
-  const response = await reviewAPI.put(`/${reviewNo}`, { commenta });
+export const updateComment = async (reviewNo, newContent) => {
+  const response = await reviewAPI.put(`/${reviewNo}`, { commenta: newContent });
   return response.data;
 };
 

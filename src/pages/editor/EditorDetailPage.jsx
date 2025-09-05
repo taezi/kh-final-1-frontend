@@ -26,6 +26,7 @@ export default function EditorDetailPage() {
   const fetchComments = async (contentType, contentNo) => {
     try {
       const data = await getComments(contentType, contentNo);
+      console.log(data)
       setComments(data);
     } catch (err) {
       console.error(err);
@@ -324,7 +325,7 @@ export default function EditorDetailPage() {
           {comments.map((comment) => (
             <li key={comment.reviewno} className="comment-item">
               <div className="comment-header">
-                <span className="comment-userno">User {comment.userno}</span>
+                <span className="comment-userno">{comment.username}</span>
                 <span className="comment-createdat">{comment.createdat}</span>
               </div>
 
