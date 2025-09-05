@@ -131,12 +131,12 @@ export default function AdminMembers() {
                 <td>{user.email}</td>
                 <td>{user.joindate}</td>
                 <td>
-                  <div className="action-buttons-container">
-                    <button className="action-button update-button">
+                  <div className="action-buttons-container-1">
+                    <button className="action-button-1 update-button-1">
                       수정
                     </button>
                     <button
-                      className="action-button delete-button"
+                      className="action-button-1 delete-button-1"
                       onClick={() => handleDelete(user.userno)}
                     >
                       삭제
