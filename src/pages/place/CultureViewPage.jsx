@@ -11,6 +11,15 @@ import {
   sanitizeDeep,
 } from "../../utils/eventNormalizer";
 
+// ✅ 댓글 API & 로그인 유저
+import useAuthStore from "../../store/authStore";
+import {
+  getComments,
+  addComment,
+  updateComment,
+  removeComment,
+} from "../../service/reviewAPI";
+
 /** 설명 추출: HTML 우선, 없으면 텍스트 후보 순회 */
 function pickDescription(data) {
   if (!data) return { html: "", text: "" };
@@ -37,6 +46,9 @@ export default function CultureViewPage() {
   const { id } = useParams();
   const loc = useLocation();
 
+  // ✅ 로그인 유저
+  const currentUser = useAuthStore((s) => s.user);
+
   // 목록에서 넘어온 row 즉시 사용(여기도 sanitize + normalize)
   const rowFromList =
     loc.state && typeof loc.state === "object" ? loc.state : null;
@@ -45,6 +57,13 @@ export default function CultureViewPage() {
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // ✅ 댓글 상태
+  const CONTENT_TYPE = "culture"; // 백엔드에서 다른 키(예: "event")면 바꿔주세요.
+  const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState("");
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editingText, setEditingText] = useState("");
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -64,13 +83,7 @@ export default function CultureViewPage() {
         const raw = await getEventDetail({ id }); // 상세 호출
         if (!alive) return;
 
-        // 🔎 디버깅: 상세 원본/정규화 결과 로그
-        // (필요 시 잠깐 켜서 어떤 필드가 빈값으로 오는지 확인)
-        // console.log("[detail raw]", raw);
-
         const detailed = normalizeEvent(raw); // 내부에서 sanitizeDeep 수행
-        // console.log("[detail normalized]", detailed);
-
         setData((prev) => mergeEvent(prev, detailed));
       } catch (e) {
         if (!alive) return;
@@ -85,6 +98,83 @@ export default function CultureViewPage() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  // ✅ 댓글 불러오기
+  useEffect(() => {
+    if (!id) return;
+    (async () => {
+      try {
+        const list = await getComments(CONTENT_TYPE, id);
+        setComments(Array.isArray(list) ? list : []);
+      } catch (err) {
+        console.error("댓글 불러오기 실패:", err);
+      }
+    })();
+  }, [id]);
+
+  // ✅ 댓글 등록
+  const handleAddComment = async () => {
+    if (!commentText.trim()) return;
+    if (!currentUser) {
+      alert("로그인 후 이용 가능합니다.");
+      return;
+    }
+
+    const newComment = {
+      userno: currentUser.userno,
+      commenta: commentText,
+    };
+
+    try {
+      const saved = await addComment(CONTENT_TYPE, id, newComment);
+      setComments((prev) => [
+        { ...saved, reviewno: Number(saved.reviewno) },
+        ...prev,
+      ]);
+      setCommentText("");
+      setEditingCommentId(null);
+      setEditingText("");
+    } catch (err) {
+      console.error(err);
+      alert("댓글 등록 실패");
+    }
+  };
+
+  // ✅ 댓글 삭제
+  const handleDeleteComment = async (reviewno) => {
+    const ok = window.confirm("정말 삭제하시겠습니까?");
+    if (!ok) return;
+    try {
+      await removeComment(reviewno, CONTENT_TYPE);
+      setComments((prev) => prev.filter((c) => c.reviewno !== reviewno));
+      alert("댓글이 삭제되었습니다.");
+    } catch (err) {
+      console.error(err);
+      alert("댓글 삭제 실패");
+    }
+  };
+
+  // ✅ 댓글 수정
+  const startEditingComment = (reviewno, currentText) => {
+    setEditingCommentId(reviewno);
+    setEditingText(currentText || "");
+  };
+
+  const submitEditComment = async (reviewno) => {
+    try {
+      await updateComment(reviewno, editingText);
+      setComments((prev) =>
+        prev.map((c) =>
+          c.reviewno === reviewno ? { ...c, commenta: editingText } : c
+        )
+      );
+      setEditingCommentId(null);
+      setEditingText("");
+    } catch (err) {
+      console.error(err);
+      alert("댓글 수정 실패");
+    }
+  };
 
   // 이미지
   const imgs = useMemo(() => {
@@ -325,6 +415,106 @@ export default function CultureViewPage() {
           </div>
         </section>
       )}
+
+      {/* ✅ 댓글 섹션 */}
+      <section className="cv-card cv-comment-section">
+        <h2 className="cv-h2">댓글</h2>
+
+        <div className="cv-comment-input">
+          <textarea
+            placeholder={
+              currentUser
+                ? "댓글을 입력하세요..."
+                : "로그인 후 댓글을 작성할 수 있어요."
+            }
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+            disabled={!currentUser}
+          />
+          <button
+            onClick={handleAddComment}
+            disabled={!currentUser || !commentText.trim()}
+          >
+            등록
+          </button>
+        </div>
+
+        <ul className="cv-comment-list">
+          {comments.map((comment) => {
+            const isEditing =
+              Number(editingCommentId) === Number(comment.reviewno);
+            const isOwner =
+              currentUser && currentUser.userno === comment.userno;
+            return (
+              <li key={comment.reviewno} className="cv-comment-item">
+                <div className="cv-comment-header">
+                  <span className="cv-comment-username">
+                    {comment.username}
+                  </span>
+                  <span className="cv-comment-createdat">
+                    {comment.createdat}
+                  </span>
+                </div>
+
+                <div className="cv-comment-content">
+                  {isEditing ? (
+                    <textarea
+                      value={editingText}
+                      onChange={(e) => setEditingText(e.target.value)}
+                    />
+                  ) : (
+                    comment.commenta || ""
+                  )}
+                </div>
+
+                {isOwner && (
+                  <div className="cv-comment-actions">
+                    {isEditing ? (
+                      <>
+                        <button
+                          onClick={() => submitEditComment(comment.reviewno)}
+                          className="btnEditComment"
+                        >
+                          완료
+                        </button>
+                        <button
+                          onClick={() => {
+                            setEditingCommentId(null);
+                            setEditingText("");
+                          }}
+                          className="btnDeleteComment"
+                        >
+                          취소
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() =>
+                            startEditingComment(
+                              comment.reviewno,
+                              comment.commenta
+                            )
+                          }
+                          className="btnEditComment"
+                        >
+                          수정
+                        </button>
+                        <button
+                          onClick={() => handleDeleteComment(comment.reviewno)}
+                          className="btnDeleteComment"
+                        >
+                          삭제
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </section>
 
       <div className="cv-footnav">
         <Link to="/culture" className="cv-btn">
