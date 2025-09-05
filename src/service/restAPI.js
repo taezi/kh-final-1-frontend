@@ -1,9 +1,9 @@
-// src/service/restAPI.js
+// src/service/cafeAPI.js
 
 import axios from "axios";
 
 // 프록시 설정이 /api → http://localhost:9999 로 전달된다고 가정합니다.
-// 여기서는 /api/rest 를 API의 기본 경로로 설정합니다.
+// 여기서는 /api/cafe 를 API의 기본 경로로 설정합니다.
 const API_BASE = "/api/rest";
 
 // Axios 인스턴스 생성
@@ -62,24 +62,23 @@ restAPI.interceptors.response.use(
 // --- API 호출 함수들 ---
 
 /**
- * 레스토랑 이름과 지점명으로 레스토랑 정보를 조회하는 GET 요청
+ * 레스토랑 번호로 레스토랑 정보를 조회하는 GET 요청
  * @param {object} params - 조회에 필요한 파라미터 객체
- * @param {string} params.restName - 조회할 레스토랑 이름
- * @param {string} params.restBranch - 조회할 레스토랑 지점명
+ * @param {number} params.restNo - 조회할 레스토랑 번호
  * @returns {Promise<RestDto>} - 조회된 레스토랑 정보
  */
-export const getRestaurantInfo = ({ restName, restBranch }) =>
+export const getRestInfo = ({ restNo }) =>
   restAPI
-    .get("/info", { params: { restName, restBranch } })
-    // 백엔드의 컨트롤러(RestrController)에 맞게 파라미터 이름을 `restName`과 `restBranch`로 변경했습니다.
+    .get("/info", { params: { restNo } })
+    // 백엔드의 컨트롤러(CafeController)에 맞게 파라미터 이름을 cafeNo로 변경했습니다.
     .then((r) => r.data);
 
 /**
  * 기존 레스토랑 정보를 업데이트하는 POST 요청
- * @param {object} restDto - 업데이트할 정보가 담긴 RestDto 객체
+ * @param {object} restDto - 업데이트할 정보가 담긴 CafeDto 객체
  * @returns {Promise<string>} - 업데이트 성공 메시지
  */
-export const updateRestaurant = (restDto) =>
+export const updateRest = (restDto) =>
   restAPI
     .post("/update", restDto)
     .then((r) => r.data);
