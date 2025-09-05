@@ -38,11 +38,12 @@ import CafeViewPage from "./pages/place/CafeViewPage";
 import InquiryDetailPage from "./pages/manage/inquiry/InquiryDetailPage";
 import MypageInquiry from "./components/mypage/MypageInquiry";
 import InquiryReplyPage from "./pages/manage/inquiry/InquiryReplyPage";
-
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop></ScrollToTop>
       <Navbar></Navbar>
       <div>
         <Routes>
@@ -56,17 +57,22 @@ function App() {
           <Route path="/findid" element={<FindIdPage></FindIdPage>} />
           <Route path="/findpwd" element={<FindPwdPage></FindPwdPage>} />
           <Route path="/culture" element={<CulturePage></CulturePage>} />
-          <Route path="/culture/:id" element={<CultureViewPage/>} />
+          <Route path="/culture/:id" element={<CultureViewPage />} />
           <Route
             path="/restaurants"
             element={<RestaurantPage></RestaurantPage>}
           />
-          <Route path="/restaurants/:restName/:restBranch" element={<RestViewPage/>} />
+          <Route
+            path="/restaurants/:restName/:restBranch"
+            element={<RestViewPage />}
+          />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/cafes" element={<CafePage></CafePage>} />
 
-          <Route path="/cafes/:cafeName/:cafeBranch" element={<CafeViewPage/>} />
-
+          <Route
+            path="/cafes/:cafeName/:cafeBranch"
+            element={<CafeViewPage />}
+          />
 
           <Route path="/editor" element={<EditorPage></EditorPage>} />
           <Route path="/editor/:editorno" element={<EditorDetailPage />} />
