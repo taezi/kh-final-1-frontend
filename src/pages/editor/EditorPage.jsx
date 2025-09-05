@@ -27,14 +27,14 @@ export default function EditorPage() {
         ...editor,
       }));
 
-      // 6개씩 잘라서 보여주기
-      const start = (p - 1) * 6;
-      const newItems = allItems.slice(start, start + 6);
+      // 9개씩 잘라서 보여주기
+      const start = (p - 1) * 9;
+      const newItems = allItems.slice(start, start + 9);
 
       setEditorList((prev) => (p === 1 ? newItems : [...prev, ...newItems]));
 
       // 더보기 여부
-      setHasMore(allItems.length > start + 6);
+      setHasMore(allItems.length > start + 9);
       setPage(p);
     } catch (error) {
       console.error("게시글 불러오기 실패:", error);
@@ -57,17 +57,6 @@ export default function EditorPage() {
 
   // 검색
   const handleSearch = async (e) => {
-  //   e.preventDefault(); // 폼 제출 시 새로고침 방지
-  //   console.log("검색어:", searchKeyword);
-
-  //   try {
-  //     const res = await getPostList(searchKeyword);
-  //     setEditorList(res.eList.map(x => ({ ...x, liked: false }))); // eList 바로 사용
-  //     setPage(1); // 페이지 초기화
-  //   } catch (err) {
-  //     console.error("검색 실패:", err);
-  //   }
-  // };
    e.preventDefault();
   try {
     await loadList(1, searchKeyword); // 키워드 포함해서 로드

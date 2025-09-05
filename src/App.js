@@ -32,6 +32,7 @@ import UpdatePwdPage from "./pages/manage/update/UpdatePwdPage";
 import UpdateNamePage from "./pages/manage/update/UpdateNamePage";
 import UpdateNickPage from "./pages/manage/update/UpdateNickPage";
 import UpdateEmailPage from "./pages/manage/update/UpdateEmailPage";
+import AdminUserUpdatePage from "./pages/manage/AdminUserUpdatePage";
 
 import RestViewPage from "./pages/place/RestViewPage";
 import CafeViewPage from "./pages/place/CafeViewPage";
@@ -109,6 +110,7 @@ function App() {
               element={<UpdateEmailPage></UpdateEmailPage>}
             />
           </Route>
+            <Route path="/admin/update/:userno" element={<AdminUserUpdatePage />} />
           {/* 관리자만 체크 */}
           <Route element={<PrivateRoute requiredRole="admin" />}>
             <Route path="/admin" element={<AdminPage></AdminPage>} />

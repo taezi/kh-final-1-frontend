@@ -9,13 +9,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  color: #4a90e2;
 }
-
-.notice-header h3 {
-  font-size: 1.5rem;
-}
-
 .register-btn {
   padding: 8px 14px;
   background-color: #4a90e2;

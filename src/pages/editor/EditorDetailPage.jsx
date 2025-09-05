@@ -47,7 +47,7 @@ export default function EditorDetailPage() {
       const saved = await addComment("editor", editor.editorno, newComment);
       console.log("댓글 추가 내용 : ", saved)
       // 댓글 목록 업데이트
-      setComments(prev => [{ ...saved, reviewno: Number(saved.reviewno) }, ...prev]);
+      setComments(prev => [{ ...saved, reviewno: Number(saved.reviewno),username: currentUser.username, }, ...prev]);
       // 입력창 초기화
       setCommentText("");
       // **수정 모드 초기화**
