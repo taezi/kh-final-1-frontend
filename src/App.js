@@ -20,7 +20,7 @@ import EventsPage from "./pages/place/EventPage";
 import NoticePage from "./pages/notice/NoticePage";
 import InquiryPage from "./pages/manage/inquiry/InquiryPage";
 import MoviePage from "./pages/place/MoviePage";
-import MovieDetailPage from "./pages/place/MovieDetailPage";
+import MovieDetailPage from "./pages/place/MoviedetailPage";
 import CultureViewPage from "./pages/place/CultureViewPage";
 import EditorEditPage from "./pages/editor/EditorEditPage";
 import NoticeWritePage from "./pages/notice/NoticeWritePage";
@@ -32,9 +32,13 @@ import UpdatePwdPage from "./pages/manage/update/UpdatePwdPage";
 import UpdateNamePage from "./pages/manage/update/UpdateNamePage";
 import UpdateNickPage from "./pages/manage/update/UpdateNickPage";
 import UpdateEmailPage from "./pages/manage/update/UpdateEmailPage";
+
+import RestViewPage from "./pages/place/RestViewPage";
+import CafeViewPage from "./pages/place/CafeViewPage";
 import InquiryDetailPage from "./pages/manage/inquiry/InquiryDetailPage";
 import MypageInquiry from "./components/mypage/MypageInquiry";
 import InquiryReplyPage from "./pages/manage/inquiry/InquiryReplyPage";
+
 
 function App() {
   return (
@@ -52,13 +56,18 @@ function App() {
           <Route path="/findid" element={<FindIdPage></FindIdPage>} />
           <Route path="/findpwd" element={<FindPwdPage></FindPwdPage>} />
           <Route path="/culture" element={<CulturePage></CulturePage>} />
-          <Route path="/culture/:id" element={<CultureViewPage />} />
+          <Route path="/culture/:id" element={<CultureViewPage/>} />
           <Route
             path="/restaurants"
             element={<RestaurantPage></RestaurantPage>}
           />
+          <Route path="/restaurants/:restName/:restBranch" element={<RestViewPage/>} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/cafes" element={<CafePage></CafePage>} />
+
+          <Route path="/cafes/:cafeName/:cafeBranch" element={<CafeViewPage/>} />
+
+
           <Route path="/editor" element={<EditorPage></EditorPage>} />
           <Route path="/editor/:editorno" element={<EditorDetailPage />} />
           <Route path="/movie" element={<MoviePage></MoviePage>} />

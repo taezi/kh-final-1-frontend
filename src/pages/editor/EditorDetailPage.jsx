@@ -1,18 +1,110 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
-import defaultImage from "../../img/save-image.png";
 import "../../css/EditorDetailPage.css";
 import useAuthStore from "../../store/authStore";
 import { getPostDetail, deletePost } from "../../service/editorAPI";
+import { incrementEditorView } from "../../service/viewAPI";
+import { addBookmark, getBookmarks, removeBookmark } from "../../service/bookmarkAPI";
+import { getComments, addComment, updateComment, removeComment } from "../../service/reviewAPI";
 
 export default function EditorDetailPage() {
   const { editorno } = useParams();
   const navigate = useNavigate();
   const [editor, setEditor] = useState(null);
   const currentUser = useAuthStore((state) => state.user);
-  console.log(editor);
 
+  // 댓글
+  const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState("");
+
+  // 댓글 조회
+  useEffect(() => {
+    if (editorno) fetchComments("editor", editorno);
+  }, [editorno]);
+
+  const fetchComments = async (contentType, contentNo) => {
+    try {
+      const data = await getComments(contentType, contentNo);
+      setComments(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // 댓글 등록
+  const handleAddComment = async () => {
+    if (!commentText.trim()) return;
+    if (!currentUser) return alert("로그인 후 이용 가능합니다.");
+
+    const newComment = {
+      userno: currentUser.userno,
+      commenta: commentText,
+    };
+
+    try {
+      const saved = await addComment("editor", editor.editorno, newComment);
+      console.log("댓글 추가 내용 : ", saved)
+      // 댓글 목록 업데이트
+      setComments(prev => [{ ...saved, reviewno: Number(saved.reviewno) }, ...prev]);
+      // 입력창 초기화
+      setCommentText("");
+      // **수정 모드 초기화**
+      setEditingCommentId(null);
+      setEditingText("");
+    } catch (err) {
+      console.error(err);
+      alert("댓글 등록 실패");
+    }
+  };
+
+  // 댓글 삭제
+  const handleDeleteComment = async (reviewno) => {
+     const isConfirmed = window.confirm("정말 삭제하시겠습니까?");
+  if (!isConfirmed) return;
+    try {
+      await removeComment(reviewno, "editor");
+      setComments(comments.filter((c) => c.reviewno !== reviewno));
+      alert("댓글이 삭제되었습니다.");
+    } catch (err) {
+      console.error(err);
+      alert("댓글 삭제 실패");
+    }
+  };
+  // 댓글 수정
+  const handleEditComment = async (reviewno, newContent) => {
+    try {
+      await updateComment(reviewno, newContent); // reviewAPI에서 서버 요청
+      setComments((prev) =>
+        prev.map((c) =>
+          c.reviewno === reviewno ? { ...c, commenta: newContent } : c
+        )
+      );
+    } catch (err) {
+      console.error(err);
+      alert("댓글 수정 실패");
+    }
+  };
+  // 댓글 수정 모드 상태
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editingText, setEditingText] = useState("");
+  // 댓글 수정
+  const startEditingComment = (reviewno, currentText) => {
+    setEditingCommentId(reviewno);
+    setEditingText(currentText);
+  };
+  // 댓글 수정 완료
+
+  const submitEditComment = async (reviewno) => {
+    try {
+      await handleEditComment(reviewno, editingText);
+      setEditingCommentId(null);
+      setEditingText("");
+    } catch (err) {
+      console.error(err);
+      alert("댓글 수정 실패");
+    }
+  };
   // 이미지 태그 추출
   const extractImages = (markdown) => {
     const regex = /!\[([^\]]*)\]\(([^)]+)\)/g;
@@ -32,17 +124,90 @@ export default function EditorDetailPage() {
   const images = editor ? extractImages(editor.editorcontent) : [];
   const text = editor ? extractText(editor.editorcontent) : "";
 
+  // 좋아요 상태 Set으로 관리
+  const [likes, setLikes] = useState(new Set());
+
+  // 마운트 시 서버에서 좋아요 데이터 가져오기
+  useEffect(() => {
+    if (!currentUser) return;
+
+    // 현재 로그인한 사용자(currentUser.userno) 기준 북마크를 가져옴
+    getBookmarks(currentUser.userno, "editor")
+      .then((list) => {
+        const editorLikes = list
+          // 에디터 콘텐츠만 적용
+          .filter((b) => b.contenttype === "editor")
+          .map((b) => Number(b.contentno));
+        // Set으로 관리해서 각 사용자의 북마크 상태 반영
+        setLikes(new Set(editorLikes));
+      })
+      .catch((err) => console.error("북마크 불러오기 실패:", err));
+  }, [currentUser]);
+
+  // 북마크 좋아요 토글
+  const toggleLike = async (editorno, e) => {
+    e.stopPropagation();
+    if (!currentUser) {
+      alert("로그인 후 이용 가능합니다.");
+      return;
+    }
+
+    const bookmarkData = {
+      userno: currentUser.userno,
+      contentno: editorno,
+      contenttype: "editor",
+    };
+
+    const currentlyLiked = likes.has(editorno); // 이전 상태 저장
+
+    try {
+      // 서버 호출
+      if (currentlyLiked) {
+        await removeBookmark(bookmarkData);
+      } else {
+        await addBookmark(bookmarkData);
+      }
+
+      // 상태 업데이트
+      setLikes(prev => {
+        const newSet = new Set(prev);
+        currentlyLiked ? newSet.delete(editorno) : newSet.add(editorno);
+        return newSet;
+      });
+    } catch (err) {
+      console.error(err);
+      alert("좋아요 처리에 실패했습니다.");
+    }
+  };
+
+
   useEffect(() => {
     const fetchEditor = async () => {
+
       try {
+        // 조회수 증가 처리
+        // localStorage에서 이미 본 게시글인지 확인
+        const viewed = JSON.parse(localStorage.getItem("viewedEditors") || "[]");
+
+        if (!viewed.includes(editorno)) {
+          // 한번도 안 본 글이면 조회수 증가
+          await incrementEditorView(editorno);
+
+          // localStorage에 현재 글 번호 추가
+          localStorage.setItem("viewedEditors", JSON.stringify([...viewed, editorno]));
+        }
+
+        // 상세 데이터 가져오기
         const data = await getPostDetail(editorno);
         setEditor(data);
       } catch (error) {
         console.error("상세 조회 실패:", error);
       }
     };
+
     fetchEditor();
   }, [editorno]);
+
 
   const handleDelete = async () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
@@ -56,6 +221,7 @@ export default function EditorDetailPage() {
       }
     }
   };
+
 
   if (!editor) return <p>로딩중...</p>;
 
@@ -72,7 +238,7 @@ export default function EditorDetailPage() {
 
       <div className="editor-detail-page">
         <div className="editor-action-wrapper">
-          <button onClick={() => navigate(-1)} className="btnBack">
+          <button onClick={() => navigate("/editor")} className="btnBack">
             목록으로
           </button>
           <div className="editor-action-buttons">
@@ -93,9 +259,22 @@ export default function EditorDetailPage() {
         </div>
         <p><strong>조회수:</strong> {editor.editorview}</p>
         <h4>에디터 추천 데이트코스</h4>
-        <p className="editor-title">
+
+        <div className="editor-title-container">
+          <p className="editor-title">
             <strong>{editor.editortitle}</strong>
           </p>
+          <button
+            className={`heart editor-detail-heart ${likes.has(editor.editorno) ? "is-on" : ""}`}
+            onClick={(e) => {
+              e.stopPropagation(); // 카드 클릭 이벤트와 겹치지 않도록
+              toggleLike(editor.editorno, e);
+            }}
+            title="좋아요"
+          >
+            ♡
+          </button>
+        </div>
         <div className="editor-meta">
           <div className="date-info">
             <span>
@@ -108,30 +287,100 @@ export default function EditorDetailPage() {
           </div>
         </div>
 
-          <div className="editor-detail-container">
-            {/* 이미지 영역 */}
-            <div className="editor-detail-image">
-              {extractImages(editor.editorcontent).map((img, idx) => (
-                <img
-                  key={idx}
-                  src={img.url}
-                  alt={img.alt}
-                  style={{
-                    maxWidth: "100%",
-                    borderRadius: "8px",
-                    marginBottom: "10px",
-                  }}
-                />
-              ))}
-            </div>
+        <div className="editor-detail-container">
+          {/* 이미지 영역 */}
+          <div className="editor-detail-image">
+            {extractImages(editor.editorcontent).map((img, idx) => (
+              <img
+                key={idx}
+                src={img.url}
+                alt={img.alt}
+                style={{
+                  maxWidth: "100%",
+                  borderRadius: "8px",
+                  marginBottom: "10px",
+                }}
+              />
+            ))}
+          </div>
 
-            {/* 글 영역 */}
-            <div className="editor-detail-info">
-              {extractText(editor.editorcontent) || null}
-            </div>
+          {/* 글 영역 */}
+          <div className="editor-detail-info">
+            {extractText(editor.editorcontent) || null}
           </div>
         </div>
-     
-    </Layout>
+      </div>
+      {/* 댓글창 시작 */}
+      <div className="comment-section">
+        <div className="comment-input">
+          <textarea
+            placeholder="댓글을 입력하세요..."
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+          />
+          <button onClick={handleAddComment}>등록</button>
+        </div>
+        <ul className="comment-list">
+          {comments.map((comment) => (
+            <li key={comment.reviewno} className="comment-item">
+              <div className="comment-header">
+                <span className="comment-userno">User {comment.userno}</span>
+                <span className="comment-createdat">{comment.createdat}</span>
+              </div>
+
+              <div className="comment-content">
+                {editingCommentId === Number(comment.reviewno) ? (
+                  <textarea
+                    value={editingText}
+                    onChange={(e) => setEditingText(e.target.value)}
+                  />
+                ) : (
+                  comment.commenta || ""
+                )}
+              </div>
+
+              {currentUser && currentUser.userno === comment.userno && (
+                <div className="comment-actions">
+                  {editingCommentId === comment.reviewno ? (
+                    <>
+                      <button
+                        onClick={() => submitEditComment(comment.reviewno)}
+                        className="btnEditComment"
+                      >
+                        완료
+                      </button>
+                      <button
+                        onClick={() => {
+                          setEditingCommentId(null);
+                          setEditingText("");
+                        }}
+                        className="btnDeleteComment"
+                      >
+                        취소
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => startEditingComment(comment.reviewno, comment.commenta)}
+                        className="btnEditComment"
+                      >
+                        수정
+                      </button>
+                      <button
+                        onClick={() => handleDeleteComment(comment.reviewno)}
+                        className="btnDeleteComment"
+                      >
+                        삭제
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Layout >
   );
 }

@@ -17,6 +17,8 @@ const useAuthStore = create(
         justLoggedOut: false,
         clearJustLoggedOut: () => set({ justLoggedOut: false }),
 
+        setUser: (newUserData) => set({ user: newUserData }),
+
         // 사용자 정보 업데이트 (동기 처리)
         updateUser: (newUserData) =>
           set((state) => {

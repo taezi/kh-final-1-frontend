@@ -225,7 +225,9 @@ export default function CulturePage() {
   // 북마크 토글
   const toggleLike = async (id) => {
     if (!user) {
+
       alert("로그인 후 이용해주세요.");
+
       return;
     }
     const userno = user.userno;
@@ -269,6 +271,7 @@ export default function CulturePage() {
       )
     );
   }, [items, selectedDate]);
+  console.log(items);
 
   return (
     <div className="page">
