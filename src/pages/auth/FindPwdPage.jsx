@@ -1,7 +1,8 @@
+// src/pages/auth/FindPwdPage.jsx
 import { useState } from "react";
 import Layout from "../../components/Layout";
 import "../../css/FindPwdPage.css";
-import { findPassword } from "../../service/authAPI"; // 비밀번호를 찾는 API 호출을 가정합니다.
+import { findPassword } from "../../service/manageAPI"; // ← manageAPI에서 import
 import { useNavigate } from "react-router-dom";
 
 export default function FindPwdPage() {
@@ -10,65 +11,44 @@ export default function FindPwdPage() {
     userid: "",
     nickname: "",
   });
-  const [foundPwd, setFoundPwd] = useState("");
+  const [foundPwd, setFoundPwd] = useState(null);
   const [showResult, setShowResult] = useState(false);
-
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((preFormData) => ({
-      ...preFormData,
-      [name]: value,
-    }));
+    setFormData((p) => ({ ...p, [name]: value }));
   };
 
   const handleFindPwd = async () => {
-    if (
-      !formData.name.trim() ||
-      !formData.userid.trim() ||
-      !formData.nickname.trim()
-    ) {
+    const name = formData.name.trim();
+    const userid = formData.userid.trim();
+    const nickname = formData.nickname.trim();
+    if (!name || !userid || !nickname) {
       alert("이름, 아이디, 별명을 모두 입력해주세요.");
       return;
     }
 
     try {
-      // TODO: 실제로 이름, 아이디, 별명으로 비밀번호를 찾는 API 호출 로직을 구현해야 합니다.
-      // 예시: const response = await findPassword(formData);
-      // const tempPwd = response.data.tempPassword;
-
-      // 임시로 가상의 비밀번호를 찾았다고 가정 (API 연동 전 테스트용)
-      let tempPwd = "";
-      if (
-        formData.name === "테스트" &&
-        formData.userid === "testuser123" &&
-        formData.nickname === "별명"
-      ) {
-        tempPwd = "temp-password-123";
-      } else {
-        tempPwd = null;
-      }
-
-      setFoundPwd(tempPwd);
+      const { tempPassword } = await findPassword({ name, userid, nickname });
+      setFoundPwd(tempPassword ?? null);
       setShowResult(true);
-    } catch (error) {
-      console.error("비밀번호 찾기 중 오류 발생:", error);
-      alert("비밀번호를 찾는 중 오류가 발생했습니다. 다시 시도해주세요.");
+    } catch (err) {
+      console.error("비밀번호 찾기 오류:", err);
       setFoundPwd(null);
       setShowResult(true);
+      alert("비밀번호 찾는 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
 
-  const goToLoginPage = () => {
-    navigate("/login");
-  };
+  const goToLoginPage = () => navigate("/login");
 
   return (
     <Layout>
       <div className="find-pwd-container">
         <div className="find-pwd-box">
           <h3>비밀번호 찾기</h3>
+
           {!showResult ? (
             <>
               <input
@@ -78,7 +58,6 @@ export default function FindPwdPage() {
                 value={formData.name}
                 onChange={handleInputChange}
                 placeholder="이름을 입력해주세요"
-                required
                 autoFocus
               />
               <input
@@ -88,7 +67,6 @@ export default function FindPwdPage() {
                 value={formData.userid}
                 onChange={handleInputChange}
                 placeholder="아이디를 입력해주세요"
-                required
               />
               <input
                 className="find-pwd-input"
@@ -97,7 +75,6 @@ export default function FindPwdPage() {
                 value={formData.nickname}
                 onChange={handleInputChange}
                 placeholder="별명을 입력해주세요"
-                required
               />
               <button
                 className="find-pwd-button primary-button"
@@ -110,7 +87,9 @@ export default function FindPwdPage() {
             <div className="find-pwd-result">
               {foundPwd ? (
                 <>
-                  <p>회원님의 임시 비밀번호는</p>
+                  <p>
+                    회원님의 <b>임시 비밀번호</b>는
+                  </p>
                   <p className="found-pwd">"{foundPwd}"</p>
                   <p>입니다. 로그인 후 반드시 비밀번호를 변경해주세요.</p>
                 </>

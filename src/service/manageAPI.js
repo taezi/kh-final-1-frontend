@@ -12,6 +12,23 @@ export const manageAPI = axios.create({
 
 setupInterceptors(manageAPI);
 
+// 아이디 찾기
+export const findIdByUserInfo = async (username, nickname) => {
+  const { data } = await manageAPI.get("/find-id", {
+    params: { username, nickname },
+  });
+  return data; // { foundId: "..." } 반환
+};
+// 비번찾기 return data
+export const findPassword = async ({ name, userid, nickname }) => {
+  const { data } = await manageAPI.post("/find-pwd", {
+    username: name, // 백엔드 파라미터명에 맞춤
+    userid,
+    nickname,
+  });
+  return data; // { tempPassword: "..." } 또는 { tempPassword: null }
+};
+
 // 문의 등록
 export const createInquiry = async (inquiryData) => {
   console.log("전송 데이터:", inquiryData);

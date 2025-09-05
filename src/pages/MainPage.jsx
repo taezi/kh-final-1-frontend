@@ -329,7 +329,7 @@ console.log("에디터 리스트 데이터:", editorList);
                 onSwiper={(s) => (swiperRef.current = s)}
                 navigation={{ prevEl: ".ev-prev", nextEl: ".ev-next" }}
                 autoplay={{
-                  delay: 3500,
+                  delay: 2000,
                   disableOnInteraction: false,
                   pauseOnMouseEnter: true,
                 }}

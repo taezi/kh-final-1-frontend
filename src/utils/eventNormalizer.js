@@ -1,147 +1,270 @@
 // src/utils/eventNormalizer.js
-import dayjs from "dayjs";
 
-/** 우선순위 매핑(있으면 이걸 먼저 씀) */
-const COLUMN_MAP = {
-  id: ["id", "event_id", "contentId"],
-  title: ["culutename", "title", "name", "eventName"],
-  summary: ["summary", "intro"],
-  descriptionHtml: ["descriptionHtml", "description", "detail", "body_html"],
-  dateStart: ["startdate"],
-  dateEnd: ["enddate"],
-  timeText: ["time", "eventTime", "openingHours"],
-  place: ["place", "venue", "organizationname"],
-  gu: ["district"],
-  address: ["cultureaddress", "address"],
-  phone: ["phone", "tel"],
-  website: ["portalurl", "website", "url"],
-  feeText: ["fee"],
-  isfree: ["isfree"],
-  openHours: ["openHours"],
-  closedDays: ["closedDays"],
-  category: ["category"],
-  targetaudience: ["targetaudience"],
-  images: ["images", "thumbnailimage", "thumbUrl", "mainImage"],
-  tags: ["tags", "keywords"],
-};
+/** 공백/빈문자/문자열 'null' 정리 + 앞뒤 trim */
+function normStr(v) {
+  if (v === null || v === undefined) return undefined;
+  if (typeof v !== "string") return v;
+  const t = v.trim();
+  if (!t) return undefined;
+  if (t.toLowerCase() === "null") return undefined;
+  return t;
+}
 
-function pick(raw, keys = []) {
-  for (const k of keys) {
-    const v = raw?.[k];
-    if (v !== undefined && v !== null && String(v).trim() !== "") return v;
+/** 객체 깊은 정리: 문자열 정리, 빈 문자열 제거 */
+export function sanitizeDeep(obj) {
+  if (obj === null || obj === undefined) return obj;
+  if (Array.isArray(obj)) return obj.map(sanitizeDeep);
+  if (typeof obj !== "object") return normStr(obj);
+
+  const out = {};
+  for (const [k, v] of Object.entries(obj)) {
+    const vv = sanitizeDeep(v);
+    if (vv === "" || vv === undefined) continue;
+    out[k] = vv;
   }
-  return undefined;
+  return out;
 }
 
-/** 키 자동 탐지: 'start','end'와 'date/일/시작/종료' 등 포함시 후보 */
-function autoFindKey(raw, type /* 'start' | 'end' */) {
-  if (!raw) return undefined;
-  const keys = Object.keys(raw);
-  const wantStart = type === "start";
-  const re = wantStart
-    ? /(start[^a-z]?|s(?:tart)?_?date|시작|from|begin)/i
-    : /(end[^a-z]?|e(?:nd)?_?date|종료|to|until|finish)/i;
-  return keys.find((k) => re.test(k));
+/** 안전한 선택: next가 의미 있을 때만 채택 */
+function pick(next, prev) {
+  if (next === null || next === undefined) return prev;
+  if (typeof next === "string") return next.trim() ? next : prev;
+  if (Array.isArray(next)) return next.length ? next : prev;
+  return next;
 }
 
-/** 느슨한 날짜 파서 (YYYY.MM.DD / YYYY-M-D / "2025.08.03 00:00" 등 폭넓게 처리) */
-function parseDateLoose(v) {
-  if (!v) return undefined;
-  const s = String(v).trim();
-  const m = s.match(/(\d{4})\D*?(\d{1,2})\D*?(\d{1,2})/);
-  if (m) {
-    const iso = `${m[1]}-${String(+m[2]).padStart(2, "0")}-${String(
-      +m[3]
-    ).padStart(2, "0")}`;
-    if (dayjs(iso).isValid()) return iso;
+/** 요금 텍스트 표준화 */
+function makeFeeText(src) {
+  const cand = [
+    src.feeText, // 이미 표준화된 경우
+    src.fee, // ✅ 백엔드 EventDto (camelCase)
+    src.isFree, // ✅ 백엔드 EventDto (Y/N)
+    src._csv?.fee,
+    src._csv?.isfree,
+    src._raw?.fee,
+    src._raw?.charge,
+    src._raw?.price,
+  ]
+    .map(normStr)
+    .filter(Boolean);
+
+  if (cand.length === 0) return "";
+
+  // isFree가 'Y'면 무료 처리
+  const hasYesFree = cand.includes("Y") || cand.includes("y");
+  const f0 = cand[0];
+  const low = f0.toLowerCase();
+  if (
+    hasYesFree ||
+    ["yes", "free", "무료", "0", "0원"].some((kw) => low.includes(kw))
+  ) {
+    return "무료";
   }
-  const try2 = s.replace(/[./]/g, "-").replace(/\s+/, " ");
-  const d = dayjs(try2);
-  return d.isValid() ? d.format("YYYY-MM-DD") : undefined;
+  return f0;
 }
 
-function coerceArray(val) {
-  if (!val) return [];
-  if (Array.isArray(val)) return val.filter(Boolean);
-  const s = String(val);
-  if (s.includes("|"))
-    return s
-      .split("|")
-      .map((x) => x.trim())
-      .filter(Boolean);
-  if (s.includes(","))
-    return s
-      .split(",")
-      .map((x) => x.trim())
-      .filter(Boolean);
-  return [s];
+/** 시간/운영시간 표준화 */
+function makeTimeText(src) {
+  return (
+    normStr(src.timeText) ||
+    normStr(src.time) || // 일반 키
+    normStr(src._csv?.time) ||
+    normStr(src._raw?.time) ||
+    ""
+  );
 }
 
-function collectImageColumns(raw) {
-  const keys = Object.keys(raw || {});
-  const imgKeys = keys
-    .filter((k) => /^img\d+$|^image\d+$|^image_\d+$|^img_\d+$/i.test(k))
-    .sort(
-      (a, b) =>
-        parseInt(a.match(/\d+/)?.[0] || "0", 10) -
-        parseInt(b.match(/\d+/)?.[0] || "0", 10)
-    );
-  return imgKeys.map((k) => raw[k]).filter(Boolean);
+function makeOpenHours(src) {
+  return (
+    normStr(src.openHours) ||
+    normStr(src.openhours) || // 변형 대응
+    normStr(src._csv?.openhours) ||
+    normStr(src._raw?.openhours) ||
+    ""
+  );
 }
 
-export function normalizeEvent(raw) {
-  if (!raw || typeof raw !== "object") return null;
+/** 설명 필드 표준화 (HTML/텍스트 분리) */
+function makeDescriptions(src) {
+  const descriptionHtml =
+    normStr(src.descriptionHtml) ||
+    normStr(src._csv?.descriptionhtml) ||
+    normStr(src._raw?.descriptionhtml) ||
+    "";
 
-  // 우선 매핑으로 시도
-  const idRaw = pick(raw, COLUMN_MAP.id);
-  const title = pick(raw, COLUMN_MAP.title) || "-";
-  const startRaw =
-    pick(raw, COLUMN_MAP.dateStart) ?? raw[autoFindKey(raw, "start")];
-  const endRaw = pick(raw, COLUMN_MAP.dateEnd) ?? raw[autoFindKey(raw, "end")];
+  const summary =
+    normStr(src.summary) ||
+    normStr(src._csv?.summary) ||
+    normStr(src._raw?.summary) ||
+    "";
 
-  const dateStart = parseDateLoose(startRaw);
-  const dateEnd = parseDateLoose(endRaw) || dateStart;
+  const description =
+    normStr(src.description) || // ✅ 백엔드 EventDto
+    normStr(src._csv?.description) ||
+    normStr(src._raw?.description) ||
+    normStr(src._raw?.overview) ||
+    normStr(src._raw?.content) ||
+    "";
 
-  let images = coerceArray(pick(raw, COLUMN_MAP.images));
-  if (images.length === 0) images = collectImageColumns(raw);
+  return { descriptionHtml, summary, description };
+}
+
+/** 원천(raw) 객체를 표준 이벤트 모델로 변환 */
+export function normalizeEvent(rawInput) {
+  const raw = sanitizeDeep(rawInput || {});
+  const _csv = raw._csv || {};
+  const _raw = raw._raw || raw;
+
+  // ✅ 백엔드 EventDto(CamelCase) 키들을 1순위로 매핑
+  const id =
+    raw.id ??
+    raw.cultureNo ?? // EventDto.cultureNo
+    _raw.id ??
+    (Number.isFinite(Number(_csv.cultureno))
+      ? Number(_csv.cultureno)
+      : undefined);
+
+  const title =
+    normStr(raw.title) ||
+    normStr(raw.cultureName) || // EventDto.cultureName
+    normStr(_csv.culturename) ||
+    normStr(_raw.title) ||
+    "";
+
+  const gu =
+    normStr(raw.gu) ||
+    normStr(raw.district) || // EventDto.district
+    normStr(_csv.district) ||
+    normStr(_raw.gu) ||
+    "";
+
+  const place =
+    normStr(raw.place) ||
+    normStr(raw.organizationName) || // EventDto.organizationName
+    normStr(_csv.organizationname) ||
+    normStr(_raw.place) ||
+    "";
+
+  const address =
+    normStr(raw.address) ||
+    normStr(raw.cultureAddress) || // EventDto.cultureAddress
+    normStr(_csv.cultureaddress) ||
+    normStr(_raw.address) ||
+    "";
+
+  const phone =
+    normStr(raw.phone) || normStr(_csv.phone) || normStr(_raw.phone) || "";
+
+  const dateStart =
+    normStr(raw.dateStart) ||
+    normStr(raw.startDate) || // EventDto.startDate
+    normStr(_csv.startdate) ||
+    normStr(_csv.startdateRaw) ||
+    normStr(_raw.dateStart) ||
+    "";
+
+  const dateEnd =
+    normStr(raw.dateEnd) ||
+    normStr(raw.endDate) || // EventDto.endDate
+    normStr(_csv.enddate) ||
+    normStr(_csv.enddateRaw) ||
+    normStr(_raw.dateEnd) ||
+    dateStart;
+
   const thumbUrl =
-    images[0] || pick(raw, ["thumbnailimage", "thumbUrl", "image"]);
+    normStr(raw.thumbUrl) ||
+    normStr(raw.thumbnailImage) || // EventDto.thumbnailImage
+    normStr(_csv.thumbnailimage) ||
+    normStr(_raw.thumbUrl) ||
+    "";
 
-  const tags = [
-    pick(raw, COLUMN_MAP.category),
-    pick(raw, COLUMN_MAP.targetaudience),
-    ...coerceArray(pick(raw, COLUMN_MAP.tags)),
-  ].filter(Boolean);
+  const website =
+    normStr(raw.website) ||
+    normStr(raw.portalUrl) || // EventDto.portalUrl
+    normStr(_csv.portalurl) ||
+    normStr(_raw.website) ||
+    "";
+
+  const images =
+    Array.isArray(raw.images) && raw.images.length
+      ? raw.images
+      : thumbUrl
+      ? [thumbUrl]
+      : [];
+
+  const { descriptionHtml, summary, description } = makeDescriptions({
+    ...raw,
+    _csv,
+    _raw,
+  });
+
+  const timeText = makeTimeText({ ...raw, _csv, _raw });
+  const openHours = makeOpenHours({ ...raw, _csv, _raw });
+  const feeText = makeFeeText({ ...raw, _csv, _raw, isFree: raw.isFree });
+
+  const closedDays =
+    normStr(raw.closedDays) ||
+    normStr(_csv.closedDays) ||
+    normStr(_raw.closedDays) ||
+    "";
+
+  const tags = Array.isArray(raw.tags) ? raw.tags : [];
 
   return {
-    id: idRaw || `${title}-${dateStart || ""}`,
+    id,
     title,
-    summary: pick(raw, COLUMN_MAP.summary) || "",
-    descriptionHtml: pick(raw, COLUMN_MAP.descriptionHtml) || "",
+    gu,
+    place,
+    address,
+    phone,
     dateStart,
     dateEnd,
-    timeText: pick(raw, COLUMN_MAP.timeText) || "",
-    place: pick(raw, COLUMN_MAP.place) || "",
-    gu: pick(raw, COLUMN_MAP.gu) || "",
-    address: pick(raw, COLUMN_MAP.address) || "",
-    phone: pick(raw, COLUMN_MAP.phone) || "",
-    website: pick(raw, COLUMN_MAP.website) || "",
-    feeText:
-      pick(raw, COLUMN_MAP.feeText) || pick(raw, COLUMN_MAP.isfree) || "",
-    openHours: pick(raw, COLUMN_MAP.openHours) || "",
-    closedDays: pick(raw, COLUMN_MAP.closedDays) || "",
-    images,
     thumbUrl,
+    images,
+    descriptionHtml,
+    summary,
+    description,
+    timeText,
+    openHours,
+    feeText,
+    closedDays,
+    website,
     tags,
-    _csv: {
-      startdateRaw: startRaw || "",
-      enddateRaw: endRaw || "",
-      category: pick(raw, COLUMN_MAP.category) || "",
-      targetaudience: pick(raw, COLUMN_MAP.targetaudience) || "",
-      organizationname: raw?.organizationname || "",
-      portalurl: pick(raw, COLUMN_MAP.website) || "",
-      description: raw?.description || "",
-    },
-    _raw: raw, // 전체 원문 보관(최후 fallback)
+    _csv,
+    _raw,
+  };
+}
+
+/** 상세/목록 병합: 비어있는 값은 덮어쓰지 않음 */
+export function mergeEvent(prev, detailed) {
+  if (!prev) return detailed || null;
+  if (!detailed) return prev;
+
+  return {
+    ...prev,
+    title: pick(detailed.title, prev.title),
+    summary: pick(detailed.summary, prev.summary),
+    description: pick(detailed.description, prev.description),
+    descriptionHtml: pick(detailed.descriptionHtml, prev.descriptionHtml),
+    feeText: pick(detailed.feeText, prev.feeText),
+    timeText: pick(detailed.timeText, prev.timeText),
+    openHours: pick(detailed.openHours, prev.openHours),
+    closedDays: pick(detailed.closedDays, prev.closedDays),
+    phone: pick(detailed.phone, prev.phone),
+    website: pick(detailed.website, prev.website),
+    address: pick(detailed.address, prev.address),
+    place: pick(detailed.place, prev.place),
+    gu: pick(detailed.gu, prev.gu),
+    tags: pick(detailed.tags, prev.tags),
+    id: pick(detailed.id, prev.id),
+    dateStart: pick(detailed.dateStart, prev.dateStart),
+    dateEnd: pick(detailed.dateEnd, prev.dateEnd),
+    images:
+      (Array.isArray(detailed.images) && detailed.images.length > 0
+        ? detailed.images
+        : prev.images) || [],
+    thumbUrl: detailed.thumbUrl || prev.thumbUrl || "",
+    _csv: { ...(prev._csv || {}), ...(detailed._csv || {}) },
+    _raw: detailed._raw || prev._raw,
   };
 }
