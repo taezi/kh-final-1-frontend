@@ -82,7 +82,6 @@ function App() {
               path="/myinquiry"
               element={<MypageInquiry></MypageInquiry>}
             />
-
             <Route path="/update-id" element={<UpdateIdPage></UpdateIdPage>} />
             <Route
               path="/update-pwd"
