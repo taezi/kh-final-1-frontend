@@ -94,7 +94,6 @@ export default function NoticeDetailPage() {
           <p>{notice.noticepost}</p>
         </div>
       </div>
-
     </Layout >
   );
 }
