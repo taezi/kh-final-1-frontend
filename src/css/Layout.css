@@ -3,7 +3,7 @@
   padding: 0px;
 }
 .container {
-  height: 2000px;
+  height: 100%;
   border: 1px solid black;
   display: flex;
   flex-flow: row nowrap;
@@ -18,14 +18,6 @@
 }
 .left-container,
 .right-container {
-  width: 20%;
+  width: 100%;
   background-color: black;
-}
-.top-blank {
-  height: 300px;
-}
-
-.a {
-  height: 200px;
-  background-color: red;
 }
