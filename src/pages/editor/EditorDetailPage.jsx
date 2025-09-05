@@ -342,7 +342,7 @@ export default function EditorDetailPage() {
 
               {currentUser && currentUser.userno === comment.userno && (
                 <div className="comment-actions">
-                  {editingCommentId === comment.reviewno ? (
+                  {editingCommentId === comment.reviewno ? ( 
                     <>
                       <button
                         onClick={() => submitEditComment(comment.reviewno)}
