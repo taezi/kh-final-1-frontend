@@ -202,26 +202,6 @@ export default function EditorWritePage() {
         <div className="formGroup">
           <label className="label">파일 첨부</label>
           <div className="file-attach-container">
-            {/* <input
-              type="file"
-              ref={fileInputRef}
-              style={{ display: "none" }}
-              accept="image/*"
-              onChange={async (e) => {
-                const files = e.target.files;
-                if (files.length > 0) {
-                  const file = files[0];
-                  try {
-                    const fileUrl = await uploadImageToS3(file);
-                    setThumbnailUrl(fileUrl); // 변수명 변경
-                    alert("썸네일 이미지가 첨부되었습니다!");
-                  } catch (err) {
-                    console.error(err);
-                    alert("썸네일 이미지 업로드에 실패했습니다.");
-                  }
-                }
-              }}
-            /> */}
             <input
               type="file"
               ref={fileInputRef}

@@ -57,13 +57,13 @@ export default function EditorPage() {
 
   // 검색
   const handleSearch = async (e) => {
-   e.preventDefault();
-  try {
-    await loadList(1, searchKeyword); // 키워드 포함해서 로드
-  } catch (err) {
-    console.error("검색 실패:", err);
-  }
-};
+    e.preventDefault();
+    try {
+      await loadList(1, searchKeyword); // 키워드 포함해서 로드
+    } catch (err) {
+      console.error("검색 실패:", err);
+    }
+  };
 
 
   // 마운트 시 서버에서 좋아요 데이터 가져오기
@@ -74,10 +74,10 @@ export default function EditorPage() {
     getBookmarks(user.userno, "editor")
       .then((list) => {
         const editorLikes = list
-        // 에디터 콘텐츠만 적용
+          // 에디터 콘텐츠만 적용
           .filter((b) => b.contenttype === "editor")
           .map((b) => Number(b.contentno));
-          // Set으로 관리해서 각 사용자의 북마크 상태 반영
+        // Set으로 관리해서 각 사용자의 북마크 상태 반영
         setLikes(new Set(editorLikes));
       })
       .catch((err) => console.error("북마크 불러오기 실패:", err));
@@ -92,32 +92,32 @@ export default function EditorPage() {
     }
 
     const bookmarkData = {
-    userno: user.userno,
-    contentno: editorno,
-    contenttype: "editor",
-  };
+      userno: user.userno,
+      contentno: editorno,
+      contenttype: "editor",
+    };
 
-  const currentlyLiked = likes.has(editorno); // 이전 상태 저장
+    const currentlyLiked = likes.has(editorno); // 이전 상태 저장
 
-  try {
-    // 서버 호출
-    if (currentlyLiked) {
-      await removeBookmark(bookmarkData);
-    } else {
-      await addBookmark(bookmarkData);
+    try {
+      // 서버 호출
+      if (currentlyLiked) {
+        await removeBookmark(bookmarkData);
+      } else {
+        await addBookmark(bookmarkData);
+      }
+
+      // 상태 업데이트
+      setLikes(prev => {
+        const newSet = new Set(prev);
+        currentlyLiked ? newSet.delete(editorno) : newSet.add(editorno);
+        return newSet;
+      });
+    } catch (err) {
+      console.error(err);
+      alert("좋아요 처리에 실패했습니다.");
     }
-
-    // 상태 업데이트
-    setLikes(prev => {
-      const newSet = new Set(prev);
-      currentlyLiked ? newSet.delete(editorno) : newSet.add(editorno);
-      return newSet;
-    });
-  } catch (err) {
-    console.error(err);
-    alert("좋아요 처리에 실패했습니다.");
-  }
-};
+  };
 
 
   // 카드 클릭 → 상세 페이지 이동
@@ -139,7 +139,16 @@ export default function EditorPage() {
             <></>
           )}
         </div>
-
+        <div className="hashtag-container">
+          <button className="hashtag">#계절</button>
+          <button className="hashtag">#BEST</button>
+          <button className="hashtag">#공원/산책/자연</button>
+          <button className="hashtag">#문화/예술</button>
+          <button className="hashtag">#카페/먹거리</button>
+          <button className="hashtag">#전망/야경/드라이브</button>
+          <button className="hashtag">#스포츠/활동</button>
+          <button className="hashtag">#로맨스/테마데이트</button>
+        </div>
         {/* 검색창 */}
         <form className="editor-search" onSubmit={handleSearch}>
           <input
@@ -167,7 +176,7 @@ export default function EditorPage() {
                   alt={editor.editortitle}
                 />
                 <button
-                  className={`heart ${likes.has(editor.editorno) ? "is-on" : ""}`} 
+                  className={`heart ${likes.has(editor.editorno) ? "is-on" : ""}`}
                   onClick={(e) => {
                     e.stopPropagation(); // 카드 클릭 이벤트와 겹치지 않도록
                     toggleLike(editor.editorno, e);

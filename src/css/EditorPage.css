@@ -1,26 +1,55 @@
+/* 해시태그 컨테이너 */
+.hashtag-container {
+  display: flex;
+  flex-wrap: wrap; /* 화면 좁으면 줄 바꿈 */
+  gap: 10px; /* 버튼 간격 */
+  justify-content: center;
+  margin-bottom: 15px;
+  padding: 30px;
+}
+
+/* 해시태그 버튼 */
+.hashtag {
+  padding: 5px 10px;
+  background-color: rgba(240, 240, 240, 0.3); /* 투명도 0.3 */
+  border: 1px solid rgba(208, 208, 208, 0.5);
+  border-radius: 15px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hashtag:hover {
+  background-color: #8bb4e7;
+  color: #fff;
+  border-color: #8bb4e7;
+}
+
 /* 검색창 컨테이너 */
 .editor-search {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end; /* 검색창 오른쪽 정렬 */
   align-items: center;
-  position: relative; /* 자식 요소인 버튼의 위치 기준점 */
+  position: relative;
   width: 100%;
-  max-width: 450px;
-  margin: 25px auto;
+  max-width: 300px; /* 검색창 크기 작게 */
+  margin: 0 auto;
 }
 
 /* 검색 입력 필드 */
 .editor-search-input {
-  width: 100%;
-  /* 아이콘 버튼이 겹치지 않도록 오른쪽 패딩을 추가 */
-  padding: 10px 15px; 
-  padding-right: 50px; /* 아이콘 버튼을 위한 여백 */
+ width: 100%;
+  padding: 10px 15px;
+  padding-right: 40px;
   border: 1px solid #e0e0e0;
   border-radius: 25px;
   font-size: 15px;
   color: #333;
   outline: none;
-  background-color: #f8f8f8;
+
+  /* 항상 밝은 배경 */
+  background-color: #ffffff; /* 하얀색 배경 */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
 }
@@ -36,19 +65,16 @@
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 검색 아이콘 버튼 */
+/* 검색 버튼 */
 .search-icon-btn {
-  position: absolute; /* input 위에 겹쳐지도록 설정 */
-  right: 15px; /* 오른쪽에서 15px 떨어진 위치 */
-  top: 50%; /* 수직 중앙 정렬 */
-  transform: translateY(-50%);
-  background-color: transparent;
+  position: absolute;
+  right: 5px;
+  background:no-repeat center center;
+  background-size: 20px 20px;
   border: none;
+  width: 35px;
+  height: 35px;
   cursor: pointer;
-  padding: 0;
-  font-size: 15px; /* 아이콘 크기 */
-  color: #a0a0a0;
-  transition: color 0.2s;
 }
 
 .search-icon-btn:hover {
