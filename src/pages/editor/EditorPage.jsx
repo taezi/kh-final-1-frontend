@@ -34,7 +34,6 @@ export default function EditorPage() {
       const response = await getPostList(keyword);
       const allItems = (response?.eList || []).map((editor) => ({ ...editor }));
 
-
       // 9개씩 잘라서 보여주기
       const start = (p - 1) * 9;
       const newItems = allItems.slice(start, start + 9);
@@ -68,20 +67,11 @@ export default function EditorPage() {
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-
       await loadList(1, searchKeyword); // 키워드 포함해서 로드
-
     } catch (err) {
       console.error("검색 실패:", err);
     }
   };
-
-
-
-  // 마운트 시 서버에서 좋아요 데이터 가져오기
-  useEffect(() => {
-    if (!user) return;
-
 
   // 마운트 시 현재 사용자 북마크(좋아요) 불러오기
   useEffect(() => {
@@ -91,7 +81,6 @@ export default function EditorPage() {
     }
     getBookmarks(user.userno, "editor")
       .then((list) => {
-
         const editorLikes = list
           // 에디터 콘텐츠만 적용
           .filter((b) => b.contenttype === "editor")
@@ -117,7 +106,6 @@ export default function EditorPage() {
       contenttype: "editor",
     };
 
-
     const currentlyLiked = likes.has(editorno); // 이전 상태 저장
 
     try {
@@ -129,24 +117,11 @@ export default function EditorPage() {
         await addBookmark(bookmarkData);
       }
 
-
       // 상태 업데이트
-      setLikes(prev => {
+      setLikes((prev) => {
         const newSet = new Set(prev);
         currentlyLiked ? newSet.delete(editorno) : newSet.add(editorno);
         return newSet;
-      });
-    } catch (err) {
-      console.error(err);
-      alert("좋아요 처리에 실패했습니다.");
-    }
-  };
-
-
-      setLikes((prev) => {
-        const next = new Set(prev);
-        currentlyLiked ? next.delete(editorno) : next.add(editorno);
-        return next;
       });
     } catch (err) {
       console.error(err);
@@ -217,13 +192,13 @@ export default function EditorPage() {
                   alt={editor.editortitle}
                 />
                 <button
-
-                  className={`heart ${likes.has(editor.editorno) ? "is-on" : ""}`}
+                  className={`heart ${
+                    likes.has(editor.editorno) ? "is-on" : ""
+                  }`}
                   onClick={(e) => {
                     e.stopPropagation(); // 카드 클릭 이벤트와 겹치지 않도록
                     toggleLike(editor.editorno, e);
                   }}
-
                   title="좋아요"
                   aria-label="좋아요"
                 >
