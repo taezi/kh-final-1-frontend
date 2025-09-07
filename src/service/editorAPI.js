@@ -12,6 +12,7 @@ setupInterceptors(editorAPI);
 
 // 게시글 작성
 export const createPost = async (postData) => {
+  console.log(postData);
   const response = await editorAPI.post("", postData); // POST /api/editors
   return response.data;
 };
@@ -43,7 +44,6 @@ export const deletePost = async (editorno) => {
   return response.data;
 };
 
-
 // 이미지 업로드
 export const uploadImageToS3 = async (blob) => {
   const presignedRes = await editorAPI.get("/s3/presigned", {
@@ -62,6 +62,11 @@ export const uploadImageToS3 = async (blob) => {
   });
 
   return fileUrl;
+};
 
-
+//해쉬태그저장
+export const saveEditorHashtags = async (postData2) => {
+  console.log("해쉬태그 내용 : ", postData2);
+  const response = await editorAPI.post("/hashtag", postData2);
+  return response.data;
 };
