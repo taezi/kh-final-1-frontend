@@ -63,17 +63,13 @@ function App() {
             path="/restaurants"
             element={<RestaurantPage></RestaurantPage>}
           />
-          <Route
-            path="/restaurants/:restName/:restBranch"
-            element={<RestViewPage />}
-          />
+
+          <Route path="/restaurants/:restNo" element={<RestViewPage/>} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/cafes" element={<CafePage></CafePage>} />
 
-          <Route
-            path="/cafes/:cafeName/:cafeBranch"
-            element={<CafeViewPage />}
-          />
+          <Route path="/cafes/:cafeNo" element={<CafeViewPage/>} />
+
 
           <Route path="/editor" element={<EditorPage></EditorPage>} />
           <Route path="/editor/:editorno" element={<EditorDetailPage />} />

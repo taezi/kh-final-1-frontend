@@ -41,11 +41,17 @@ export default function MypageBookmark() {
 
   const goToDetail = (bookmark) => {
     console.log("이동하는 북마크 정보 : ", bookmark);
-    if (bookmark.type === "editor") {
+    if (bookmark.contenttype === "editor") {
       navigate(`/editor/${bookmark.contentno}`);
     }
-    if (bookmark.type === "event") {
+    if (bookmark.contenttype === "event") {
       navigate(`/culture/${bookmark.contentno}`);
+    }
+    if (bookmark.contenttype === "cafe") {
+      navigate(`/cafes/${bookmark.contentno}`);
+    }
+    if (bookmark.contenttype === "restaurant") {
+      navigate(`/restaurants/${bookmark.contentno}`);
     }
   };
 

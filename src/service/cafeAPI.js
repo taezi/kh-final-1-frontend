@@ -62,16 +62,15 @@ cafeAPI.interceptors.response.use(
 // --- API 호출 함수들 ---
 
 /**
- * 레스토랑 이름과 지점명으로 레스토랑 정보를 조회하는 GET 요청
+ * 레스토랑 번호로 레스토랑 정보를 조회하는 GET 요청
  * @param {object} params - 조회에 필요한 파라미터 객체
- * @param {string} params.cafeName - 조회할 레스토랑 이름
- * @param {string} params.cafeBranch - 조회할 레스토랑 지점명
+ * @param {number} params.cafeNo - 조회할 레스토랑 번호
  * @returns {Promise<CafeDto>} - 조회된 레스토랑 정보
  */
-export const getCafeInfo = ({cafeName, cafeBranch }) =>
+export const getCafeInfo = ({ cafeNo }) =>
   cafeAPI
-    .get("/info", { params: { cafeName, cafeBranch } })
-    // 백엔드의 컨트롤러(CaferController)에 맞게 파라미터 이름을 `cafeName`과 `cafeBranch`로 변경했습니다.
+    .get("/info", { params: { cafeNo } })
+    // 백엔드의 컨트롤러(CafeController)에 맞게 파라미터 이름을 cafeNo로 변경했습니다.
     .then((r) => r.data);
 
 /**

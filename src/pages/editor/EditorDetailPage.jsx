@@ -5,8 +5,19 @@ import "../../css/EditorDetailPage.css";
 import useAuthStore from "../../store/authStore";
 import { getPostDetail, deletePost } from "../../service/editorAPI";
 import { incrementEditorView } from "../../service/viewAPI";
-import { addBookmark, getBookmarks, removeBookmark } from "../../service/bookmarkAPI";
-import { getComments, addComment, updateComment, removeComment } from "../../service/reviewAPI";
+import {
+  addBookmark,
+  getBookmarks,
+  removeBookmark,
+} from "../../service/bookmarkAPI";
+import {
+  getComments,
+  addComment,
+  updateComment,
+  removeComment,
+} from "../../service/reviewAPI";
+import HeroStrip from "../../components/HeroStrip";
+import MY_PAGE_HERO from "../../img/my-page.jpg";
 
 export default function EditorDetailPage() {
   const { editorno } = useParams();
@@ -222,13 +233,18 @@ export default function EditorDetailPage() {
       try {
         // 조회수 증가 처리
         // localStorage에서 이미 본 게시글인지 확인
-        const viewed = JSON.parse(localStorage.getItem("viewedEditors") || "[]");
+        const viewed = JSON.parse(
+          localStorage.getItem("viewedEditors") || "[]"
+        );
 
         if (!viewed.includes(editorno)) {
           // 한번도 안 본 글이면 조회수 증가
           await incrementEditorView(editorno);
           // localStorage에 현재 글 번호 추가
-          localStorage.setItem("viewedEditors", JSON.stringify([...viewed, editorno]));
+          localStorage.setItem(
+            "viewedEditors",
+            JSON.stringify([...viewed, editorno])
+          );
         }
 
         // 상세 데이터 가져오기
@@ -260,16 +276,27 @@ export default function EditorDetailPage() {
   // 마크다운 이미지 변환 함수
   const renderMarkdownImages = (text) => {
     // ![alt](url) → <img src="url" alt="alt" />
-    return text.replace(
-      /!\[([^\]]*)\]\(([^)]+)\)/g,
-      (_, alt, url) => {
-        return <img src="${url}" alt="${alt}" style="max-width:100%; border-radius:8px;" />;
-      }
-    );
+    return text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, url) => {
+      return (
+        <img
+          src="${url}"
+          alt="${alt}"
+          style="max-width:100%; border-radius:8px;"
+        />
+      );
+    });
   };
 
   return (
     <Layout>
+      <HeroStrip
+        imageSrc={MY_PAGE_HERO}
+        title="에디터 추천 데이트 코스"
+        subtitle="에디터들이 엄선한 코스를 모아봤어요"
+        align="left"
+        height={600}
+        variant="def"
+      />
       <div className="editor-detail-page">
         <div className="editor-action-wrapper">
           <button onClick={() => navigate("/editor")} className="btnBack">
@@ -292,7 +319,9 @@ export default function EditorDetailPage() {
           </div>
         </div>
 
-        <p><strong>조회수:</strong> {editor.editorview}</p>
+        <p>
+          <strong>조회수:</strong> {editor.editorview}
+        </p>
         <h4>에디터 추천 데이트코스</h4>
 
         <div className="editor-title-container">
@@ -300,7 +329,9 @@ export default function EditorDetailPage() {
             <strong>{editor.editortitle}</strong>
           </p>
           <button
-            className={`heart editor-detail-heart ${likes.has(editor.editorno) ? "is-on" : ""}`}
+            className={`heart editor-detail-heart ${
+              likes.has(editor.editorno) ? "is-on" : ""
+            }`}
             onClick={(e) => {
               e.stopPropagation();
               toggleLike(editor.editorno, e);
@@ -331,7 +362,11 @@ export default function EditorDetailPage() {
                 key={idx}
                 src={img.url}
                 alt={img.alt}
-                style={{ maxWidth: "100%", borderRadius: "8px", marginBottom: "10px" }}
+                style={{
+                  maxWidth: "100%",
+                  borderRadius: "8px",
+                  marginBottom: "10px",
+                }}
               />
             ))}
           </div>
@@ -403,7 +438,12 @@ export default function EditorDetailPage() {
                   ) : (
                     <>
                       <button
-                        onClick={() => startEditingComment(comment.reviewno, comment.commenta)}
+                        onClick={() =>
+                          startEditingComment(
+                            comment.reviewno,
+                            comment.commenta
+                          )
+                        }
                         className="btnEditComment"
                       >
                         수정

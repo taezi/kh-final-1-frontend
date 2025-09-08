@@ -3,14 +3,24 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../../components/Layout";
 import AdminInquiry from "../../admin/AdminInquiry";
-import AdminMember from "../../components/AdminMember"; 
+import AdminMember from "../../components/AdminMember";
 import "../../css/AdminPage.css";
+import HeroStrip from "../../components/HeroStrip";
+import MY_PAGE_HERO from "../../img/my-page.jpg";
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("members");
 
   return (
     <Layout>
+      <HeroStrip
+        imageSrc={MY_PAGE_HERO}
+        title="관리자 페이지"
+        subtitle="내용을 수정한 뒤 저장하세요"
+        align="left"
+        height={600}
+        variant="def"
+      />
       <div className="admin-page-container">
         {/* 관리자 페이지 헤더 */}
         <div className="admin-header">
