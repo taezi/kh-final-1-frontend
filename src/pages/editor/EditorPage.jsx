@@ -238,7 +238,7 @@ export default function EditorPage() {
               </div>
               <div className="editor-info">
                 <h4>{editor.editortitle}</h4>
-                {/* ✅ 해시태그 목록 */}
+                {/*  해시태그 목록 */}
                 <div className="hashtags-list">
                   {editor.hashtags &&
                     editor.hashtags.map((tag, idx) => (

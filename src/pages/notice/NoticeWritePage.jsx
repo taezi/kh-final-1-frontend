@@ -6,7 +6,7 @@ import "../../css/NoticeWritePage.css";
 import useAuthStore from "../../store/authStore";
 import { createNotice } from "../../service/noticeAPI";
 
-export default function EditorWritePage() {
+export default function NoticeWritePage() {
   const user = useAuthStore((state) => state.user); // ✅ user 가져오기
   const titleRef = useRef(null);
   const contentRef = useRef();
