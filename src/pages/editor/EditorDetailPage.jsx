@@ -57,7 +57,6 @@ export default function EditorDetailPage() {
       }
     }
 
-
     return parts;
   };
   // 스크롤 상태 관리
@@ -376,8 +375,9 @@ export default function EditorDetailPage() {
             <strong>{editor.editortitle}</strong>
           </p>
           <button
-            className={`heart editor-detail-heart ${likes.has(editor.editorno) ? "is-on" : ""
-              }`}
+            className={`heart editor-detail-heart ${
+              likes.has(editor.editorno) ? "is-on" : ""
+            }`}
             onClick={(e) => {
               e.stopPropagation();
               toggleLike(editor.editorno, e);
