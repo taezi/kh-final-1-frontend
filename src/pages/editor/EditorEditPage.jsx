@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Editor } from "@toast-ui/react-editor";
 import {
   getPostDetail,
+  saveEditorHashtags,
   updatePost,
   uploadImageToS3,
 } from "../../service/editorAPI";

@@ -2,7 +2,11 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Editor } from "@toast-ui/react-editor";
-import { createPost, uploadImageToS3 } from "../../service/editorAPI";
+import {
+  createPost,
+  saveEditorHashtags,
+  uploadImageToS3,
+} from "../../service/editorAPI";
 import "@toast-ui/editor/toastui-editor.css";
 import "../../css/EditorWritePage.css";
 import useAuthStore from "../../store/authStore";
@@ -23,6 +27,10 @@ export default function EditorWritePage() {
   // 썸네일 URL/파일명
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [thumbnailName, setThumbnailName] = useState("");
+
+  //해쉬태그
+  const [tagInput, setTagInput] = useState("");
+  const [tags, setTags] = useState([]);
 
   const dropZoneRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -98,10 +106,7 @@ export default function EditorWritePage() {
   // 등록
   const handleClickCreateButton = async () => {
     const title = titleRef.current?.value?.trim() || "";
-    if (!user?.userno || !user?.token) {
-      alert("로그인 후 이용해주세요.");
-      return;
-    }
+
     if (!title) {
       alert("제목을 입력해주세요!");
       return;
@@ -144,6 +149,16 @@ export default function EditorWritePage() {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       console.log("저장 성공:", response?.data || response);
+      const editorno = response?.data?.editorno;
+      // 해쉬태그 저장
+      if (editorno && tags.length > 0) {
+        const postData2 = {
+          editorno: editorno,
+          hashtags: tags,
+        };
+        await saveEditorHashtags(postData2);
+      }
+
       alert("등록되었습니다!");
       navigate("/editor");
     } catch (error) {
@@ -256,6 +271,42 @@ export default function EditorWritePage() {
               </div>
             )}
           </div>
+        </div>
+
+        {/* 해쉬태그 */}
+        <div className="formGroup">
+          <label className="label">해쉬태그</label>
+          <input
+            type="text"
+            placeholder="쉼표로 해시태그 입력 (예: 계절, 공원/산책/자연, 문화/예술)"
+            className="input"
+            value={tagInput}
+            onChange={(e) => setTagInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === ",") {
+                e.preventDefault();
+                const newTag = tagInput.trim().replace(/,$/, ""); // 쉼표 제거
+                if (newTag && !tags.includes(newTag)) {
+                  setTags([...tags, newTag]);
+                }
+                setTagInput("");
+              }
+            }}
+          />
+        </div>
+        <div className="tag-container">
+          {tags.map((tag, idx) => (
+            <div key={idx} className="tag-item">
+              #{tag}
+              <button
+                type="button"
+                className="tag-remove-btn"
+                onClick={() => setTags(tags.filter((t) => t !== tag))}
+              >
+                ❌
+              </button>
+            </div>
+          ))}
         </div>
 
         {/* 내용 */}
