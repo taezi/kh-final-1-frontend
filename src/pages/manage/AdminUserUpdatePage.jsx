@@ -52,9 +52,9 @@ export default function AdminUserUpdatePage() {
           <button
             type="button"
             className="change-button"
-            onClick={() => handleUpdate("id")}
+             disabled
           >
-            변경
+            수정할수없음
           </button>
         </div>
 
