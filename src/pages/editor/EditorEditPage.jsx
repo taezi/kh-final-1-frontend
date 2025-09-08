@@ -29,8 +29,8 @@ export default function EditorEditPage() {
   // 썸네일 (단일)
   const [thumbnailUrl, setThumbnailUrl] = useState("");
 
-  // 본문 이미지 (여러 장 → 배열로 관리)
-  const [contentImgUrls, setContentImgUrls] = useState([]);
+  // 본문 이미지 (단일)
+  const [contentImgUrl, setContentImgUrl] = useState("");
 
   // 게시글 불러오기
   useEffect(() => {
@@ -45,17 +45,8 @@ export default function EditorEditPage() {
         // 썸네일
         setThumbnailUrl(post.thumbnailUrl || "");
 
-        // 본문 이미지 배열
-        // 서버가 문자열/단일값을 줄 가능성도 고려해서 배열로 정규화
-        if (Array.isArray(post.contentImgUrl)) {
-          setContentImgUrls(post.contentImgUrl);
-        } else if (post.contentImgUrl) {
-          setContentImgUrls([post.contentImgUrl]);
-        } else if (Array.isArray(post.contentImgUrls)) {
-          setContentImgUrls(post.contentImgUrls);
-        } else {
-          setContentImgUrls([]);
-        }
+        // 본문 이미지 단일 값
+        setContentImgUrl(post.contentImgUrl || "");
 
         setLoading(false);
       } catch (err) {
@@ -87,8 +78,8 @@ export default function EditorEditPage() {
       return;
     }
 
-    if (!contentImgUrls || contentImgUrls.length === 0) {
-      alert("에디터 이미지를 최소 하나 업로드해주세요!");
+    if (!contentImgUrl) {
+      alert("에디터 이미지를 업로드해주세요!");
       return;
     }
 
@@ -109,8 +100,7 @@ export default function EditorEditPage() {
       editorcontent: editorContent,
       userno: user?.userno,
       thumbnailUrl,
-      // 백엔드에 배열로 전달 (필드명은 서버 스펙에 맞춰 주세요)
-      contentImgUrls,
+      contentImgUrl,
     };
 
     console.log("업데이트 전송 데이터:", postData);
@@ -227,10 +217,8 @@ export default function EditorEditPage() {
                   // 에디터에 즉시 삽입
                   callback(fileUrl, blob.name);
 
-                  // 본문 이미지 배열에 추가 (중복 방지)
-                  setContentImgUrls((prev) =>
-                    prev.includes(fileUrl) ? prev : [...prev, fileUrl]
-                  );
+                  // 본문 이미지 단일 값 저장
+                  setContentImgUrl(fileUrl);
                 } catch (err) {
                   console.error("이미지 업로드 실패:", err);
                   alert("이미지 업로드 실패");
@@ -240,36 +228,29 @@ export default function EditorEditPage() {
           />
         </div>
 
-        {/* 본문 이미지 목록(선택 표시용) */}
-        {contentImgUrls.length > 0 && (
+        {/* 본문 이미지 미리보기 */}
+        {contentImgUrl && (
           <div className="formGroup">
-            <label className="label">본문 이미지 목록</label>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-              {contentImgUrls.map((url, idx) => (
-                <div key={idx} style={{ textAlign: "center" }}>
-                  <img
-                    src={url}
-                    alt={`content-${idx}`}
-                    style={{
-                      width: 120,
-                      height: 80,
-                      objectFit: "cover",
-                      borderRadius: 6,
-                      display: "block",
-                    }}
-                  />
-                  <button
-                    type="button"
-                    className="btn btnMini"
-                    style={{ marginTop: 6 }}
-                    onClick={() =>
-                      setContentImgUrls((prev) => prev.filter((u) => u !== url))
-                    }
-                  >
-                    제거
-                  </button>
-                </div>
-              ))}
+            <label className="label">본문 이미지</label>
+            <div style={{ textAlign: "center" }}>
+              <img
+                src={contentImgUrl}
+                alt="본문 이미지"
+                style={{
+                  width: 240,
+                  height: 160,
+                  objectFit: "cover",
+                  borderRadius: 6,
+                }}
+              />
+              <button
+                type="button"
+                className="btn btnMini"
+                style={{ marginTop: 6 }}
+                onClick={() => setContentImgUrl("")}
+              >
+                제거
+              </button>
             </div>
           </div>
         )}

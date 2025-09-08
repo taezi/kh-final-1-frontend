@@ -21,14 +21,14 @@ export default function EditorWritePage() {
   const editorRef = useRef();
   const navigate = useNavigate();
 
-  // 본문 이미지: 여러 장 가능 → 배열로 관리
-  const [contentImgUrls, setContentImgUrls] = useState([]);
+  // 본문 이미지 (단일)
+  const [contentImgUrl, setContentImgUrl] = useState("");
 
   // 썸네일 URL/파일명
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [thumbnailName, setThumbnailName] = useState("");
 
-  //해쉬태그
+  // 해쉬태그
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState([]);
 
@@ -40,7 +40,7 @@ export default function EditorWritePage() {
     fileInputRef.current?.click();
   };
 
-  // 썸네일 업로드 공통 함수 (정확히 400x244 검증)
+  // 썸네일 업로드 (400x244 검증)
   const handleThumbnailUpload = async (file) => {
     if (!file) return;
 
@@ -81,23 +81,20 @@ export default function EditorWritePage() {
     };
   };
 
-  // 파일 선택
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     handleThumbnailUpload(file);
   };
 
-  // DnD 핸들러
   const handleThumbnailDrop = (event) => {
     event.preventDefault();
     event.stopPropagation();
     const files = event.dataTransfer.files;
     if (files.length > 0) {
-      handleThumbnailUpload(files[0]); // 동일 검증 로직 사용
+      handleThumbnailUpload(files[0]);
     }
   };
 
-  // 썸네일 삭제
   const handleRemoveThumbnail = () => {
     setThumbnailUrl("");
     setThumbnailName("");
@@ -115,7 +112,7 @@ export default function EditorWritePage() {
       alert("썸네일 이미지를 첨부해주세요!");
       return;
     }
-    if (!contentImgUrls.length) {
+    if (!contentImgUrl) {
       alert("에디터 이미지를 최소 하나 업로드해주세요!");
       return;
     }
@@ -128,7 +125,6 @@ export default function EditorWritePage() {
       return;
     }
 
-    // 본문에 실제 이미지가 포함됐는지 검사 (마크다운 이미지 문법)
     const hasImageInEditor = /!\[.*?\]\(.*?\)/.test(markdown);
     if (!hasImageInEditor) {
       alert("에디터 본문에 이미지를 최소 하나 업로드해주세요!");
@@ -139,8 +135,7 @@ export default function EditorWritePage() {
       editortitle: title,
       editorcontent: markdown,
       userno: user.userno,
-      // 백엔드 스펙에 맞게 키 사용 (배열 전달)
-      contentImgUrls,
+      contentImgUrl, // 단일 값
       thumbnailUrl,
     };
 
@@ -150,7 +145,6 @@ export default function EditorWritePage() {
       });
       console.log("저장 성공:", response?.data || response);
       const editorno = response?.data?.editorno;
-      // 해쉬태그 저장
       if (editorno && tags.length > 0) {
         const postData2 = {
           editorno: editorno,
@@ -167,12 +161,10 @@ export default function EditorWritePage() {
     }
   };
 
-  // 취소
   const handleClickCancelButton = () => {
     navigate("/editor");
   };
 
-  // dragover/dragenter/drop 바인딩
   useEffect(() => {
     const dropZone = dropZoneRef.current;
     if (!dropZone) return;
@@ -199,7 +191,6 @@ export default function EditorWritePage() {
 
   return (
     <Layout>
-      {/* 상단 히어로 */}
       <HeroStrip
         imageSrc={MY_PAGE_HERO}
         title="에디터 추천 데이트코스 작성"
@@ -223,7 +214,7 @@ export default function EditorWritePage() {
           />
         </div>
 
-        {/* 썸네일 첨부 */}
+        {/* 썸네일 */}
         <div className="formGroup">
           <label className="label">썸네일(400x244px)</label>
           <div className="file-attach-container">
@@ -285,7 +276,7 @@ export default function EditorWritePage() {
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === ",") {
                 e.preventDefault();
-                const newTag = tagInput.trim().replace(/,$/, ""); // 쉼표 제거
+                const newTag = tagInput.trim().replace(/,$/, "");
                 if (newTag && !tags.includes(newTag)) {
                   setTags([...tags, newTag]);
                 }
@@ -340,12 +331,8 @@ export default function EditorWritePage() {
               addImageBlobHook: async (blob, callback) => {
                 try {
                   const fileUrl = await uploadImageToS3(blob);
-                  // 에디터에 즉시 삽입
                   callback(fileUrl, blob.name);
-                  // 본문 이미지 배열에 추가(중복 방지)
-                  setContentImgUrls((prev) =>
-                    prev.includes(fileUrl) ? prev : [...prev, fileUrl]
-                  );
+                  setContentImgUrl(fileUrl); // 단일 저장
                 } catch (err) {
                   console.error("이미지 업로드 실패:", err);
                   alert("이미지 업로드 실패");
@@ -355,41 +342,36 @@ export default function EditorWritePage() {
           />
         </div>
 
-        {/* 본문 이미지 목록 (선택 사항 표시/제거) */}
-        {contentImgUrls.length > 0 && (
+        {/* 본문 이미지 미리보기 */}
+        {contentImgUrl && (
           <div className="formGroup">
-            <label className="label">본문 이미지 목록</label>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-              {contentImgUrls.map((url, idx) => (
-                <div key={idx} style={{ textAlign: "center" }}>
-                  <img
-                    src={url}
-                    alt={`content-${idx}`}
-                    style={{
-                      width: 120,
-                      height: 80,
-                      objectFit: "cover",
-                      borderRadius: 6,
-                      display: "block",
-                    }}
-                  />
-                  <button
-                    type="button"
-                    className="btn btnMini"
-                    style={{ marginTop: 6 }}
-                    onClick={() =>
-                      setContentImgUrls((prev) => prev.filter((u) => u !== url))
-                    }
-                  >
-                    제거
-                  </button>
-                </div>
-              ))}
+            <label className="label">본문 이미지</label>
+            <div style={{ textAlign: "center" }}>
+              <img
+                src={contentImgUrl}
+                alt="content"
+                style={{
+                  width: 200,
+                  height: 140,
+                  objectFit: "cover",
+                  borderRadius: 6,
+                  display: "block",
+                  margin: "0 auto",
+                }}
+              />
+              <button
+                type="button"
+                className="btn btnMini"
+                style={{ marginTop: 6 }}
+                onClick={() => setContentImgUrl("")}
+              >
+                제거
+              </button>
             </div>
           </div>
         )}
 
-        {/* 액션 버튼 */}
+        {/* 버튼 */}
         <div className="buttonGroup">
           <button onClick={handleClickCreateButton} className="btn btnCreate">
             등록
