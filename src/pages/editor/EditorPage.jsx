@@ -7,7 +7,8 @@ import useAuthStore from "../../store/authStore";
 import { getPostList } from "../../service/editorAPI";
 import defaultImage from "../../img/save-image.png";
 import {
-  addBookmark,
+  add
+  ,
   getBookmarks,
   removeBookmark,
 } from "../../service/bookmarkAPI";
@@ -33,7 +34,6 @@ export default function EditorPage() {
     try {
       const response = await getPostList(keyword);
       const allItems = (response?.eList || []).map((editor) => ({ ...editor }));
-
 
       // 9개씩 잘라서 보여주기
       const start = (p - 1) * 9;
@@ -69,14 +69,11 @@ export default function EditorPage() {
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-
       await loadList(1, searchKeyword); // 키워드 포함해서 로드
-
     } catch (err) {
       console.error("검색 실패:", err);
     }
   };
-
 
 
     // 마운트 시 현재 사용자 북마크(좋아요) 불러오기
@@ -116,6 +113,7 @@ export default function EditorPage() {
 
       const currentlyLiked = likes.has(editorno); // 이전 상태 저장
 
+
       try {
         // 서버 호출
 
@@ -124,6 +122,7 @@ export default function EditorPage() {
         } else {
           await addBookmark(bookmarkData);
         }
+
 
 
         // 상태 업데이트
@@ -137,6 +136,7 @@ export default function EditorPage() {
         alert("좋아요 처리에 실패했습니다.");
       }
     };
+
 
 
     // 카드 클릭 → 상세 페이지 이동
@@ -218,6 +218,7 @@ export default function EditorPage() {
                 <div className="editor-info">
                   <h4>{editor.editortitle}</h4>
                 </div>
+
               </div>
             ))}
           </div>
