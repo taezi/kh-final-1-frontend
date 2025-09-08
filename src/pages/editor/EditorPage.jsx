@@ -150,7 +150,6 @@ export default function EditorPage() {
       <div className="editor-page">
         {/* 헤더 */}
         <div className="editor-header">
-          <h3>에디터 추천 데이트 코스</h3>
           {user?.role === "editor" ? (
             <button className="register-btn" onClick={handleClick}>
               등록
