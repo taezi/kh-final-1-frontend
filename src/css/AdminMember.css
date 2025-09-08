@@ -23,31 +23,31 @@
 }
 
 /* 테이블 내 수정/삭제 버튼 컨테이너 */
-.action-buttons-container {
+.action-buttons-container-1 {
   display: flex;
   gap: 5px; /* 버튼 사이 간격 */
 }
 
 /* 모든 액션 버튼에 공통으로 적용되는 스타일 */
-.action-button {
+.action-button-1 {
   padding: 8px 12px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
   font-size: 14px;
-  width: 60px; /* 버튼 크기 통일 */
+  width: 60px;
   text-align: center;
 }
 
 /* 수정 버튼 스타일 */
-.update-button {
+.update-button-1 {
   background-color: #007bff;
   color: #fff;
 }
 
 /* 삭제 버튼 스타일 */
-.delete-button {
+.delete-button-1 {
   background-color: #dc3545;
   color: #fff;
 }

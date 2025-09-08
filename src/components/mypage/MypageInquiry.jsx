@@ -1,4 +1,3 @@
-// src/components/MypageInquiry.jsx
 import { useEffect, useState } from "react";
 import useAuthStore from "../../store/authStore";
 import { getInquiries } from "../../service/manageAPI";
@@ -39,10 +38,18 @@ export default function MypageInquiry() {
             inquiries.map((inq) => (
               <tr
                 key={inq.inquiryno}
-                onClick={() => goToDetail(inq.inquiryno)} //
-                style={{ cursor: "pointer" }} //
+                onClick={() => goToDetail(inq.inquiryno)}
+                style={{ cursor: "pointer" }}
               >
-                <td>{inq.status === "pending" ? "처리중" : "답변완료"}</td>
+                <td
+                  className={
+                    inq.status === "pending"
+                      ? "status-pending-1"
+                      : "status-replied-1"
+                  }
+                >
+                  {inq.status === "pending" ? "처리중" : "답변완료"}
+                </td>
                 <td>{inq.inquiryTitle}</td>
                 <td>{new Date(inq.createdAt).toLocaleString()}</td>
               </tr>

@@ -1,9 +1,13 @@
+// src/pages/notice/NoticePage.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../components/Layout";
 import "../../css/NoticePage.css";
-import { getNoticeList, noticeAPI } from "../../service/noticeAPI";
+import { getNoticeList } from "../../service/noticeAPI";
 import useAuthStore from "../../store/authStore";
+
+import HeroStrip from "../../components/HeroStrip";
+import MY_PAGE_HERO from "../../img/my-page.jpg";
 
 export default function NoticePage() {
   const navigate = useNavigate();
@@ -18,19 +22,21 @@ export default function NoticePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getNoticeList(page, PAGE_SIZE);
-        console.log("noticeList:", response.nList);
-        setNoticeList(response.nList);
-        setTotalPages(Math.ceil(response.total / PAGE_SIZE));
+        const res = await getNoticeList(page, PAGE_SIZE);
+        const nList = res?.nList || [];
+        const total = Number(res?.total || nList.length);
+        setNoticeList(nList);
+        setTotalPages(Math.max(1, Math.ceil(total / PAGE_SIZE)));
       } catch (error) {
         console.error("공지사항 조회 실패:", error);
+        setNoticeList([]);
+        setTotalPages(1);
       }
     };
-
     fetchData();
   }, [page]);
 
-  // 공지 상세페이지 이동
+  // 상세 페이지 이동
   const goToDetail = (noticeno) => {
     navigate(`/notice/${noticeno}`);
   };
@@ -42,6 +48,16 @@ export default function NoticePage() {
 
   return (
     <Layout>
+      {/* ✅ 상단 히어로 */}
+      <HeroStrip
+        imageSrc={MY_PAGE_HERO}
+        title="공지사항"
+        subtitle="서비스 업데이트와 중요한 안내를 확인하세요"
+        align="left"
+        height={600}
+        variant="def"
+      />
+
       <div className="notice-page">
         <div className="notice-header">
           <h3>공지사항 페이지</h3>
@@ -49,10 +65,9 @@ export default function NoticePage() {
             <button className="register-btn" onClick={handleClick}>
               등록
             </button>
-          ) : (
-            <></>
-          )}
+          ) : null}
         </div>
+
         {/* 리스트 */}
         <table className="notice-table">
           <thead>
@@ -63,34 +78,47 @@ export default function NoticePage() {
               <th>조회수</th>
             </tr>
           </thead>
-
           <tbody>
-            {noticeList.map((notice) => (
-              <tr
-                key={notice.noticeno}
-                onClick={() => goToDetail(notice.noticeno)}
-                className="notice-row"
-              >
-                <td>{notice.noticeno}</td>
-                <td className="title">{notice.noticetitle}</td>
-                <td>{notice.noticedate}</td>
-                <td>{notice.noticeview}</td>
+            {noticeList.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={4}
+                  style={{ textAlign: "center", padding: "24px" }}
+                >
+                  공지사항이 없습니다.
+                </td>
               </tr>
-            ))}
+            ) : (
+              noticeList.map((notice) => (
+                <tr
+                  key={notice.noticeno}
+                  onClick={() => goToDetail(notice.noticeno)}
+                  className="notice-row"
+                >
+                  <td>{notice.noticeno}</td>
+                  <td className="title">{notice.noticetitle}</td>
+                  <td>{notice.noticedate}</td>
+                  <td>{notice.noticeview}</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
 
         {/* 페이지네이션 */}
         <div className="pagination">
-          {Array.from({ length: totalPages }, (_, idx) => (
-            <button
-              key={idx + 1}
-              className={page === idx + 1 ? "active" : ""}
-              onClick={() => setPage(idx + 1)}
-            >
-              {idx + 1}
-            </button>
-          ))}
+          {Array.from({ length: totalPages }, (_, idx) => {
+            const pageNum = idx + 1;
+            return (
+              <button
+                key={pageNum}
+                className={page === pageNum ? "active" : ""}
+                onClick={() => setPage(pageNum)}
+              >
+                {pageNum}
+              </button>
+            );
+          })}
         </div>
       </div>
     </Layout>

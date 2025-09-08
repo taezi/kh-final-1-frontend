@@ -26,3 +26,17 @@ export const signup = async (username, userid, password, nickname, email) => {
     throw error;
   }
 };
+
+export const duplicateCheck = async (userid) => {
+  try {
+    const response = await authAPI.get("duplicate-check", {
+      params: {
+        userid: userid,
+      },
+    });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

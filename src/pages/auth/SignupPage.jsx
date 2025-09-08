@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../../css/SignupPage.css";
 import { useNavigate } from "react-router-dom";
-import { signup } from "../../service/authAPI";
+import { duplicateCheck, signup } from "../../service/authAPI";
 import Layout from "../../components/Layout";
 
 export default function SignupPage() {
@@ -14,6 +14,8 @@ export default function SignupPage() {
     email: "",
   });
 
+  const [isIdChecked, setIsIdChecked] = useState(false);
+
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -24,13 +26,36 @@ export default function SignupPage() {
     }));
   };
 
+  const HandleDuplicatedCheck = async () => {
+    if (!formData.userid) {
+      alert("아이디를 입력해주세요");
+      return;
+    }
+    console.log("중복체크 아이디 : ", formData.userid);
+    try {
+      const response = await duplicateCheck(formData.userid);
+      if (response.isAvailable) {
+        alert(response.msg);
+        setIsIdChecked(true);
+      } else {
+        alert(response.msg);
+        setIsIdChecked(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleRegister = async () => {
     const koreanRegex = /^[가-힣]+$/;
     if (!koreanRegex.test(formData.username)) {
       alert("이름은 한글만 입력 가능합니다.");
       return;
     }
-
+    if (!isIdChecked) {
+      alert("아이디 중복 확인을 먼저 해주세요.");
+      return;
+    }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
@@ -38,12 +63,10 @@ export default function SignupPage() {
       return;
     }
 
-
     if (formData.password !== formData.repassword) {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
-
 
     try {
       const response = await signup(
@@ -88,7 +111,12 @@ export default function SignupPage() {
               placeholder="아이디를 입력해주세요"
               required
             />
-            <button className="duplicate-check-button">중복확인</button>
+            <button
+              className="duplicate-check-button"
+              onClick={HandleDuplicatedCheck}
+            >
+              중복확인
+            </button>
           </div>
           <input
             className="signup-input"
