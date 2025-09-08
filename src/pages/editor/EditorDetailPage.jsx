@@ -62,6 +62,7 @@ export default function EditorDetailPage() {
   };
   // 스크롤 상태 관리
   const [showScrollTop, setShowScrollTop] = useState(false);
+  console.log("aaaaaaaaa : ", editor);
 
   // 스크롤 이벤트 감지
   useEffect(() => {
@@ -360,6 +361,15 @@ export default function EditorDetailPage() {
           <strong>조회수:</strong> {editor.editorview}
         </p>
         <h4>에디터 추천 데이트코스</h4>
+        {editor.hashtags && editor.hashtags.length > 0 && (
+          <div className="editor-hashtags">
+            {editor.hashtags.map((tag, idx) => (
+              <span key={idx} className="hashtag">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
 
         <div className="editor-title-container">
           <p className="editor-title">

@@ -1,7 +1,10 @@
+import Layout from "../../components/Layout";
 import "../../css/AdminUserUpdatePage.css";
 import { getUserByNo, updateAdminUser } from "../../service/adminAPI";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import HeroStrip from "../../components/HeroStrip";
+import MY_PAGE_HERO from "../../img/my-page.jpg";
 
 export default function AdminUserUpdatePage() {
   const { userno } = useParams();
@@ -40,15 +43,29 @@ export default function AdminUserUpdatePage() {
   if (!user) return <div>로딩 중...</div>;
 
   return (
-    <div className="mypage-update-container">
-      <h3>프로필 수정</h3>
-      <form>
-        {/* ID */}
-        <div className="profile-item">
-          <div className="item-label">
-            <label>ID</label>
-            <span className="item-value">{user.userid}</span>
+    <Layout>
+      <HeroStrip
+        imageSrc={MY_PAGE_HERO}
+        title="관리자 페이지"
+        subtitle="내용을 수정한 뒤 저장하세요"
+        align="left"
+        height={600}
+        variant="def"
+      />
+      <div className="mypage-update-container">
+        <h3>프로필 수정</h3>
+        <form>
+          {/* ID */}
+          <div className="profile-item">
+            <div className="item-label">
+              <label>ID</label>
+              <span className="item-value">{user.userid}</span>
+            </div>
+            <button type="button" className="change-button" disabled>
+              수정할수없음
+            </button>
           </div>
+
           <button
             type="button"
             className="change-button"
@@ -58,36 +75,38 @@ export default function AdminUserUpdatePage() {
           </button>
         </div>
 
-        {/* 이름 */}
-        <div className="profile-item">
-          <div className="item-label">
-            <label>이름</label>
-            <span className="item-value">{user.username}</span>
-          </div>
-          <button
-            type="button"
-            className="change-button"
-            onClick={() => handleUpdate("name")}
-          >
-            변경
-          </button>
-        </div>
 
-        {/* 이메일 */}
-        <div className="profile-item">
-          <div className="item-label">
-            <label>이메일</label>
-            <span className="item-value">{user.email}</span>
+          {/* 이름 */}
+          <div className="profile-item">
+            <div className="item-label">
+              <label>이름</label>
+              <span className="item-value">{user.username}</span>
+            </div>
+            <button
+              type="button"
+              className="change-button"
+              onClick={() => handleUpdate("name")}
+            >
+              변경
+            </button>
           </div>
-          <button
-            type="button"
-            className="change-button"
-            onClick={() => handleUpdate("email")}
-          >
-            변경
-          </button>
-        </div>
-      </form>
-    </div>
+
+          {/* 이메일 */}
+          <div className="profile-item">
+            <div className="item-label">
+              <label>이메일</label>
+              <span className="item-value">{user.email}</span>
+            </div>
+            <button
+              type="button"
+              className="change-button"
+              onClick={() => handleUpdate("email")}
+            >
+              변경
+            </button>
+          </div>
+        </form>
+      </div>
+    </Layout>
   );
 }

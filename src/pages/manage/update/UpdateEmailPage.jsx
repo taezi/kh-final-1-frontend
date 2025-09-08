@@ -4,6 +4,8 @@ import useAuthStore from "../../../store/authStore";
 import { useRef } from "react";
 import { updateEmail } from "../../../service/manageAPI";
 import "../../../css/UpdateEmailPage.css";
+import HeroStrip from "../../../components/HeroStrip";
+import MY_PAGE_HERO from "../../../img/my-page.jpg";
 
 export default function UpdateEmailPage(params) {
   const user = useAuthStore((state) => state.user);
@@ -43,6 +45,14 @@ export default function UpdateEmailPage(params) {
   };
   return (
     <Layout>
+      <HeroStrip
+        imageSrc={MY_PAGE_HERO}
+        title="관리자 페이지"
+        subtitle="내용을 수정한 뒤 저장하세요"
+        align="left"
+        height={600}
+        variant="def"
+      />
       <div className="update-email-container">
         {" "}
         {/* 클래스명이 추가된 부분 */}

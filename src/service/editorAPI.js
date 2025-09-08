@@ -70,3 +70,12 @@ export const saveEditorHashtags = async (postData2) => {
   const response = await editorAPI.post("/hashtag", postData2);
   return response.data;
 };
+
+export const updatePostWithHashtags = async (editorno, requestData) => {
+  console.log("해쉬태그 포함 보내는 내용 : ", editorno, requestData);
+  const response = await editorAPI.put(
+    `${editorno}/with-hashtags`,
+    requestData
+  );
+  return response.data;
+};

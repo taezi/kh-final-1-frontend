@@ -137,10 +137,20 @@ export default function EditorWritePage() {
     };
 
     try {
-      const response = await createPost(postData, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
+      const response = await createPost(postData);
       console.log("저장 성공:", response?.data || response);
+
+
+      const editorno = response?.editorno;
+
+      if (editorno && tags.length > 0) {
+        const postData2 = {
+          editorno: editorno,
+          hashtags: tags,
+        };
+        await saveEditorHashtags(postData2);
+      }
+
       alert("등록되었습니다!");
       navigate("/editor");
     } catch (error) {
@@ -254,6 +264,44 @@ export default function EditorWritePage() {
             )}
           </div>
         </div>
+
+
+        {/* 해쉬태그 */}
+        <div className="formGroup">
+          <label className="label">해쉬태그</label>
+          <input
+            type="text"
+            placeholder="해시태그 입력"
+            className="input"
+            value={tagInput}
+            onChange={(e) => setTagInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === ",") {
+                e.preventDefault();
+                const newTag = tagInput.trim().replace(/,$/, "");
+                if (newTag && !tags.includes(newTag)) {
+                  setTags([...tags, newTag]);
+                }
+                setTagInput("");
+              }
+            }}
+          />
+        </div>
+        <div className="tag-container">
+          {tags.map((tag, idx) => (
+            <div key={idx} className="tag-item">
+              #{tag}
+              <button
+                type="button"
+                className="tag-remove-btn"
+                onClick={() => setTags(tags.filter((t) => t !== tag))}
+              >
+                ❌
+              </button>
+            </div>
+          ))}
+        </div>
+
 
         {/* 내용 */}
         <div className="formGroup">
