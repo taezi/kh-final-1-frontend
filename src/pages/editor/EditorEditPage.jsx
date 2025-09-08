@@ -1,3 +1,4 @@
+// src/pages/editor/EditorEditPage.jsx
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Editor } from "@toast-ui/react-editor";
@@ -10,6 +11,8 @@ import "@toast-ui/editor/toastui-editor.css";
 import "../../css/EditorWritePage.css";
 import useAuthStore from "../../store/authStore";
 import Layout from "../../components/Layout";
+import HeroStrip from "../../components/HeroStrip";
+import MY_PAGE_HERO from "../../img/my-page.jpg";
 
 export default function EditorEditPage() {
   const { editorno } = useParams();
@@ -17,14 +20,16 @@ export default function EditorEditPage() {
   const navigate = useNavigate();
   const editorRef = useRef();
 
-  const [title, setTitle] = useState(""); // 제목
-  const [content, setContent] = useState(""); // 내용
-  const [loading, setLoading] = useState(true); // 로딩 상태
+  // 제목/내용/로딩
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  // 썸네일 이미지
+  // 썸네일 (단일)
   const [thumbnailUrl, setThumbnailUrl] = useState("");
-  // 본문 이미지
-  const [contentImgUrl, setContentImgUrl] = useState("");
+
+  // 본문 이미지 (여러 장 → 배열로 관리)
+  const [contentImgUrls, setContentImgUrls] = useState([]);
 
   // 게시글 불러오기
   useEffect(() => {
@@ -33,10 +38,24 @@ export default function EditorEditPage() {
         const res = await getPostDetail(editorno);
         const post = res.data || res;
 
-        setTitle(post.editortitle);
-        setContent(post.editorcontent);
+        setTitle(post.editortitle || "");
+        setContent(post.editorcontent || "");
+
+        // 썸네일
         setThumbnailUrl(post.thumbnailUrl || "");
-        setContentImgUrl(post.contentImgUrl || ""); // 기존 본문 이미지 배열
+
+        // 본문 이미지 배열
+        // 서버가 문자열/단일값을 줄 가능성도 고려해서 배열로 정규화
+        if (Array.isArray(post.contentImgUrl)) {
+          setContentImgUrls(post.contentImgUrl);
+        } else if (post.contentImgUrl) {
+          setContentImgUrls([post.contentImgUrl]);
+        } else if (Array.isArray(post.contentImgUrls)) {
+          setContentImgUrls(post.contentImgUrls);
+        } else {
+          setContentImgUrls([]);
+        }
+
         setLoading(false);
       } catch (err) {
         console.error("불러오기 실패", err);
@@ -49,47 +68,48 @@ export default function EditorEditPage() {
 
   // 수정 완료
   const handleUpdate = async () => {
-    const editorInstance = editorRef.current.getInstance();
+    const editorInstance = editorRef.current?.getInstance();
+    if (!editorInstance) {
+      alert("에디터가 아직 준비되지 않았습니다.");
+      return;
+    }
 
-     const editorContent = editorInstance.getMarkdown();
-    // 제목이 없을 경우 경고창
-  if (!title) {
-    alert("제목을 입력해주세요!");
-    return;
-  }
-  
-  // 썸네일 이미지가 없을 경우 경고창
-  if (!thumbnailUrl) {
-    alert("썸네일 이미지를 첨부해주세요!");
-    return;
-  }
-  
-  // 본문(에디터) 이미지가 없을 경우 경고창
-  if (!contentImgUrl) {
-    alert("에디터 이미지를 최소 하나 업로드해주세요!");
-    return;
-  }
-  
-  // 본문(에디터) 내용이 없을 경우 경고창
-  if (!editorInstance.getMarkdown()) {
-    alert("내용을 입력해주세요!");
-    return;
-  }
-  
-  // 본문(에디터) 내에 이미지가 없을 경우 경고창
-  // Markdown 이미지 형식( ![alt](url) )이 포함되어 있는지 확인합니다.
-  const hasImageInEditor = /!\[.*?\]\(.*?\)/.test(editorContent);
-  if (!hasImageInEditor) {
-    alert("에디터 본문에 이미지를 최소 하나 업로드해주세요!");
-    return;
-  }
-    
+    const editorContent = editorInstance.getMarkdown();
+
+    if (!title?.trim()) {
+      alert("제목을 입력해주세요!");
+      return;
+    }
+
+    if (!thumbnailUrl) {
+      alert("썸네일 이미지를 첨부해주세요!");
+      return;
+    }
+
+    if (!contentImgUrls || contentImgUrls.length === 0) {
+      alert("에디터 이미지를 최소 하나 업로드해주세요!");
+      return;
+    }
+
+    if (!editorContent?.trim()) {
+      alert("내용을 입력해주세요!");
+      return;
+    }
+
+    // 에디터 본문 내 이미지 존재 여부 체크 (Markdown 이미지 문법)
+    const hasImageInEditor = /!\[.*?\]\(.*?\)/.test(editorContent);
+    if (!hasImageInEditor) {
+      alert("에디터 본문에 이미지를 최소 하나 업로드해주세요!");
+      return;
+    }
+
     const postData = {
       editortitle: title,
-      editorcontent: editorInstance.getMarkdown(),
-      userno: user.userno,
-      thumbnailUrl, // 새로 업로드했으면 최신 URL, 아니면 기존 값
-      contentImgUrl, // 배열 통째로 교체
+      editorcontent: editorContent,
+      userno: user?.userno,
+      thumbnailUrl,
+      // 백엔드에 배열로 전달 (필드명은 서버 스펙에 맞춰 주세요)
+      contentImgUrls,
     };
 
     console.log("업데이트 전송 데이터:", postData);
@@ -109,9 +129,9 @@ export default function EditorEditPage() {
     navigate("/editor");
   };
 
-  // 썸네일 수동 업로드 (버튼으로)
+  // 썸네일 수동 업로드
   const handleThumbnailUpload = async (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (!file) return;
 
     try {
@@ -128,6 +148,16 @@ export default function EditorEditPage() {
 
   return (
     <Layout>
+      {/* ✅ HeroStrip 상단 배너 */}
+      <HeroStrip
+        imageSrc={MY_PAGE_HERO}
+        title="에디터 게시글 수정"
+        subtitle="이미지 업로드와 내용을 수정한 뒤 저장하세요"
+        align="left"
+        height={600}
+        variant="def"
+      />
+
       <div className="editor-container">
         <h2 className="title">에디터 게시글 수정</h2>
 
@@ -139,6 +169,7 @@ export default function EditorEditPage() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="input"
+            placeholder="제목을 입력하세요"
           />
         </div>
 
@@ -154,7 +185,7 @@ export default function EditorEditPage() {
             <img
               src={thumbnailUrl}
               alt="썸네일 미리보기"
-              style={{ marginTop: "10px", maxWidth: "200px" }}
+              style={{ marginTop: 10, maxWidth: 240, borderRadius: 8 }}
             />
           )}
         </div>
@@ -164,11 +195,12 @@ export default function EditorEditPage() {
           <label className="label">내용</label>
           <Editor
             previewStyle="vertical"
-            height="400px"
+            height="480px"
             initialEditType="wysiwyg"
             useCommandShortcut={true}
             ref={editorRef}
-            key={content}
+            // initialValue는 최초 1회만 반영되므로 key로 강제 리마운트
+            key={content ? `content-${editorno}` : `empty-${editorno}`}
             initialValue={content || "내용을 입력하세요"}
             toolbarItems={[
               [
@@ -191,17 +223,55 @@ export default function EditorEditPage() {
               addImageBlobHook: async (blob, callback) => {
                 try {
                   const fileUrl = await uploadImageToS3(blob);
+                  // 에디터에 즉시 삽입
                   callback(fileUrl, blob.name);
 
-                  // 본문 이미지 배열에 추가
-                  setContentImgUrl(fileUrl);
+                  // 본문 이미지 배열에 추가 (중복 방지)
+                  setContentImgUrls((prev) =>
+                    prev.includes(fileUrl) ? prev : [...prev, fileUrl]
+                  );
                 } catch (err) {
                   console.error("이미지 업로드 실패:", err);
+                  alert("이미지 업로드 실패");
                 }
               },
             }}
           />
         </div>
+
+        {/* 본문 이미지 목록(선택 표시용) */}
+        {contentImgUrls.length > 0 && (
+          <div className="formGroup">
+            <label className="label">본문 이미지 목록</label>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+              {contentImgUrls.map((url, idx) => (
+                <div key={idx} style={{ textAlign: "center" }}>
+                  <img
+                    src={url}
+                    alt={`content-${idx}`}
+                    style={{
+                      width: 120,
+                      height: 80,
+                      objectFit: "cover",
+                      borderRadius: 6,
+                      display: "block",
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="btn btnMini"
+                    style={{ marginTop: 6 }}
+                    onClick={() =>
+                      setContentImgUrls((prev) => prev.filter((u) => u !== url))
+                    }
+                  >
+                    제거
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="buttonGroup">
           <button onClick={handleUpdate} className="btn btnCreate">
