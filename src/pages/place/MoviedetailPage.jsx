@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import "../../css/MovieDetailPage.css";
 import useAuthStore from "../../store/authStore";
+import { uploadImageToS3 } from "../../service/editorAPI";
 
 const TMDB_API_KEY = "674c3b16235176789e8ad2f9fee1a760";
 
@@ -47,8 +48,9 @@ export default function MovieDetailPage() {
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [reviewText, setReviewText] = useState("");
   const [reviews, setReviews] = useState([]);
-  const [photo, setPhoto] = useState(null);
-  const [photoPreview, setPhotoPreview] = useState(null);
+  // photo state를 S3 이미지 URL로 변경
+  const [reviewPhotoUrl, setReviewPhotoUrl] = useState("");
+  
 
   // 수정 기능 관련 상태 추가
   const [editingReviewId, setEditingReviewId] = useState(null);
@@ -79,6 +81,7 @@ export default function MovieDetailPage() {
       console.error("리뷰를 불러오는 중 오류가 발생했습니다:", error);
     }
   };
+
 
   const fetchUserInfo = async () => {
     // JWT 토큰이 있지만 사용자 정보가 없는 경우에만 실행
@@ -126,17 +129,34 @@ export default function MovieDetailPage() {
     setIsReviewOpen(!isReviewOpen);
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setPhoto(file);
-      setPhotoPreview(URL.createObjectURL(file));
-    } else {
-      setPhoto(null);
-      setPhotoPreview(null);
-    }
-  };
+  // --- 1. 파일 선택 시 S3에 이미지 업로드하는 로직 추가 ---
+  const handleFileChange = async (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    try {
+      const fileUrl = await uploadImageToS3(file);
+      setReviewPhotoUrl(fileUrl);
+      console.log("리뷰 사진 업로드 성공:", fileUrl);
+      alert("사진이 첨부되었습니다!");
+    } catch (error) {
+      console.error("사진 업로드 실패:", error);
+      alert("사진 업로드에 실패했습니다.");
+      setReviewPhotoUrl("");
+    }
+  } else {
+    setReviewPhotoUrl("");
+  }
+};
 
+  // --- 2. 사진 삭제 기능 추가 ---
+  const handleRemovePhoto = () => {
+  setReviewPhotoUrl("");
+  const fileInput = document.getElementById("photo-upload");
+  if (fileInput) fileInput.value = "";
+};
+
+
+  // --- 3. 리뷰 등록 시 이미지 URL 포함하여 전송 ---
   const handleReviewSubmit = async () => {
     if (!isLoggedIn) {
       alert("로그인해야 리뷰를 등록하실 수 있습니다.");
@@ -155,6 +175,8 @@ export default function MovieDetailPage() {
       commentA: reviewText,
       contentType: "movie",
       contentNo: parseInt(id),
+      // photoUrl 필드 추가
+      photoUrl: reviewPhotoUrl,
     };
 
     try {
@@ -167,8 +189,7 @@ export default function MovieDetailPage() {
       alert("리뷰 등록을 완료했습니다.");
 
       setReviewText("");
-      setPhoto(null);
-      setPhotoPreview(null);
+      setReviewPhotoUrl(""); // 사진 URL 초기화
       fetchReviews();
     } catch (error) {
       console.error("리뷰 등록 중 오류가 발생했습니다:", error);
@@ -289,27 +310,27 @@ export default function MovieDetailPage() {
                     onChange={(e) => setReviewText(e.target.value)}
                   ></textarea>
                   <div className="input-buttons">
-                    <label htmlFor="photo-upload" className="photo-upload-label">
-                      사진
-                    </label>
-                    <input
-                      type="file"
-                      id="photo-upload"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                      style={{ display: "none" }}
-                    />
-                    {photoPreview && (
-                      <img
-                        src={photoPreview}
-                        alt="미리보기"
-                        className="photo-preview-thumbnail"
-                      />
-                    )}
-                    <button onClick={handleReviewSubmit} className="review-submit-button">
-                      등록
-                    </button>
+                    <label htmlFor="photo-upload" className="photo-upload-label">
+                      사진
+                    </label>
+                    <input
+                      type="file"
+                      id="photo-upload"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      style={{ display: "none" }}
+                    />
+                    {reviewPhotoUrl && (
+                      <div className="photo-upload-status">
+                        <span>사진 첨부 완료!</span>
+                        <button onClick={handleRemovePhoto}>삭제</button>
+                      </div>
+                    )}
+                    <button onClick={handleReviewSubmit} className="review-submit-button">
+                      등록
+                    </button>
                   </div>
+                    
                 </div>
                 <div className="review-list">
                   {reviews.length > 0 ? (
@@ -340,16 +361,20 @@ export default function MovieDetailPage() {
                         ) : (
                           <>
                             <p className="review-commentA">{review.commentA}</p>
-                            <div className="review-meta">
-                              {isLoggedIn && user?.userno === review.userNo && (
-                                <div className="review-actions">
-                                  <button
-                                    className="edit-button"
-                                    onClick={() => {
-                                      setEditingReviewId(review.reviewNo);
-                                      setEditingReviewText(review.commentA);
-                                    }}
-                                  >
+                            {/* 4. 리뷰 목록에 사진 표시 로직 추가 */}
+                            {review.photoUrl && (
+                              <img src={review.photoUrl} alt="리뷰 사진" className="review-photo-display" />
+                            )}
+                            <div className="review-meta">
+                              {isLoggedIn && user?.userno === review.userNo && (
+                                <div className="review-actions">
+                                  <button
+                                    className="edit-button"
+                                    onClick={() => {
+                                      setEditingReviewId(review.reviewNo);
+                                      setEditingReviewText(review.commentA);
+                                    }}
+                                  >
                                     수정
                                   </button>
                                   <button
