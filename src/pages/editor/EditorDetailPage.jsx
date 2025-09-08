@@ -279,7 +279,7 @@ export default function EditorDetailPage() {
             {currentUser && currentUser.userno === editor.userno && (
               <>
                 <button
-                  onClick={() => navigate(/editor/edit/${editor.editorno})}
+                  onClick={() => navigate(`/editor/edit/${editor.editorno}`)}
                   className="btnEdit"
                 >
                   수정

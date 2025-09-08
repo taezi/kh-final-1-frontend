@@ -98,10 +98,7 @@ export default function EditorWritePage() {
   // 등록
   const handleClickCreateButton = async () => {
     const title = titleRef.current?.value?.trim() || "";
-    if (!user?.userno || !user?.token) {
-      alert("로그인 후 이용해주세요.");
-      return;
-    }
+    
     if (!title) {
       alert("제목을 입력해주세요!");
       return;
