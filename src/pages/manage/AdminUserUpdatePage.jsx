@@ -66,6 +66,16 @@ export default function AdminUserUpdatePage() {
             </button>
           </div>
 
+          <button
+            type="button"
+            className="change-button"
+              onClick={() => handleUpdate("id")}
+          >
+            변경
+          </button>
+        </div>
+
+
           {/* 이름 */}
           <div className="profile-item">
             <div className="item-label">
