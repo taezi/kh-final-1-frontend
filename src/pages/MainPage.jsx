@@ -420,7 +420,12 @@ console.log("에디터 리스트 데이터:", editorList);
 
         {/* 에디터 데이트 코스추천 */}
         <section className="home-section">
+          <div className="home-edHeader">
           <h3 className="home-edTitle">에디터 추천 데이트 코스</h3>
+          <button className="editorCourse-more" onClick={() => navigate("/editor")}>
+              더 많은 데이트 코스 보기
+            </button>
+            </div>
           <div className="home-edWrap">
             <button
               className="home-edArrow left"

@@ -21,10 +21,6 @@ const setupInterceptors = (apiInstance) => {
     (response) => response,
     async (error) => {
       const originalRequest = error.config;
-      console.log(
-        "refresh 요청 실행됨 : " + originalRequest.url.includes("refresh")
-      );
-
       // refresh 요청 자체가 실패했으면 그냥 에러 리턴
       if (originalRequest.url.includes("refresh")) {
         console.log("refresh 요청 자체가 실패했으면 그냥 에러 리턴");

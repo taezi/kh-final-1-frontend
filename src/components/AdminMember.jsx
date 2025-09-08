@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { deleteAdminUser, getUserData } from "../service/adminAPI";
+import { useNavigate } from "react-router-dom";
 // CSS 파일 import
 import "../css/AdminMember.css";
 
@@ -8,7 +9,7 @@ export default function AdminMembers() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchFilter, setSearchFilter] = useState("userid");
-
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -42,6 +43,9 @@ export default function AdminMembers() {
     } else {
       alert("취소되었습니다.");
     }
+  };
+  const handleUpdate = (userno) => {
+    navigate(`/admin/update/${userno}`); // userno를 URL 파라미터로 전달
   };
 
   const getFilteredUsers = () => {
@@ -132,11 +136,14 @@ export default function AdminMembers() {
                 <td>{user.joindate}</td>
                 <td>
                   <div className="action-buttons-container">
-                    <button className="action-button update-button">
+                    <button
+                      className="action-button update-button"
+                      onClick={() => handleUpdate(user.userno)}
+                    >
                       수정
                     </button>
                     <button
-                      className="action-button delete-button"
+                      className="action-button-1 delete-button-1"
                       onClick={() => handleDelete(user.userno)}
                     >
                       삭제

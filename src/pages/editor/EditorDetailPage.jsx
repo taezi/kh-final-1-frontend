@@ -1,4 +1,3 @@
-// src/pages/editor/EditorDetailPage.jsx
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
@@ -20,50 +19,56 @@ import {
 import HeroStrip from "../../components/HeroStrip";
 import MY_PAGE_HERO from "../../img/my-page.jpg";
 
-/**
- * 에디터 상세 페이지
- * - 추천 데이트 코스 상세 / 이미지 / 본문 / 댓글
- * - 조회수 증가, 북마크(좋아요) 토글, 수정/삭제
- */
-
 export default function EditorDetailPage() {
   const { editorno } = useParams();
   const navigate = useNavigate();
-
+  const [editor, setEditor] = useState(null);
   const currentUser = useAuthStore((state) => state.user);
 
-  const [editor, setEditor] = useState(null);
+  // 스크롤 상태 관리
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // 스크롤 이벤트 감지
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // 스크롤 맨 위로 올리기
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   // 댓글
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
-  const [editingCommentId, setEditingCommentId] = useState(null);
-  const [editingText, setEditingText] = useState("");
 
-  // 좋아요 상태 (해당 사용자의 editor 북마크 집합)
-  const [likes, setLikes] = useState(new Set());
-
-  // -----------------------------
-  // 댓글 로드 / CRUD
-  // -----------------------------
+  // 댓글 조회
   useEffect(() => {
-    if (!editorno) return;
-    fetchComments("editor", editorno);
+    if (editorno) fetchComments("editor", editorno);
   }, [editorno]);
 
   const fetchComments = async (contentType, contentNo) => {
     try {
       const data = await getComments(contentType, contentNo);
-      setComments(Array.isArray(data) ? data : []);
+      console.log(data);
+      setComments(data);
     } catch (err) {
-      console.error("댓글 불러오기 실패:", err);
+      console.error(err);
     }
   };
 
+  // 댓글 등록
   const handleAddComment = async () => {
     if (!commentText.trim()) return;
     if (!currentUser) return alert("로그인 후 이용 가능합니다.");
-    if (!editor) return;
 
     const newComment = {
       userno: currentUser.userno,
@@ -72,11 +77,22 @@ export default function EditorDetailPage() {
 
     try {
       const saved = await addComment("editor", editor.editorno, newComment);
+      console.log("댓글 추가 내용 : ", saved);
+
+      // 댓글 목록 업데이트
       setComments((prev) => [
-        { ...saved, reviewno: Number(saved.reviewno) },
+        {
+          ...saved,
+          reviewno: Number(saved.reviewno),
+          username: currentUser.username,
+        },
         ...prev,
       ]);
+
+      // 입력창 초기화
       setCommentText("");
+
+      // **수정 모드 초기화**
       setEditingCommentId(null);
       setEditingText("");
     } catch (err) {
@@ -85,12 +101,14 @@ export default function EditorDetailPage() {
     }
   };
 
+  // 댓글 삭제
   const handleDeleteComment = async (reviewno) => {
     const isConfirmed = window.confirm("정말 삭제하시겠습니까?");
     if (!isConfirmed) return;
+
     try {
       await removeComment(reviewno, "editor");
-      setComments((prev) => prev.filter((c) => c.reviewno !== reviewno));
+      setComments(comments.filter((c) => c.reviewno !== reviewno));
       alert("댓글이 삭제되었습니다.");
     } catch (err) {
       console.error(err);
@@ -98,9 +116,10 @@ export default function EditorDetailPage() {
     }
   };
 
+  // 댓글 수정
   const handleEditComment = async (reviewno, newContent) => {
     try {
-      await updateComment(reviewno, newContent);
+      await updateComment(reviewno, newContent); // reviewAPI에서 서버 요청
       setComments((prev) =>
         prev.map((c) =>
           c.reviewno === reviewno ? { ...c, commenta: newContent } : c
@@ -112,11 +131,17 @@ export default function EditorDetailPage() {
     }
   };
 
+  // 댓글 수정 모드 상태
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editingText, setEditingText] = useState("");
+
+  // 댓글 수정
   const startEditingComment = (reviewno, currentText) => {
     setEditingCommentId(reviewno);
-    setEditingText(currentText || "");
+    setEditingText(currentText);
   };
 
+  // 댓글 수정 완료
   const submitEditComment = async (reviewno) => {
     try {
       await handleEditComment(reviewno, editingText);
@@ -128,10 +153,8 @@ export default function EditorDetailPage() {
     }
   };
 
-  // -----------------------------
-  // 본문 Markdown에서 이미지/텍스트 추출
-  // -----------------------------
-  const extractImages = (markdown = "") => {
+  // 이미지 태그 추출
+  const extractImages = (markdown) => {
     const regex = /!\[([^\]]*)\]\(([^)]+)\)/g;
     const images = [];
     let match;
@@ -141,30 +164,37 @@ export default function EditorDetailPage() {
     return images;
   };
 
-  const extractText = (markdown = "") =>
-    markdown.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, "").trim();
+  // 텍스트만 추출 (이미지 제거)
+  const extractText = (markdown) => {
+    return markdown.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, "").trim();
+  };
 
-  // -----------------------------
-  // 북마크(좋아요) 초기 로드
-  // -----------------------------
+  const images = editor ? extractImages(editor.editorcontent) : [];
+  const text = editor ? extractText(editor.editorcontent) : "";
+
+  // 좋아요 상태 Set으로 관리
+  const [likes, setLikes] = useState(new Set());
+
+  // 마운트 시 서버에서 좋아요 데이터 가져오기
   useEffect(() => {
-    if (!currentUser) {
-      setLikes(new Set());
-      return;
-    }
+    if (!currentUser) return;
+    // 현재 로그인한 사용자(currentUser.userno) 기준 북마크를 가져옴
     getBookmarks(currentUser.userno, "editor")
       .then((list) => {
-        const editorLikes = (list || [])
+        const editorLikes = list
+          // 에디터 콘텐츠만 적용
           .filter((b) => b.contenttype === "editor")
           .map((b) => Number(b.contentno));
+
+        // Set으로 관리해서 각 사용자의 북마크 상태 반영
         setLikes(new Set(editorLikes));
       })
       .catch((err) => console.error("북마크 불러오기 실패:", err));
   }, [currentUser]);
 
-  // 좋아요 토글
-  const toggleLike = async (targetEditorNo, e) => {
-    e?.stopPropagation?.();
+  // 북마크 좋아요 토글
+  const toggleLike = async (editorno, e) => {
+    e.stopPropagation();
     if (!currentUser) {
       alert("로그인 후 이용 가능합니다.");
       return;
@@ -172,22 +202,25 @@ export default function EditorDetailPage() {
 
     const bookmarkData = {
       userno: currentUser.userno,
-      contentno: targetEditorNo,
+      contentno: editorno,
       contenttype: "editor",
     };
 
-    const currentlyLiked = likes.has(targetEditorNo);
+    const currentlyLiked = likes.has(editorno); // 이전 상태 저장
 
     try {
+      // 서버 호출
       if (currentlyLiked) {
         await removeBookmark(bookmarkData);
       } else {
         await addBookmark(bookmarkData);
       }
+
+      // 상태 업데이트
       setLikes((prev) => {
-        const next = new Set(prev);
-        currentlyLiked ? next.delete(targetEditorNo) : next.add(targetEditorNo);
-        return next;
+        const newSet = new Set(prev);
+        currentlyLiked ? newSet.delete(editorno) : newSet.add(editorno);
+        return newSet;
       });
     } catch (err) {
       console.error(err);
@@ -195,80 +228,76 @@ export default function EditorDetailPage() {
     }
   };
 
-  // -----------------------------
-  // 상세/조회수
-  // -----------------------------
   useEffect(() => {
     const fetchEditor = async () => {
       try {
-        // 조회수 증가 (중복 방지: localStorage)
+        // 조회수 증가 처리
+        // localStorage에서 이미 본 게시글인지 확인
         const viewed = JSON.parse(
           localStorage.getItem("viewedEditors") || "[]"
         );
+
         if (!viewed.includes(editorno)) {
+          // 한번도 안 본 글이면 조회수 증가
           await incrementEditorView(editorno);
+          // localStorage에 현재 글 번호 추가
           localStorage.setItem(
             "viewedEditors",
             JSON.stringify([...viewed, editorno])
           );
         }
 
-        // 상세 데이터
-        const res = await getPostDetail(editorno);
-        const data = res?.data || res; // 방어코드: axios/직접객체 모두 대응
+        // 상세 데이터 가져오기
+        const data = await getPostDetail(editorno);
         setEditor(data);
       } catch (error) {
         console.error("상세 조회 실패:", error);
       }
     };
-    if (editorno) fetchEditor();
+
+    fetchEditor();
   }, [editorno]);
 
   const handleDelete = async () => {
-    if (!window.confirm("정말 삭제하시겠습니까?")) return;
-    try {
-      await deletePost(editorno);
-      alert("삭제되었습니다.");
-      navigate("/editor");
-    } catch (error) {
-      console.error("삭제 실패:", error);
-      alert("삭제 실패");
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      try {
+        await deletePost(editorno);
+        alert("삭제되었습니다.");
+        navigate("/editor");
+      } catch (error) {
+        console.error("삭제 실패:", error);
+        alert("삭제 실패");
+      }
     }
   };
 
-  if (!editor) {
-    return (
-      <Layout>
-        <HeroStrip
-          imageSrc={MY_PAGE_HERO}
-          title="에디터 상세"
-          subtitle="게시글을 불러오는 중입니다…"
-          align="left"
-          height={600}
-          variant="def"
-        />
-        <p style={{ padding: "16px" }}>로딩중...</p>
-      </Layout>
-    );
-  }
+  if (!editor) return <p>로딩중...</p>;
 
-  const images = extractImages(editor.editorcontent);
-  const text = extractText(editor.editorcontent);
+  // 마크다운 이미지 변환 함수
+  const renderMarkdownImages = (text) => {
+    // ![alt](url) → <img src="url" alt="alt" />
+    return text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, url) => {
+      return (
+        <img
+          src="${url}"
+          alt="${alt}"
+          style="max-width:100%; border-radius:8px;"
+        />
+      );
+    });
+  };
 
   return (
     <Layout>
-      {/* ✅ 상단 히어로 */}
       <HeroStrip
         imageSrc={MY_PAGE_HERO}
-        title={editor.editortitle || "에디터 상세"}
-        subtitle="에디터가 추천한 데이트 코스를 확인해보세요"
+        title="에디터 추천 데이트 코스"
+        subtitle="에디터들이 엄선한 코스를 모아봤어요"
         align="left"
         height={600}
         variant="def"
       />
-
       <div className="editor-detail-page">
-        {/* 상단 액션 */}
         <div className="editor-action-wrapper">
           <button onClick={() => navigate("/editor")} className="btnBack">
             목록으로
@@ -290,10 +319,10 @@ export default function EditorDetailPage() {
           </div>
         </div>
 
-        {/* 메타 */}
         <p>
           <strong>조회수:</strong> {editor.editorview}
         </p>
+        <h4>에디터 추천 데이트코스</h4>
 
         <div className="editor-title-container">
           <p className="editor-title">
@@ -303,9 +332,11 @@ export default function EditorDetailPage() {
             className={`heart editor-detail-heart ${
               likes.has(editor.editorno) ? "is-on" : ""
             }`}
-            onClick={(e) => toggleLike(editor.editorno, e)}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleLike(editor.editorno, e);
+            }}
             title="좋아요"
-            aria-label="좋아요"
           >
             ♡
           </button>
@@ -323,11 +354,10 @@ export default function EditorDetailPage() {
           </div>
         </div>
 
-        {/* 본문 */}
         <div className="editor-detail-container">
           {/* 이미지 영역 */}
           <div className="editor-detail-image">
-            {images.map((img, idx) => (
+            {extractImages(editor.editorcontent).map((img, idx) => (
               <img
                 key={idx}
                 src={img.url}
@@ -342,11 +372,20 @@ export default function EditorDetailPage() {
           </div>
 
           {/* 글 영역 */}
-          <div className="editor-detail-info">{text || null}</div>
+          <div className="editor-detail-info">
+            {extractText(editor.editorcontent) || null}
+          </div>
         </div>
       </div>
 
-      {/* 댓글 영역 */}
+      {/* 스크롤 위로 버튼 */}
+      {showScrollTop && (
+        <button className="scroll-to-top" onClick={scrollToTop}>
+          ↑
+        </button>
+      )}
+
+      {/* 댓글창 시작 */}
       <div className="comment-section">
         <div className="comment-input">
           <textarea
@@ -358,75 +397,69 @@ export default function EditorDetailPage() {
         </div>
 
         <ul className="comment-list">
-          {comments.map((comment) => {
-            const isEditing =
-              Number(editingCommentId) === Number(comment.reviewno);
-            const isOwner =
-              currentUser && currentUser.userno === comment.userno;
-            return (
-              <li key={comment.reviewno} className="comment-item">
-                <div className="comment-header">
-                  <span className="comment-userno">{comment.username}</span>
-                  <span className="comment-createdat">{comment.createdat}</span>
-                </div>
+          {comments.map((comment) => (
+            <li key={comment.reviewno} className="comment-item">
+              <div className="comment-header">
+                <span className="comment-userno">{comment.username}</span>
+                <span className="comment-createdat">{comment.createdat}</span>
+              </div>
 
-                <div className="comment-content">
-                  {isEditing ? (
-                    <textarea
-                      value={editingText}
-                      onChange={(e) => setEditingText(e.target.value)}
-                    />
+              <div className="comment-content">
+                {editingCommentId === Number(comment.reviewno) ? (
+                  <textarea
+                    value={editingText}
+                    onChange={(e) => setEditingText(e.target.value)}
+                  />
+                ) : (
+                  comment.commenta || ""
+                )}
+              </div>
+
+              {currentUser && currentUser.userno === comment.userno && (
+                <div className="comment-actions">
+                  {editingCommentId === comment.reviewno ? (
+                    <>
+                      <button
+                        onClick={() => submitEditComment(comment.reviewno)}
+                        className="btnEditComment"
+                      >
+                        완료
+                      </button>
+                      <button
+                        onClick={() => {
+                          setEditingCommentId(null);
+                          setEditingText("");
+                        }}
+                        className="btnDeleteComment"
+                      >
+                        취소
+                      </button>
+                    </>
                   ) : (
-                    comment.commenta || ""
+                    <>
+                      <button
+                        onClick={() =>
+                          startEditingComment(
+                            comment.reviewno,
+                            comment.commenta
+                          )
+                        }
+                        className="btnEditComment"
+                      >
+                        수정
+                      </button>
+                      <button
+                        onClick={() => handleDeleteComment(comment.reviewno)}
+                        className="btnDeleteComment"
+                      >
+                        삭제
+                      </button>
+                    </>
                   )}
                 </div>
-
-                {isOwner && (
-                  <div className="comment-actions">
-                    {isEditing ? (
-                      <>
-                        <button
-                          onClick={() => submitEditComment(comment.reviewno)}
-                          className="btnEditComment"
-                        >
-                          완료
-                        </button>
-                        <button
-                          onClick={() => {
-                            setEditingCommentId(null);
-                            setEditingText("");
-                          }}
-                          className="btnDeleteComment"
-                        >
-                          취소
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <button
-                          onClick={() =>
-                            startEditingComment(
-                              comment.reviewno,
-                              comment.commenta
-                            )
-                          }
-                          className="btnEditComment"
-                        >
-                          수정
-                        </button>
-                        <button
-                          onClick={() => handleDeleteComment(comment.reviewno)}
-                          className="btnDeleteComment"
-                        >
-                          삭제
-                        </button>
-                      </>
-                    )}
-                  </div>
-                )}
-              </li>
-            );
-          })}
+              )}
+            </li>
+          ))}
         </ul>
       </div>
     </Layout>
