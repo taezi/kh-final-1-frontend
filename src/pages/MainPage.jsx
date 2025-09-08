@@ -6,7 +6,6 @@ import { getEventList } from "../service/placeAPI";
 import "../css/MainPage.css";
 import { getPostList } from "../service/editorAPI";
 
-
 /* Swiper */
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay, Keyboard, A11y } from "swiper/modules";
@@ -75,8 +74,9 @@ function DateRail({ start, selected, onChange, onPrev, onNext }) {
             return (
               <button
                 key={d.format("YYYY-MM-DD")}
-                className={`home-tick ${isSel ? "is-sel" : ""} ${isToday ? "is-today" : ""
-                  }`}
+                className={`home-tick ${isSel ? "is-sel" : ""} ${
+                  isToday ? "is-today" : ""
+                }`}
                 onClick={() => onChange(d)}
                 aria-label={d.format("YYYY-MM-DD")}
               >
@@ -153,7 +153,7 @@ function alignSlidesSafe(swiper) {
       if (isShort) wrap.style.transform = "translate3d(0px,0px,0px)";
       else wrap.style.removeProperty("transform");
     });
-  } catch { }
+  } catch {}
 }
 
 const alignSlides = alignSlidesSafe;
@@ -240,7 +240,7 @@ export default function MainPage() {
       }
     })();
   }, []);
-console.log("에디터 리스트 데이터:", editorList);
+  // console.log("에디터 리스트 데이터:", editorList);
   return (
     <div className="home">
       {/* ===== HERO ===== */}
@@ -421,11 +421,14 @@ console.log("에디터 리스트 데이터:", editorList);
         {/* 에디터 데이트 코스추천 */}
         <section className="home-section">
           <div className="home-edHeader">
-          <h3 className="home-edTitle">에디터 추천 데이트 코스</h3>
-          <button className="editorCourse-more" onClick={() => navigate("/editor")}>
+            <h3 className="home-edTitle">에디터 추천 데이트 코스</h3>
+            <button
+              className="editorCourse-more"
+              onClick={() => navigate("/editor")}
+            >
               더 많은 데이트 코스 보기
             </button>
-            </div>
+          </div>
           <div className="home-edWrap">
             <button
               className="home-edArrow left"
@@ -456,7 +459,20 @@ console.log("에디터 리스트 데이터:", editorList);
                     }}
                   />
                   <div className="title center">{editor.editortitle}</div>
-                  <div className="meta center">{editor.editorintro || "에디터 추천"}</div>
+                  <div className="hashtags-list">
+                    {editor.hashtags &&
+                      editor.hashtags.map((tag, idx) => (
+                        <span
+                          key={`${editor.editorno}-${idx}`}
+                          className="tag-pill"
+                        >
+                          #{typeof tag === "string" ? tag : tag.tagname}
+                        </span>
+                      ))}
+                  </div>
+                  <div className="meta center">
+                    {editor.editorintro || "에디터 추천"}
+                  </div>
                 </article>
               ))}
             </div>
