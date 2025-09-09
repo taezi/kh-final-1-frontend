@@ -61,8 +61,12 @@ export default function AdminUserUpdatePage() {
               <label>ID</label>
               <span className="item-value">{user.userid}</span>
             </div>
-            <button type="button" className="change-button" disabled>
-              수정할수없음
+            <button
+              type="button"
+              className="change-button"
+              onClick={() => handleUpdate("name")}
+            >
+              변경
             </button>
           </div>
 

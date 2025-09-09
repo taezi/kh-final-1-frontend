@@ -359,7 +359,7 @@ export default function EditorDetailPage() {
         <p>
           <strong>조회수:</strong> {editor.editorview}
         </p>
-        <h4>에디터 추천 데이트코스</h4>
+        <h3>에디터 추천 데이트코스</h3>
         {editor.hashtags && editor.hashtags.length > 0 && (
           <div className="editor-hashtags">
             {editor.hashtags.map((tag, idx) => (
