@@ -140,11 +140,11 @@ export default function EditorWritePage() {
     };
 
     try {
-      const response = await createPost(postData, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
+      const response = await createPost(postData);
       console.log("저장 성공:", response?.data || response);
-      const editorno = response?.data?.editorno;
+
+      const editorno = response?.editorno;
+
       if (editorno && tags.length > 0) {
         const postData2 = {
           editorno: editorno,
@@ -269,7 +269,7 @@ export default function EditorWritePage() {
           <label className="label">해쉬태그</label>
           <input
             type="text"
-            placeholder="쉼표로 해시태그 입력 (예: 계절, 공원/산책/자연, 문화/예술)"
+            placeholder="해시태그 입력"
             className="input"
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}

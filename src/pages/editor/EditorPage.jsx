@@ -1,4 +1,3 @@
-// src/pages/editor/EditorPage.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../components/Layout";
@@ -7,7 +6,6 @@ import useAuthStore from "../../store/authStore";
 import { getPostList } from "../../service/editorAPI";
 import defaultImage from "../../img/save-image.png";
 import {
-  add,
   addBookmark,
   getBookmarks,
   removeBookmark,
@@ -26,14 +24,20 @@ export default function EditorPage() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
 
+  // ✅ 선택된 해시태그 상태
+  const [selectedTag, setSelectedTag] = useState("");
+
   // 좋아요(북마크) 상태: Set으로 관리 (editorno 보관)
   const [likes, setLikes] = useState(new Set());
+  console.log("editorList : ", editorList);
 
   // 리스트 로드 함수 (검색/페이지 공통)
   const loadList = async (p = 1, keyword = "") => {
     try {
       const response = await getPostList(keyword);
-      const allItems = (response?.eList || []).map((editor) => ({ ...editor }));
+      const allItems = (response?.eList || []).map((editor) => ({
+        ...editor,
+      }));
 
       // 9개씩 잘라서 보여주기
       const start = (p - 1) * 9;
@@ -68,7 +72,7 @@ export default function EditorPage() {
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      await loadList(1, searchKeyword); // 키워드 포함해서 로드
+      await loadList(1, searchKeyword);
     } catch (err) {
       console.error("검색 실패:", err);
     }
@@ -83,11 +87,8 @@ export default function EditorPage() {
     getBookmarks(user.userno, "editor")
       .then((list) => {
         const editorLikes = list
-          // 에디터 콘텐츠만 적용
           .filter((b) => b.contenttype === "editor")
           .map((b) => Number(b.contentno));
-        // Set으로 관리해서 각 사용자의 북마크 상태 반영
-
         setLikes(new Set(editorLikes));
       })
       .catch((err) => console.error("북마크 불러오기 실패:", err));
@@ -107,18 +108,15 @@ export default function EditorPage() {
       contenttype: "editor",
     };
 
-    const currentlyLiked = likes.has(editorno); // 이전 상태 저장
+    const currentlyLiked = likes.has(editorno);
 
     try {
-      // 서버 호출
-
       if (currentlyLiked) {
         await removeBookmark(bookmarkData);
       } else {
         await addBookmark(bookmarkData);
       }
 
-      // 상태 업데이트
       setLikes((prev) => {
         const newSet = new Set(prev);
         currentlyLiked ? newSet.delete(editorno) : newSet.add(editorno);
@@ -135,6 +133,25 @@ export default function EditorPage() {
     navigate(`/editor/${editorno}`);
   };
 
+  // ✅ 해시태그 버튼 클릭 시 필터링
+  const handleTagClick = (tag) => {
+    if (selectedTag === tag) {
+      setSelectedTag(""); // 다시 클릭하면 전체보기
+    } else {
+      setSelectedTag(tag);
+    }
+  };
+
+  // ✅ 선택된 태그가 있으면 필터링된 리스트 사용
+  const filteredList = selectedTag
+    ? editorList.filter((editor) =>
+        editor.hashtags?.some((t) => {
+          if (typeof t === "string") return t === selectedTag; // 문자열 배열일 경우
+          return t.tagname === selectedTag; // 객체 배열일 경우
+        })
+      )
+    : editorList;
+
   return (
     <Layout>
       {/* ✅ 상단 히어로 배너 */}
@@ -150,23 +167,35 @@ export default function EditorPage() {
       <div className="editor-page">
         {/* 헤더 */}
         <div className="editor-header">
-          <h3>에디터 추천 데이트 코스</h3>
           {user?.role === "editor" ? (
             <button className="register-btn" onClick={handleClick}>
               등록
             </button>
           ) : null}
         </div>
+
+        {/* ✅ 해시태그 버튼 */}
         <div className="hashtag-container">
-          <button className="hashtag">#계절</button>
-          <button className="hashtag">#BEST</button>
-          <button className="hashtag">#공원/산책/자연</button>
-          <button className="hashtag">#문화/예술</button>
-          <button className="hashtag">#카페/먹거리</button>
-          <button className="hashtag">#전망/야경/드라이브</button>
-          <button className="hashtag">#스포츠/활동</button>
-          <button className="hashtag">#로맨스/테마데이트</button>
+          {[
+            "계절",
+            "BEST",
+            "공원/산책/자연",
+            "문화/예술",
+            "카페/먹거리",
+            "전망/야경/드라이브",
+            "스포츠/활동",
+            "로맨스/테마데이트",
+          ].map((tag) => (
+            <button
+              key={tag}
+              className={`hashtag ${selectedTag === tag ? "active" : ""}`}
+              onClick={() => handleTagClick(tag)}
+            >
+              #{tag}
+            </button>
+          ))}
         </div>
+
         {/* 검색창 */}
         <form className="editor-search" onSubmit={handleSearch}>
           <input
@@ -181,7 +210,7 @@ export default function EditorPage() {
 
         {/* 게시글 카드 리스트 */}
         <div className="editor-grid">
-          {editorList.map((editor) => (
+          {filteredList.map((editor) => (
             <div
               key={editor.editorno}
               className="editor-card"
@@ -197,7 +226,7 @@ export default function EditorPage() {
                     likes.has(editor.editorno) ? "is-on" : ""
                   }`}
                   onClick={(e) => {
-                    e.stopPropagation(); // 카드 클릭 이벤트와 겹치지 않도록
+                    e.stopPropagation();
                     toggleLike(editor.editorno, e);
                   }}
                   title="좋아요"
@@ -208,6 +237,18 @@ export default function EditorPage() {
               </div>
               <div className="editor-info">
                 <h4>{editor.editortitle}</h4>
+                {/*  해시태그 목록 */}
+                <div className="hashtags-list">
+                  {editor.hashtags &&
+                    editor.hashtags.map((tag, idx) => (
+                      <span
+                        key={`${editor.editorno}-${idx}`}
+                        className="tag-pill"
+                      >
+                        #{typeof tag === "string" ? tag : tag.tagname}
+                      </span>
+                    ))}
+                </div>
               </div>
             </div>
           ))}
@@ -221,6 +262,7 @@ export default function EditorPage() {
             <button
               onClick={() => {
                 setSearchKeyword("");
+                setSelectedTag(""); // 선택된 태그 초기화
                 loadList(1, "");
               }}
             >

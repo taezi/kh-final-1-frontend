@@ -25,8 +25,43 @@ export default function EditorDetailPage() {
   const [editor, setEditor] = useState(null);
   const currentUser = useAuthStore((state) => state.user);
 
+  // 이미지-글 순서대로 렌더링
+  const parseContent = (markdown) => {
+    const regex = /(!\[([^\]]*)\]\(([^)]+)\))/g;
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = regex.exec(markdown)) !== null) {
+      // 이미지 앞 텍스트가 있으면 추가
+      if (match.index > lastIndex) {
+        let textPart = markdown.slice(lastIndex, match.index);
+        // 공백, 띄어쓰기, 줄바꿈만 있는 경우를 제외
+        if (textPart.trim().length > 0) {
+          textPart = textPart.replace(/<br\s*\/?>/gi, "\n");
+          parts.push({ type: "text", content: textPart });
+        }
+      }
+
+      // 이미지 추가
+      parts.push({ type: "image", url: match[3], alt: match[2] });
+
+      lastIndex = regex.lastIndex;
+    }
+
+    // 마지막 텍스트 추가
+    if (lastIndex < markdown.length) {
+      const textPart = markdown.slice(lastIndex).trim();
+      if (textPart.length > 0) {
+        parts.push({ type: "text", content: textPart });
+      }
+    }
+
+    return parts;
+  };
   // 스크롤 상태 관리
   const [showScrollTop, setShowScrollTop] = useState(false);
+  console.log("aaaaaaaaa : ", editor);
 
   // 스크롤 이벤트 감지
   useEffect(() => {
@@ -79,12 +114,14 @@ export default function EditorDetailPage() {
       const saved = await addComment("editor", editor.editorno, newComment);
       console.log("댓글 추가 내용 : ", saved);
 
+      const now = new Date().toISOString();
       // 댓글 목록 업데이트
       setComments((prev) => [
         {
           ...saved,
           reviewno: Number(saved.reviewno),
           username: currentUser.username,
+          createdat: saved.createdat || now,
         },
         ...prev,
       ]);
@@ -323,6 +360,15 @@ export default function EditorDetailPage() {
           <strong>조회수:</strong> {editor.editorview}
         </p>
         <h4>에디터 추천 데이트코스</h4>
+        {editor.hashtags && editor.hashtags.length > 0 && (
+          <div className="editor-hashtags">
+            {editor.hashtags.map((tag, idx) => (
+              <span key={idx} className="hashtag">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
 
         <div className="editor-title-container">
           <p className="editor-title">
@@ -355,26 +401,20 @@ export default function EditorDetailPage() {
         </div>
 
         <div className="editor-detail-container">
-          {/* 이미지 영역 */}
-          <div className="editor-detail-image">
-            {extractImages(editor.editorcontent).map((img, idx) => (
-              <img
-                key={idx}
-                src={img.url}
-                alt={img.alt}
-                style={{
-                  maxWidth: "100%",
-                  borderRadius: "8px",
-                  marginBottom: "10px",
-                }}
-              />
-            ))}
-          </div>
-
-          {/* 글 영역 */}
-          <div className="editor-detail-info">
-            {extractText(editor.editorcontent) || null}
-          </div>
+          {parseContent(editor.editorcontent).map((part, index) => {
+            if (part.type === "image") {
+              return (
+                <div key={index} className="editor-detail-image">
+                  <img src={part.url} alt={part.alt} />
+                </div>
+              );
+            }
+            return (
+              <p key={index} className="editor-detail-text">
+                {part.content}
+              </p>
+            );
+          })}
         </div>
       </div>
 

@@ -4,10 +4,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Editor } from "@toast-ui/react-editor";
 import {
   getPostDetail,
-  saveEditorHashtags,
-  updatePost,
+  updatePostWithHashtags,
   uploadImageToS3,
 } from "../../service/editorAPI";
+import axios from "axios";
 import "@toast-ui/editor/toastui-editor.css";
 import "../../css/EditorWritePage.css";
 import useAuthStore from "../../store/authStore";
@@ -32,6 +32,10 @@ export default function EditorEditPage() {
   // 본문 이미지 (단일)
   const [contentImgUrl, setContentImgUrl] = useState("");
 
+  // 해시태그
+  const [tags, setTags] = useState([]);
+  const [tagInput, setTagInput] = useState("");
+
   // 게시글 불러오기
   useEffect(() => {
     const fetchData = async () => {
@@ -41,12 +45,11 @@ export default function EditorEditPage() {
 
         setTitle(post.editortitle || "");
         setContent(post.editorcontent || "");
-
-        // 썸네일
         setThumbnailUrl(post.thumbnailUrl || "");
-
-        // 본문 이미지 단일 값
         setContentImgUrl(post.contentImgUrl || "");
+
+        // 기존 해시태그 불러오기
+        setTags(post.hashtags || []);
 
         setLoading(false);
       } catch (err) {
@@ -68,47 +71,30 @@ export default function EditorEditPage() {
 
     const editorContent = editorInstance.getMarkdown();
 
-    if (!title?.trim()) {
-      alert("제목을 입력해주세요!");
-      return;
-    }
+    if (!title?.trim()) return alert("제목을 입력해주세요!");
+    if (!thumbnailUrl) return alert("썸네일 이미지를 첨부해주세요!");
+    if (!contentImgUrl) return alert("본문 이미지를 업로드해주세요!");
+    if (!editorContent?.trim()) return alert("내용을 입력해주세요!");
 
-    if (!thumbnailUrl) {
-      alert("썸네일 이미지를 첨부해주세요!");
-      return;
-    }
-
-    if (!contentImgUrl) {
-      alert("에디터 이미지를 업로드해주세요!");
-      return;
-    }
-
-    if (!editorContent?.trim()) {
-      alert("내용을 입력해주세요!");
-      return;
-    }
-
-    // 에디터 본문 내 이미지 존재 여부 체크 (Markdown 이미지 문법)
     const hasImageInEditor = /!\[.*?\]\(.*?\)/.test(editorContent);
-    if (!hasImageInEditor) {
-      alert("에디터 본문에 이미지를 최소 하나 업로드해주세요!");
-      return;
-    }
+    if (!hasImageInEditor)
+      return alert("본문에 이미지를 최소 하나 포함해주세요!");
 
-    const postData = {
-      editortitle: title,
-      editorcontent: editorContent,
-      userno: user?.userno,
-      thumbnailUrl,
-      contentImgUrl,
+    const requestData = {
+      editor: {
+        editortitle: title,
+        editorcontent: editorContent,
+        userno: user?.userno,
+        thumbnailUrl,
+        contentImgUrl,
+      },
+      hashtags: tags.map((t) => (typeof t === "string" ? t : t.tagname)), // 문자열 배열로 변환
     };
 
-    console.log("업데이트 전송 데이터:", postData);
-
     try {
-      await updatePost(editorno, postData);
+      await updatePostWithHashtags(editorno, requestData);
       alert("수정 완료!");
-      navigate("/editor", { replace: true });
+      navigate(`/editor/${editorno}`);
     } catch (err) {
       console.error("수정 실패", err);
       alert("수정 실패");
@@ -133,6 +119,26 @@ export default function EditorEditPage() {
       console.error(err);
       alert("썸네일 업로드 실패");
     }
+  };
+
+  // 해시태그 추가
+  const addTag = () => {
+    if (!tagInput.trim()) return;
+    if (tags.some((t) => (t.tagname || t) === tagInput.trim())) {
+      alert("이미 추가된 해시태그입니다.");
+      return;
+    }
+    setTags([...tags, tagInput.trim()]);
+    setTagInput("");
+  };
+
+  // 해시태그 삭제
+  const removeTag = (tagToRemove) => {
+    setTags(
+      tags.filter(
+        (t) => (t.tagname || t) !== (tagToRemove.tagname || tagToRemove)
+      )
+    );
   };
 
   if (loading) return <p>로딩중...</p>;
@@ -181,6 +187,42 @@ export default function EditorEditPage() {
           )}
         </div>
 
+        {/* 해시태그 */}
+        <div className="formGroup">
+          <label className="label">해시태그</label>
+          <input
+            type="text"
+            placeholder="해시태그 입력 후 Enter"
+            className="input"
+            value={tagInput}
+            onChange={(e) => setTagInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === ",") {
+                e.preventDefault();
+                const newTag = tagInput.trim().replace(/,$/, "");
+                if (newTag && !tags.includes(newTag)) {
+                  setTags([...tags, newTag]);
+                }
+                setTagInput("");
+              }
+            }}
+          />
+        </div>
+        <div className="tag-container">
+          {tags.map((tag, idx) => (
+            <div key={idx} className="tag-item">
+              #{tag}
+              <button
+                type="button"
+                className="tag-remove-btn"
+                onClick={() => setTags(tags.filter((t) => t !== tag))}
+              >
+                ❌
+              </button>
+            </div>
+          ))}
+        </div>
+
         {/* 내용 */}
         <div className="formGroup">
           <label className="label">내용</label>
@@ -190,7 +232,6 @@ export default function EditorEditPage() {
             initialEditType="wysiwyg"
             useCommandShortcut={true}
             ref={editorRef}
-            // initialValue는 최초 1회만 반영되므로 key로 강제 리마운트
             key={content ? `content-${editorno}` : `empty-${editorno}`}
             initialValue={content || "내용을 입력하세요"}
             toolbarItems={[
@@ -214,10 +255,7 @@ export default function EditorEditPage() {
               addImageBlobHook: async (blob, callback) => {
                 try {
                   const fileUrl = await uploadImageToS3(blob);
-                  // 에디터에 즉시 삽입
                   callback(fileUrl, blob.name);
-
-                  // 본문 이미지 단일 값 저장
                   setContentImgUrl(fileUrl);
                 } catch (err) {
                   console.error("이미지 업로드 실패:", err);
