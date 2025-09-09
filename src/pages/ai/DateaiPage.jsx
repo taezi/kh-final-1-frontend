@@ -6,6 +6,7 @@ import DateCourseForm from "../../components/DateCourseForm";
 import DateCourseResults from "../../components/DateCourseResults";
 import Layout from "../../components/Layout";
 import { generateAI } from "../../service/aiAPI";
+import DateCourseDirections from "../../components/DateCourseDirections";
 
 import HeroStrip from "../../components/HeroStrip";
 import MY_PAGE_HERO from "../../img/my-page.jpg";
@@ -195,6 +196,12 @@ export default function DateaiPage() {
               searchCriteria={searchCriteria}
             />
           )}
+
+          {!loading &&
+            !errorMsg &&
+            searchData?.date_course?.places?.length >= 2 && (
+              <DateCourseDirections places={searchData.date_course.places} />
+            )}
         </div>
       ) : (
         <div className="date-course-page">
