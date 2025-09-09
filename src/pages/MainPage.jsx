@@ -25,7 +25,7 @@ const HERO_POSTERS = [
     sub: "고즈넉한 한옥의 정취",
   },
   {
-    src: "https://images.unsplash.com/photo-1557484461-b91ad19d4ef9?q=80&w=1940&auto=format&fit=crop&fm=jpg",
+    src: "https://images.unsplash.com/photo-1505764706515-aa95265c5abc?q=80&w=1940&auto=format&fit=crop&fm=jpg",
     title: "성수의 감성",
     sub: "카페·공방·갤러리 산책",
   },
