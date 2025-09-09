@@ -57,53 +57,7 @@
   background-color: #286090;
 }
 
-.social-login-container {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 25px;
-}
 
-
-.social-login-container .kakao-button {
-  width: calc(50% - 5px);
-  padding: 12px;
-  background-color: #fee500; 
-  color: #3c1e1e;
-  border: none;
-  border-radius: 6px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.3s ease;
-}
-
-.social-login-container .kakao-button:hover {
-  opacity: 0.85;
-}
-
-
-.social-login-container .naver-button {
-  width: calc(50% - 5px);
-  padding: 12px;
-  background-color: #03c75a; 
-  color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.3s ease;
-}
-
-.social-login-container .naver-button:hover {
-  opacity: 0.85;
-}
 
 
 .account-actions {
