@@ -5,7 +5,7 @@
   position: relative;
 }
 
-.editor-detail-page h4 {
+.editor-detail-page h3 {
   text-align: center;
   margin-bottom: 20px;
   color: #4a90e2;
@@ -359,3 +359,6 @@
   word-break: break-word; /* 길게 붙은 단어도 줄바꿈 */
 }
 
+.editor-hashtags {
+  margin-bottom: 20px; /* 아래 공간 띄우기 */
+}
