@@ -159,6 +159,7 @@
   border-radius: 8px;
   font-weight: 700;
   cursor: pointer;
+  text-decoration: none;
 }
 
 /* 링크/스켈레톤/에러 */
