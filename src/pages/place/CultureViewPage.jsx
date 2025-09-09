@@ -112,7 +112,7 @@ export default function CultureViewPage() {
     })();
   }, [id]);
 
-  // ✅ 댓글 등록
+  //  댓글 등록
   const handleAddComment = async () => {
     if (!commentText.trim()) return;
     if (!currentUser) {
@@ -120,18 +120,30 @@ export default function CultureViewPage() {
       return;
     }
 
-    const newComment = {
+    const newCommentData = {
       userno: currentUser.userno,
       commenta: commentText,
     };
 
     try {
-      const saved = await addComment(CONTENT_TYPE, id, newComment);
-      setComments((prev) => [
-        { ...saved, reviewno: Number(saved.reviewno) },
-        ...prev,
-      ]);
+      const saved = await addComment(CONTENT_TYPE, id, newCommentData);
+
+      // 화면에 즉시 반영될 최종 댓글 객체 생성
+      const finalComment = {
+        // ...saved,  // <-- 서버 응답에 다른 유용한 정보가 없다면 이 부분은 필요 없습니다.
+        ...newCommentData, // <-- 클라이언트에서 보낸 데이터
+        reviewno: Number(saved.reviewno),
+        username: currentUser.username, //  로그인 유저의 username 추가
+        createdat: dayjs().format("YYYY-MM-DD HH:mm:ss"), //  현재 시간 추가
+      };
+
+      // 댓글 목록의 맨 앞에 새로운 댓글 추가
+      setComments((prev) => [finalComment, ...prev]);
+
+      // 입력창 초기화
       setCommentText("");
+
+      // 수정 모드 초기화
       setEditingCommentId(null);
       setEditingText("");
     } catch (err) {
