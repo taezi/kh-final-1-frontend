@@ -60,21 +60,21 @@ export default function EditorDetailPage() {
     return parts;
   };
   // 스크롤 상태 관리
-  const [showScrollTop, setShowScrollTop] = useState(false);
+  // const [showScrollTop, setShowScrollTop] = useState(false);
   console.log("aaaaaaaaa : ", editor);
 
   // 스크롤 이벤트 감지
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setShowScrollTop(true);
-      } else {
-        setShowScrollTop(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     if (window.scrollY > 300) {
+  //       setShowScrollTop(true);
+  //     } else {
+  //       setShowScrollTop(false);
+  //     }
+  //   };
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
 
   // 스크롤 맨 위로 올리기
   const scrollToTop = () => {
@@ -419,11 +419,11 @@ export default function EditorDetailPage() {
       </div>
 
       {/* 스크롤 위로 버튼 */}
-      {showScrollTop && (
+      {/* {showScrollTop && (
         <button className="scroll-to-top" onClick={scrollToTop}>
           ↑
         </button>
-      )}
+      )} */}
 
       {/* 댓글창 시작 */}
       <div className="comment-section">

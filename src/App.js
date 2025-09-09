@@ -40,11 +40,14 @@ import InquiryDetailPage from "./pages/manage/inquiry/InquiryDetailPage";
 import MypageInquiry from "./components/mypage/MypageInquiry";
 import InquiryReplyPage from "./pages/manage/inquiry/InquiryReplyPage";
 import ScrollToTop from "./components/ScrollToTop";
+import ScrollTopButton from "./components/ScrollTopButton";
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <BrowserRouter>
       <ScrollToTop></ScrollToTop>
+      <ScrollTopButton></ScrollTopButton>
       <Navbar></Navbar>
       <div>
         <Routes>
@@ -64,12 +67,11 @@ function App() {
             element={<RestaurantPage></RestaurantPage>}
           />
 
-          <Route path="/restaurants/:restNo" element={<RestViewPage/>} />
+          <Route path="/restaurants/:restNo" element={<RestViewPage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/cafes" element={<CafePage></CafePage>} />
 
-          <Route path="/cafes/:cafeNo" element={<CafeViewPage/>} />
-
+          <Route path="/cafes/:cafeNo" element={<CafeViewPage />} />
 
           <Route path="/editor" element={<EditorPage></EditorPage>} />
           <Route path="/editor/:editorno" element={<EditorDetailPage />} />
@@ -112,7 +114,10 @@ function App() {
               element={<UpdateEmailPage></UpdateEmailPage>}
             />
           </Route>
-            <Route path="/admin/update/:userno" element={<AdminUserUpdatePage />} />
+          <Route
+            path="/admin/update/:userno"
+            element={<AdminUserUpdatePage />}
+          />
           {/* 관리자만 체크 */}
           <Route element={<PrivateRoute requiredRole="admin" />}>
             <Route path="/admin" element={<AdminPage></AdminPage>} />
@@ -139,6 +144,7 @@ function App() {
           <Route path="*" element={<h1>404 Not Found</h1>} />
         </Routes>
       </div>
+      <Footer></Footer>
     </BrowserRouter>
   );
 }
