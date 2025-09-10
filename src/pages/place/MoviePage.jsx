@@ -8,6 +8,7 @@ import { fetchCinemas } from "../../service/cinemaAPI";
 export default function MoviePage() {
   const [movies, setMovies] = useState([]);
   const [cinemas, setCinemas] = useState([]);
+  console.log("영화정보 : ", movies);
   // 서울 25개 구 전체 목록을 직접 정의
   const allRegions = [
     "강남구",
@@ -117,6 +118,11 @@ export default function MoviePage() {
             className="hero"
             style={{ backgroundImage: `url(${currentBannerImage})` }}
           >
+            <div className="hero-overlay">
+              <h2 className="hero-title">
+                {movies.length > 0 ? movies[currentSlide].title : ""}
+              </h2>
+            </div>
             <button onClick={prevSlide} className="hero-arrow left">
               {"<"}
             </button>
