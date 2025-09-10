@@ -47,8 +47,7 @@ export default function MovieDetailPage() {
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [reviewText, setReviewText] = useState("");
   const [reviews, setReviews] = useState([]);
-  const [photo, setPhoto] = useState(null);
-  const [photoPreview, setPhotoPreview] = useState(null);
+  
 
   // 수정 기능 관련 상태 추가
   const [editingReviewId, setEditingReviewId] = useState(null);
@@ -79,6 +78,7 @@ export default function MovieDetailPage() {
       console.error("리뷰를 불러오는 중 오류가 발생했습니다:", error);
     }
   };
+
 
   const fetchUserInfo = async () => {
     // JWT 토큰이 있지만 사용자 정보가 없는 경우에만 실행
@@ -126,17 +126,6 @@ export default function MovieDetailPage() {
     setIsReviewOpen(!isReviewOpen);
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setPhoto(file);
-      setPhotoPreview(URL.createObjectURL(file));
-    } else {
-      setPhoto(null);
-      setPhotoPreview(null);
-    }
-  };
-
   const handleReviewSubmit = async () => {
     if (!isLoggedIn) {
       alert("로그인해야 리뷰를 등록하실 수 있습니다.");
@@ -167,8 +156,6 @@ export default function MovieDetailPage() {
       alert("리뷰 등록을 완료했습니다.");
 
       setReviewText("");
-      setPhoto(null);
-      setPhotoPreview(null);
       fetchReviews();
     } catch (error) {
       console.error("리뷰 등록 중 오류가 발생했습니다:", error);
@@ -289,27 +276,11 @@ export default function MovieDetailPage() {
                     onChange={(e) => setReviewText(e.target.value)}
                   ></textarea>
                   <div className="input-buttons">
-                    <label htmlFor="photo-upload" className="photo-upload-label">
-                      사진
-                    </label>
-                    <input
-                      type="file"
-                      id="photo-upload"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                      style={{ display: "none" }}
-                    />
-                    {photoPreview && (
-                      <img
-                        src={photoPreview}
-                        alt="미리보기"
-                        className="photo-preview-thumbnail"
-                      />
-                    )}
-                    <button onClick={handleReviewSubmit} className="review-submit-button">
-                      등록
-                    </button>
+                    <button onClick={handleReviewSubmit} className="review-submit-button">
+                      등록
+                    </button>
                   </div>
+                    
                 </div>
                 <div className="review-list">
                   {reviews.length > 0 ? (
@@ -340,16 +311,16 @@ export default function MovieDetailPage() {
                         ) : (
                           <>
                             <p className="review-commentA">{review.commentA}</p>
-                            <div className="review-meta">
-                              {isLoggedIn && user?.userno === review.userNo && (
-                                <div className="review-actions">
-                                  <button
-                                    className="edit-button"
-                                    onClick={() => {
-                                      setEditingReviewId(review.reviewNo);
-                                      setEditingReviewText(review.commentA);
-                                    }}
-                                  >
+                            <div className="review-meta">
+                              {isLoggedIn && user?.userno === review.userNo && (
+                                <div className="review-actions">
+                                  <button
+                                    className="edit-button"
+                                    onClick={() => {
+                                      setEditingReviewId(review.reviewNo);
+                                      setEditingReviewText(review.commentA);
+                                    }}
+                                  >
                                     수정
                                   </button>
                                   <button
