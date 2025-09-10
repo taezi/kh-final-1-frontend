@@ -108,7 +108,7 @@ export default function Navbar({ className = "" }) {
     if (category === "places" && type === "restaurants") {
       navigate("/restaurants");
     }
-    if (category === "places" && type === "cafes"){
+    if (category === "places" && type === "cafes") {
       navigate("/cafes");
     }
     if (category === "places" && type === "movie") {
