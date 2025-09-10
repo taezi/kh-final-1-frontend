@@ -160,22 +160,6 @@
     font-size: 1em;
 }
 
-.photo-upload-label {
-    background-color: #edb4b7;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
-    font-size: 0.9em;
-}
-
-.photo-upload-label:hover {
-    background-color: #e50914;
-}
-
 .review-input-box input[type="file"] {
     display: none;
 }
@@ -244,13 +228,10 @@
     cursor: pointer;
     font-size: 0.8em;
     transition: background-color 0.2s, color 0.2s;
+    width: 70px;
 }
 
-.edit-button:hover {
-    background-color: #ffe066;
-    color: #333;
-}
-
+.edit-button:hover, 
 .delete-button:hover {
     background-color: #ff6b6b;
     color: #fff;
