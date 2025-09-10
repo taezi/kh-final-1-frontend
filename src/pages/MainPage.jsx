@@ -407,7 +407,7 @@ export default function MainPage() {
         </section>
 
         {/* 서울 지도 */}
-        <div className="home-tsTitle">
+        {/* <div className="home-tsTitle">
           <span className="kr">서울</span>
           <span className="en">seoul</span>
         </div>
@@ -416,7 +416,7 @@ export default function MainPage() {
           <div className="home-center" style={{ marginTop: 8 }}>
             <span className="home-chip">선택: {selectedGu}</span>
           </div>
-        )}
+        )} */}
 
         {/* 에디터 데이트 코스추천 */}
         <section className="home-section">

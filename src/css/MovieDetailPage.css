@@ -1,365 +1,361 @@
 /* 기본 스타일링 및 레이아웃 */
 .movie-detail-page {
-    font-family: 'Arial', sans-serif;
-    color: #000; /* 글씨색을 검은색으로 변경 */
-    background-color: #fff; /* 배경색을 흰색으로 변경 */
-    min-height: 100vh;
+  font-family: "Arial", sans-serif;
+  color: #000; /* 글씨색을 검은색으로 변경 */
+  background-color: #fff; /* 배경색을 흰색으로 변경 */
+  min-height: 100vh;
 }
 
 /* 상단 공백 (헤더 고정 시 필요) */
 .top-blank-temp {
-    height: 80px; /* 적절한 높이 설정 */
+  height: 80px; /* 적절한 높이 설정 */
 }
 
 .detail-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 /* 영화 정보 섹션 */
 .info-section {
-    display: flex;
-    gap: 40px;
-    flex-wrap: wrap; 
-    background-color: #fff; 
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); 
-    align-items: flex-start;
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  align-items: flex-start;
 }
 
 .poster-container {
-    flex-shrink: 0;
-    max-width: 300px;
-    width: 100%;
+  flex-shrink: 0;
+  max-width: 300px;
+  width: 100%;
 }
 
 .poster {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .text-info {
-    flex-grow: 1;
-    min-width: 300px;
+  flex-grow: 1;
+  min-width: 300px;
 }
 
 .text-info h1 {
-    font-size: 2.5em;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #000; 
+  font-size: 2.5em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #000;
 }
 
 .text-info h3 {
-    font-size: 1.5em;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    color: #000; 
+  font-size: 1.5em;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #000;
 }
 
 .text-info p {
-    font-size: 1em;
-    line-height: 1.6;
-    color: #555; 
-    margin-bottom: 10px;
+  font-size: 1em;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 10px;
 }
-
-
-
 
 .content-sections-container {
-    display: flex;
-    flex-direction: column; /* 자식 요소들을 세로로 정렬 */
-    gap: 40px; /* 자식 요소들 사이에 40px의 간격 추가 */
-    margin-top: 30px; /* 전체 섹션의 상단 마진 */
-    width: 80%;
+  display: flex;
+  flex-direction: column; /* 자식 요소들을 세로로 정렬 */
+  gap: 40px; /* 자식 요소들 사이에 40px의 간격 추가 */
+  margin-top: 30px; /* 전체 섹션의 상단 마진 */
+  width: 80%;
 }
-
-
-
-
 
 /* 예고편 섹션 */
 .trailer-section {
-    /* margin-top: 30px; */
-    width: 100%;
+  /* margin-top: 30px; */
+  width: 100%;
 }
 
 .trailer-video-container {
-    position: relative;
-    width: 100%;
-    padding-bottom: 56.25%;
-    height: 0;
-    overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .trailer-video-container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /* 리뷰 섹션 */
 .review-section {
-    /* margin-top: 40px; */
-    background-color: #fff;
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    width: 100%;
+  /* margin-top: 40px; */
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
 .review-toggle-button {
-    width: 100%;
-    background-color: #eee;
-    color: #000;
-    font-size: 1.2em;
-    font-weight: bold;
-    padding: 15px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  width: 100%;
+  background-color: #eee;
+  color: #000;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .review-toggle-button:hover {
-    background-color: #ddd; 
+  background-color: #ddd;
 }
 
 .review-content-container {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .review-input-box {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .review-input-box textarea {
-    flex-grow: 1;
-    height: 80px;
-    background-color: #f8f8f8;
-    color: #000;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-    resize: none;
-    font-size: 1em;
+  flex-grow: 1;
+  height: 80px;
+  background-color: #f8f8f8;
+  color: #000;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  resize: none;
+  font-size: 1em;
 }
 
 .review-input-box input[type="file"] {
-    display: none;
+  display: none;
 }
 
 .review-submit-button {
-    background-color: #edb4b7;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
+  background-color: #edb4b7;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
 }
 
 .review-submit-button:hover {
-    background-color: #ff2a34;
+  background-color: #ff2a34;
 }
 
 .review-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .review-item {
-    display: flex; /* flexbox를 사용해 내부 요소 정렬 */
-    flex-direction: column; /* 세로 방향으로 정렬 */
-    background-color: #f8f9fa; /* 배경색을 약간 더 밝게 변경 */
-    border: 1px solid #e9ecef; /* 경계선 추가 */
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* 그림자 효과를 부드럽게 변경 */
+  display: flex; /* flexbox를 사용해 내부 요소 정렬 */
+  flex-direction: column; /* 세로 방향으로 정렬 */
+  background-color: #f8f9fa; /* 배경색을 약간 더 밝게 변경 */
+  border: 1px solid #e9ecef; /* 경계선 추가 */
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* 그림자 효과를 부드럽게 변경 */
 }
 
 .review-commentA {
-    font-size: 1em; /* 리뷰 내용 폰트 크기 조정 */
-    color: #495057; /* 텍스트 색상을 더 부드럽게 변경 */
-    line-height: 1.6;
-    margin: 0 0 15px; /* 아래쪽 여백 추가 */
-    text-align: left; /* 리뷰 내용을 왼쪽으로 정렬 */
+  font-size: 1em; /* 리뷰 내용 폰트 크기 조정 */
+  color: #495057; /* 텍스트 색상을 더 부드럽게 변경 */
+  line-height: 1.6;
+  margin: 0 0 15px; /* 아래쪽 여백 추가 */
+  text-align: left; /* 리뷰 내용을 왼쪽으로 정렬 */
 }
 
 .review-meta {
-    display: flex;
-    justify-content: flex-end; /* 작성자 정보를 오른쪽 끝으로 정렬 */
-    align-items: center;
-    width: 100%; /* 부모 컨테이너의 전체 너비 사용 */
-    gap: 15px; /* 작성자와 날짜 사이의 간격 조정 */
-    font-size: 0.9em;
-    color: #868e96;
+  display: flex;
+  justify-content: flex-end; /* 작성자 정보를 오른쪽 끝으로 정렬 */
+  align-items: center;
+  width: 100%; /* 부모 컨테이너의 전체 너비 사용 */
+  gap: 15px; /* 작성자와 날짜 사이의 간격 조정 */
+  font-size: 0.9em;
+  color: #868e96;
 }
 
 .review-actions {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 .edit-button,
 .delete-button {
-    background-color: transparent;
-    color: #495057;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 0.8em;
-    transition: background-color 0.2s, color 0.2s;
-    width: 70px;
+  background-color: transparent;
+  color: #495057;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 0.8em;
+  transition: background-color 0.2s, color 0.2s;
+  width: 70px;
 }
 
-.edit-button:hover, 
+.edit-button:hover,
 .delete-button:hover {
-    background-color: #ff6b6b;
-    color: #fff;
+  background-color: #ff6b6b;
+  color: #fff;
 }
 
-.user-info, .date {
-    display: inline-block; /* 한 줄에 표시 */
-    margin: 0;
+.user-info,
+.date {
+  display: inline-block; /* 한 줄에 표시 */
+  margin: 0;
 }
 
 .user-info {
-    font-weight: bold;
-    color: #212529; /* 작성자 이름을 더 눈에 띄게 */
+  font-weight: bold;
+  color: #212529; /* 작성자 이름을 더 눈에 띄게 */
 }
-
 
 /* 로딩 스피너 */
 .detail-loading-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    color: #000;
-    font-size: 1.2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  color: #000;
+  font-size: 1.2em;
 }
 
 .loading-spinner {
-    border: 4px solid rgba(0, 0, 0, 0.3);
-    border-radius: 50%;
-    border-top: 4px solid #edb4b7;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin-bottom: 15px;
+  border: 4px solid rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #edb4b7;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
-    /* 모바일에서는 세로로 변경 */
-    .info-section {
-        flex-direction: column;
-    }
+  /* 모바일에서는 세로로 변경 */
+  .info-section {
+    flex-direction: column;
+  }
 
-    .poster-container {
-        max-width: 100%;
-    }
+  .poster-container {
+    max-width: 100%;
+  }
 
-    .text-info h1 {
-        font-size: 2em;
-    }
+  .text-info h1 {
+    font-size: 2em;
+  }
 
-    .text-info h3 {
-        font-size: 1.3em;
-    }
+  .text-info h3 {
+    font-size: 1.3em;
+  }
 
-    .review-input-box {
-        flex-direction: column;
-    }
+  .review-input-box {
+    flex-direction: column;
+  }
 
-    .review-input-box textarea {
-        width: 100%;
-        height: 100px;
-    }
+  .review-input-box textarea {
+    width: 100%;
+    height: 100px;
+  }
 
-    .review-submit-button {
-        width: 100%;
-    }
+  .review-submit-button {
+    width: 100%;
+  }
 }
-
 
 /* --------------------------------------------- */
 /* review-edit-box와 textarea 스타일 */
 .review-edit-box {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 10px;
 }
 
 .edit-textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    resize: vertical;
-    min-height: 80px;
-    font-size: 16px;
-    margin-bottom: 10px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  resize: vertical;
+  min-height: 80px;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
 /* 수정 완료 및 취소 버튼 스타일 */
 .complete-button,
 .cancel-button {
-    padding: 8px 12px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    font-size: 12px;
-    transition: background-color 0.2s ease;
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s ease;
 }
 
 .complete-button {
-    background-color: #007bff; /* 파란색 */
-    color: white;
-    margin-right: 10px;
+  background-color: #007bff; /* 파란색 */
+  color: white;
+  margin-right: 10px;
 }
 
 .complete-button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 .cancel-button {
-    background-color: #6c757d; /* 회색 */
-    color: white;
+  background-color: #6c757d; /* 회색 */
+  color: white;
 }
 
 .cancel-button:hover {
-    background-color: #5a6268;
+  background-color: #5a6268;
 }
 
 .review-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 5px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
 }
