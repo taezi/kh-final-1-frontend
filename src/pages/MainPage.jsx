@@ -12,27 +12,32 @@ import { Navigation, Autoplay, Keyboard, A11y } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
+import banpo_view from "../img/banpo_view.jpg";
+import hongdae from "../img/hongdae.jpg";
+import seoul_gang from "../img/seoul_gang.jpg";
+import seoulro from "../img/seoulro.jpg";
+
 /** 히어로 포스터(샘플) */
 const HERO_POSTERS = [
   {
-    src: "https://images.unsplash.com/photo-1549692520-acc6669e2f0c?q=80&w=1940&auto=format&fit=crop&fm=jpg",
-    title: "서울 스카이라인",
-    sub: "남산에서 내려다보는 도심의 오후",
+    src: banpo_view,
+    title: "반포대교",
+    sub: "반포대교 달빛 무지개 분수",
   },
   {
-    src: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1940&auto=format&fit=crop&fm=jpg",
-    title: "경복궁의 아침",
-    sub: "고즈넉한 한옥의 정취",
+    src: hongdae,
+    title: "홍대의 저녁",
+    sub: "활기넘치는 홍대입구",
   },
   {
-    src: "https://images.unsplash.com/photo-1505764706515-aa95265c5abc?q=80&w=1940&auto=format&fit=crop&fm=jpg",
-    title: "성수의 감성",
-    sub: "카페·공방·갤러리 산책",
+    src: seoul_gang,
+    title: "한강",
+    sub: "늦은 저녁 한강의 야경",
   },
   {
-    src: "https://images.unsplash.com/photo-1505764706515-aa95265c5abc?q=80&w=1940&auto=format&fit=crop&fm=jpg",
-    title: "한강의 밤",
-    sub: "리버사이드 야경",
+    src: seoulro,
+    title: "서울의 차로",
+    sub: "아름다운 서울의 거리",
   },
 ];
 

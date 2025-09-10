@@ -137,7 +137,7 @@ export default function AdminMembers() {
                 <td>
                   <div className="action-buttons-container">
                     <button
-                      className="action-button update-button"
+                      className="action-button-1 update-button-1"
                       onClick={() => handleUpdate(user.userno)}
                     >
                       수정
