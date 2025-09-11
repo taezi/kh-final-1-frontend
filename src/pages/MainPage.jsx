@@ -12,10 +12,10 @@ import { Navigation, Autoplay, Keyboard, A11y } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
-import banpo_view from "../img/banpo_view.jpg";
+import banpo_view from "../img/banpo.jpg";
 import hongdae from "../img/hongdae.jpg";
-import seoul_gang from "../img/seoul_gang.jpg";
-import seoulro from "../img/seoulro.jpg";
+import seoul_gang from "../img/seoul_night.jpg";
+import seoulro from "../img/gangnam.jpg";
 
 /** 히어로 포스터(샘플) */
 const HERO_POSTERS = [
