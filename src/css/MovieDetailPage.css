@@ -72,7 +72,7 @@
   display: flex;
   flex-direction: column; /* 자식 요소들을 세로로 정렬 */
   gap: 40px; /* 자식 요소들 사이에 40px의 간격 추가 */
-  margin-top: 30px; /* 전체 섹션의 상단 마진 */
+  margin: 30px auto 0; /* 전체 섹션의 상단 마진 */
   width: 80%;
 }
 
