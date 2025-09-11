@@ -1,0 +1,130 @@
+.notice-detail-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+ min-height: 120vh;
+ padding-bottom: 100px;
+}
+
+.notice-detail-page h4 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #4a90e2;
+}
+
+.notice-action-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.notice-action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.notice-meta {
+  text-align: center;
+  padding-bottom: 40px;
+  margin-top: 10px;
+}
+
+.date-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: #888;
+  position: relative;
+  /* 가상 요소 위치 지정을 위해 추가 */
+  margin: 0 20px;
+  /* 가로선이 내용과 겹치지 않도록 좌우 여백 추가 */
+}
+
+.date-info::before,
+.date-info::after {
+  content: '';
+  /* 가상 요소에 필수 */
+  flex-grow: 1;
+  /* 가용 공간을 채우도록 늘어남 */
+  height: 1px;
+  /* 가로선 두께 */
+  background-color: #ccc;
+  /* 가로선 색상 */
+  margin: 0 10px;
+  /* 가로선과 텍스트 사이 여백 */
+}
+
+.separator {
+  margin: 0 10px;
+  color: #aaa;
+}
+
+.notice-item {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  align-items: center;
+  text-align: center;
+}
+
+.notice-title {
+font-size: 2rem;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+
+.notice-detail-info {
+  text-align: center;    
+  width: 100%;
+  white-space: pre-line;  
+   margin-bottom: 80px;
+}
+
+.notice-detail-info p {
+  margin: 5px 0;
+  line-height: 1.5;
+  color: #333;
+  font-size: 20px;  
+}
+
+
+.btnEdit,
+.btnDelete,
+.btnBack {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+}
+
+.btnEdit {
+  background-color: #1e90ff;
+}
+.btnEdit:hover {
+  background-color: #1c86ee;
+}
+
+.btnDelete {
+  background-color: #f44336;
+}
+.btnDelete:hover {
+  background-color: #d32f2f;
+}
+
+.btnBack {
+  background-color: #4a90e2;
+}
+.btnBack:hover {
+  background-color: #357ab8;
+}
+
+

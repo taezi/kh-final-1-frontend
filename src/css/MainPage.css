@@ -1,0 +1,539 @@
+/* ===== 공통 ===== */
+.home {
+  padding-top: 0;
+  background: #fff;
+  --border: #e5e7eb;
+  --ink: #111827;
+  --muted: #6b7280;
+  --card: #fff;
+  --shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+}
+
+/* ===== HERO ===== */
+.home-hero {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: clamp(420px, 62vh, 720px);
+  background: #000 center/cover no-repeat;
+  overflow: hidden;
+  background-size: 120% auto; /* 가로를 더 키워서 화질 보완 */
+  background-position: center center; /* 가운데 기준 */
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 채우되 잘림 발생 */
+  /* object-fit: contain;  전체 보이게, 대신 여백 생김 */
+}
+
+.home-heroGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.45),
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 0.18)
+  );
+  z-index: 1;
+}
+
+.home-heroNote {
+  position: absolute;
+  right: 32px;
+  bottom: 40px;
+  z-index: 2;
+}
+
+.home-heroNote .bubble {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  max-width: 280px;
+  box-shadow: var(--shadow);
+}
+
+.home-heroNote .title {
+  font-weight: 900;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.home-heroNote .meta {
+  font-size: 11px;
+  color: #666;
+}
+
+.home-heroArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.92);
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  z-index: 2;
+}
+
+.home-heroArrow.left {
+  left: 16px;
+}
+
+.home-heroArrow.right {
+  right: 16px;
+}
+
+.home-heroDots {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 12px;
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+}
+
+.home-heroDots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.home-heroDots .dot.is-active {
+  background: #fff;
+}
+
+/* ===== 본문 컨테이너 ===== */
+.home-page {
+  max-width: 1100px;
+  margin: 0 auto 48px;
+  padding: 0 16px;
+  position: relative;
+  z-index: 3;
+}
+
+.home-section {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 16px;
+  margin: 18px 0;
+}
+
+.home-more {
+  width: 150px;
+  margin-top: 15px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 14px;
+  background: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.home-center {
+  display: flex;
+  justify-content: center;
+}
+
+/* ===== 날짜 ===== */
+.home-dateHead {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin: 2px 0 8px;
+}
+
+.home-dateHead .mon {
+  font: 800 18px/1.1 system-ui;
+  color: var(--ink);
+}
+
+.home-dateHead .bar {
+  color: #d1d5db;
+  font-weight: 900;
+}
+
+.home-dateHead .day {
+  font: 900 22px/1.1 system-ui;
+  color: var(--ink);
+}
+
+.home-dateHead .dow {
+  color: #6b7280;
+  font-weight: 700;
+}
+
+.home-dateRail {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.home-railArrow {
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: #fff;
+  cursor: pointer;
+}
+
+.home-railTrack {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  padding: 6px 4px;
+  z-index: 1;
+}
+
+.home-railLine {
+  display: none;
+}
+
+.home-tick {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 6px 2px;
+  min-width: 44px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.home-tick:hover {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.home-tick .dow-mini {
+  font-size: 11px;
+  color: #8b95a1;
+}
+
+.home-tick .num {
+  font-weight: 900;
+  font-size: 14px;
+  padding: 0 6px;
+  border-radius: 6px;
+}
+
+.home-tick.is-today .num {
+  border: 1px solid var(--ink);
+}
+
+.home-tick.is-sel {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+.home-tick.is-sel .dow-mini {
+  color: #e5e7eb;
+}
+
+/* ===== 행사 캐러셀 ===== */
+.home-carouselHead {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  gap: 8px;
+  align-items: center;
+}
+
+.home-arrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: #fff;
+  font-size: 20px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+/* Swiper 컨테이너 */
+.home-swiper {
+  width: 100%;
+}
+
+/* 기본 버튼 숨김(이 캐러셀 안에서) */
+.home-swiper .swiper-button-prev,
+.home-swiper .swiper-button-next {
+  display: none !important;
+}
+
+/* 세로 정렬 유지 */
+.home-swiper .swiper-wrapper {
+  align-items: stretch;
+}
+
+/* 카드 = 슬라이드 내부 100% 차지 */
+.home-swiper .swiper-slide {
+  display: flex;
+}
+
+.home-card {
+  width: 100%;
+}
+
+/* ===== 카드: flip ===== */
+.home-card {
+  position: relative;
+  perspective: 1000px;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.2, 0.65, 0.2, 1);
+}
+
+.home-card.flip:hover .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-face {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  backface-visibility: hidden;
+}
+
+.flip-back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.home-thumb {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.35s ease;
+}
+
+.home-card:hover .home-thumb {
+  transform: scale(1.03);
+}
+
+.home-back .t {
+  font-weight: 900;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 6px;
+  padding: 0 12px;
+  text-align: center;
+}
+
+.home-back .m {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.5;
+  padding: 0 12px;
+  text-align: center;
+}
+
+/* ===== TiltSeoulMap ===== */
+.ts-abs {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56%;
+}
+
+.ts-river-abs {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ts-block-abs {
+  position: absolute;
+  transform-origin: center;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.ts-block {
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.ts-block .label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #374151;
+  display: inline-block;
+}
+
+.ts-block:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.ts-block.is-selected {
+  outline: 2px solid #2563eb;
+}
+
+/* ===== 에디터 추천 ===== */
+.home-edTitle {
+  font-weight: 800;
+  margin: 0 0 12px;
+  color: var(--ink);
+}
+
+.home-edWrap {
+  position: relative;
+}
+
+.home-edArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.home-edArrow.left {
+  left: -10px;
+}
+
+.home-edArrow.right {
+  right: -10px;
+}
+
+.home-edCarousel {
+  overflow: auto;
+  display: flex;
+  gap: 12px;
+  scroll-behavior: smooth;
+  padding: 6px;
+}
+
+.home-edCard {
+  min-width: 260px;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 10px;
+  background: #fff;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+  cursor: pointer;
+}
+
+.home-edCard:hover {
+  transform: scale(1.05) translateY(-5px);
+  /* 살짝 위로 띄우기 */
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  /* 그림자 강조 */
+  filter: brightness(1.05);
+  /* 밝기 조금 올리기 */
+}
+
+.home-edCard .thumb {
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.home-edCard:hover .thumb {
+  filter: brightness(1.1);
+  /* 밝기 강조 */
+}
+
+.home-edCard .title {
+  font-weight: 700;
+  margin-top: 6px;
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.home-edCard .meta {
+  font-size: 12px;
+  color: #6b7280;
+}
+.editorCourse-more {
+  width: 170px;
+  margin-top: 15px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 14px;
+  background: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+.home-edHeader {
+  display: flex;
+  justify-content: space-between; /* 타이틀 왼쪽, 버튼 오른쪽 */
+  align-items: center; /* 세로 가운데 정렬 */
+  margin-bottom: 12px; /* 캐러셀과 간격 */
+}
+
+.editorCourse-more {
+  width: auto; /* 필요에 따라 조정 */
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+/* 타이틀 */
+.home-tsTitle {
+  margin: 18px 0 8px;
+  font-weight: 900;
+  color: var(--ink);
+}
+
+.home-tsTitle .kr {
+  margin-right: 6px;
+}
+
+.home-chip {
+  display: inline-block;
+  border: 1px solid var(--border);
+  background: #f8fafc;
+  border-radius: 9999px;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+/* 빈 상태 */
+.home-empty {
+  padding: 24px;
+  text-align: center;
+  color: #6b7280;
+  font-weight: 700;
+}

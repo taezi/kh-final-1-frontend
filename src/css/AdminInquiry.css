@@ -1,0 +1,70 @@
+.inquiry-list-container-1 {
+
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.inquiry-header-1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.inquiry-table-1 {
+
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.inquiry-table-1 th,
+.inquiry-table-1 td {
+
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.inquiry-table-1 thead th {
+  
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.inquiry-table-1 tbody tr {
+
+  cursor: pointer;
+}
+
+.inquiry-table-1 tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+.status-pending {
+ 
+  color: #f5c50c;
+  font-weight: bold;
+}
+
+.status-replied {
+ 
+  color: #22c153;
+  font-weight: bold;
+}
+
+.empty-message-1 {
+
+  text-align: center;
+  padding: 20px;
+  color: #777;
+}
+
+.inquiry-select-1 {
+ 
+  width: 120px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  justify-content: flex-end;
+}

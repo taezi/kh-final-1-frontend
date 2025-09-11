@@ -1,0 +1,92 @@
+.inquiry-container { 
+  max-width: 600px; 
+  margin: 40px auto; 
+  padding: 30px; 
+  background-color: #f9f9f9; 
+  border: 1px solid #ddd; 
+  border-radius: 8px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  font-family: Arial, sans-serif; 
+} 
+
+.inquiry-container h2 { 
+  text-align: center; 
+  color: #333; 
+  margin-bottom: 25px; 
+  font-size: 28px; 
+  font-weight: bold; 
+} 
+
+.inquiry-form .form-group { 
+  margin-bottom: 20px; 
+} 
+
+.inquiry-form label { 
+  display: block; 
+  font-size: 16px; 
+  color: #555; 
+  margin-bottom: 8px; 
+  font-weight: 600; 
+} 
+
+.inquiry-form input, 
+.inquiry-form textarea { 
+  width: 100%; 
+  padding: 12px; 
+  border: 1px solid #ccc; 
+  border-radius: 6px; 
+  font-size: 15px; 
+  box-sizing: border-box;  
+} 
+
+.inquiry-form input:focus, 
+.inquiry-form textarea:focus { 
+  outline: none; 
+  border-color: #007bff; 
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+} 
+
+.inquiry-form textarea { 
+  resize: vertical;  
+} 
+
+.button-group-1 { 
+  display: flex; 
+  justify-content: center;  
+  gap: 10px; 
+  margin-top: 25px;
+  align-items: center;
+} 
+
+.button-group-1 button { 
+  font-size: 16px; 
+  font-weight: bold; 
+  cursor: pointer; 
+  border: none; 
+  border-radius: 6px; 
+  transition: background-color 0.3s ease;
+  width: 120px;
+  height: 48px;
+  padding: 12px 25px;
+  height: auto;
+  line-height: normal;
+  text-align: center;
+} 
+
+.submit-button-1 { 
+  background-color: #007bff; 
+  color: #fff; 
+} 
+
+.submit-button-1:hover { 
+  background-color: #0056b3; 
+} 
+
+.cancel-button-1 { 
+  background-color: #a6adb3;  
+  color: #fff; 
+} 
+
+.cancel-button-1:hover { 
+  background-color: #5a6268; 
+}

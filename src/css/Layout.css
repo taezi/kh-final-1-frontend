@@ -1,0 +1,21 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+.container {
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+}
+.left-container,
+.main-container,
+.right-container {
+  box-sizing: border-box;
+}
+.main-container {
+  width: 60%;
+}
+.left-container,
+.right-container {
+  width: 100%;
+}

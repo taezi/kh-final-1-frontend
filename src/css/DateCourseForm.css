@@ -1,0 +1,211 @@
+/* DateCourseForm.css */
+
+.form-card {
+  max-width: 1024px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid hsl(201, 30%, 91%);
+}
+
+.form-content {
+  padding: 32px;
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* 필드 그룹 */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.field-label {
+  display: flex;
+  align-items: center;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: hsl(215, 25%, 27%);
+  gap: 8px;
+}
+
+.field-label .icon {
+  width: 20px;
+  height: 20px;
+  color: hsl(16, 100%, 60%);
+}
+
+/* 입력 필드 */
+.form-input {
+  height: 48px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  border: 1px solid hsl(201, 30%, 91%);
+  border-radius: 8px;
+  background: hsl(200, 23%, 97%);
+  color: hsl(215, 25%, 27%);
+  transition: all 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: hsl(16, 100%, 60%);
+  box-shadow: 0 0 0 3px hsla(16, 100%, 60%, 0.1);
+}
+
+.form-input::placeholder {
+  color: hsl(0, 0%, 60%);
+}
+
+/* 셀렉트 */
+.form-select {
+  height: 48px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  border: 1px solid hsl(201, 30%, 91%);
+  border-radius: 8px;
+  background: hsl(200, 23%, 97%);
+  color: hsl(215, 25%, 27%);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: hsl(16, 100%, 60%);
+  box-shadow: 0 0 0 3px hsla(16, 100%, 60%, 0.1);
+}
+
+/* DateaiPage.css */
+.date-course-page {
+  margin-top: 50px; /* ✅ 히어로 밑 여백 */
+}
+
+/* 날짜/시간 그룹 */
+.date-time-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.date-input-group,
+.time-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-sublabel {
+  font-size: 0.875rem;
+  color: hsl(0, 0%, 45%);
+  font-weight: 500;
+}
+
+/* 예산 입력 */
+.budget-input-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid hsl(201, 30%, 91%);
+  border-radius: 8px;
+  background: hsl(200, 23%, 97%);
+  padding: 0 12px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+
+.budget-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  height: 48px;
+  font-size: 1rem;
+  padding: 0 8px;
+}
+.budget-input:focus,
+.budget-input:focus-visible {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.budget-input-container:focus-within {
+  border: 2px solid hsl(14, 88%, 57%); /* 주황색 */
+}
+
+.currency-symbol {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: hsl(0, 0%, 45%);
+  font-weight: 600;
+}
+
+/* 검색 버튼 */
+.search-button-container {
+  padding-top: 16px;
+}
+
+.search-button {
+  width: 100%;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: hsl(16, 100%, 60%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.search-button:hover {
+  background: hsl(16, 100%, 55%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px hsla(16, 100%, 60%, 0.3);
+}
+
+.search-button:active {
+  transform: translateY(0);
+}
+
+.search-button .icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .form-content {
+    padding: 24px;
+  }
+
+  .form-fields {
+    gap: 24px;
+  }
+
+  .date-time-group {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .field-label {
+    font-size: 1rem;
+  }
+
+  .form-input,
+  .form-select {
+    font-size: 16px; /* iOS 줌 방지 */
+  }
+}

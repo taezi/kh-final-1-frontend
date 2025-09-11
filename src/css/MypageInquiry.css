@@ -1,0 +1,43 @@
+.inquiry-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 수평 가운데 정렬 */
+  width: 100%;
+}
+
+.inquiry-list-container h3 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.inquiry-table {
+  width: 100%; /* 부모 요소(container)의 너비에 맞춤 */
+  max-width: 800px; /* 테이블의 최대 너비 설정 */
+  border-collapse: collapse; /* 테이블 셀 경계선 병합 */
+  text-align: center; /* 테이블 내용을 가운데 정렬 */
+  margin-bottom: 20px;
+}
+
+.inquiry-table th,
+.inquiry-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+.inquiry-table thead tr {
+  background-color: #f2f2f2;
+}
+
+.inquiry-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.status-pending-1 {
+  color: #f5c50c; /* 노란색 */
+  font-weight: bold;
+}
+
+.status-replied-1 {
+  color: #27ae60; /* 초록색 */
+  font-weight: bold;
+}

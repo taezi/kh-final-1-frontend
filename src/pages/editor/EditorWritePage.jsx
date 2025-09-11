@@ -1,0 +1,386 @@
+// src/pages/editor/EditorWritePage.jsx
+import { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { Editor } from "@toast-ui/react-editor";
+import {
+  createPost,
+  saveEditorHashtags,
+  uploadImageToS3,
+} from "../../service/editorAPI";
+import "@toast-ui/editor/toastui-editor.css";
+import "../../css/EditorWritePage.css";
+import useAuthStore from "../../store/authStore";
+
+import Layout from "../../components/Layout";
+import HeroStrip from "../../components/HeroStrip";
+import MY_PAGE_HERO from "../../img/my-page.jpg";
+
+export default function EditorWritePage() {
+  const user = useAuthStore((state) => state.user);
+  const titleRef = useRef(null);
+  const editorRef = useRef();
+  const navigate = useNavigate();
+
+  // 본문 이미지 (단일)
+  const [contentImgUrl, setContentImgUrl] = useState("");
+
+  // 썸네일 URL/파일명
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const [thumbnailName, setThumbnailName] = useState("");
+
+  // 해쉬태그
+  const [tagInput, setTagInput] = useState("");
+  const [tags, setTags] = useState([]);
+
+  const dropZoneRef = useRef(null);
+  const fileInputRef = useRef(null);
+
+  // '내 PC' 버튼
+  const handlePcButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  // 썸네일 업로드 (400x244 검증)
+  const handleThumbnailUpload = async (file) => {
+    if (!file) return;
+
+    const allowedWidth = 400;
+    const allowedHeight = 244;
+
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+    img.src = objectUrl;
+
+    img.onload = async () => {
+      const { width, height } = img;
+
+      if (width !== allowedWidth || height !== allowedHeight) {
+        alert(
+          `썸네일 이미지는 ${allowedWidth}x${allowedHeight}px이어야 합니다.`
+        );
+        URL.revokeObjectURL(objectUrl);
+        return;
+      }
+
+      try {
+        const fileUrl = await uploadImageToS3(file);
+        setThumbnailUrl(fileUrl);
+        setThumbnailName(file.name);
+        alert("썸네일 이미지가 첨부되었습니다!");
+      } catch (err) {
+        console.error(err);
+        alert("썸네일 업로드 실패");
+      } finally {
+        URL.revokeObjectURL(objectUrl);
+      }
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      alert("이미지 파일을 불러오지 못했습니다.");
+    };
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    handleThumbnailUpload(file);
+  };
+
+  const handleThumbnailDrop = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const files = event.dataTransfer.files;
+    if (files.length > 0) {
+      handleThumbnailUpload(files[0]);
+    }
+  };
+
+  const handleRemoveThumbnail = () => {
+    setThumbnailUrl("");
+    setThumbnailName("");
+  };
+
+  // 등록
+  const handleClickCreateButton = async () => {
+    const title = titleRef.current?.value?.trim() || "";
+
+    if (!title) {
+      alert("제목을 입력해주세요!");
+      return;
+    }
+    if (!thumbnailUrl) {
+      alert("썸네일 이미지를 첨부해주세요!");
+      return;
+    }
+    if (!contentImgUrl) {
+      alert("에디터 이미지를 최소 하나 업로드해주세요!");
+      return;
+    }
+
+    const editorInstance = editorRef.current?.getInstance();
+    const markdown = editorInstance?.getMarkdown() || "";
+
+    if (!markdown.trim()) {
+      alert("내용을 입력해주세요!");
+      return;
+    }
+
+    const hasImageInEditor = /!\[.*?\]\(.*?\)/.test(markdown);
+    if (!hasImageInEditor) {
+      alert("에디터 본문에 이미지를 최소 하나 업로드해주세요!");
+      return;
+    }
+
+    const postData = {
+      editortitle: title,
+      editorcontent: markdown,
+      userno: user.userno,
+      contentImgUrl, // 단일 값
+      thumbnailUrl,
+    };
+
+    try {
+      const response = await createPost(postData);
+      console.log("저장 성공:", response?.data || response);
+
+      const editorno = response?.editorno;
+
+      if (editorno && tags.length > 0) {
+        const postData2 = {
+          editorno: editorno,
+          hashtags: tags,
+        };
+        await saveEditorHashtags(postData2);
+      }
+
+      alert("등록되었습니다!");
+      navigate("/editor");
+    } catch (error) {
+      console.error("저장 실패:", error);
+      alert("저장 실패입니다");
+    }
+  };
+
+  const handleClickCancelButton = () => {
+    navigate("/editor");
+  };
+
+  useEffect(() => {
+    const dropZone = dropZoneRef.current;
+    if (!dropZone) return;
+
+    const handleDragOver = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
+    const handleDragEnter = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
+
+    dropZone.addEventListener("dragover", handleDragOver);
+    dropZone.addEventListener("dragenter", handleDragEnter);
+    dropZone.addEventListener("drop", handleThumbnailDrop);
+
+    return () => {
+      dropZone.removeEventListener("dragover", handleDragOver);
+      dropZone.removeEventListener("dragenter", handleDragEnter);
+      dropZone.removeEventListener("drop", handleThumbnailDrop);
+    };
+  }, []);
+
+  return (
+    <Layout>
+      <HeroStrip
+        imageSrc={MY_PAGE_HERO}
+        title="에디터 추천 데이트코스 작성"
+        subtitle="본문 이미지를 함께 업로드하세요"
+        align="left"
+        height={600}
+        variant="def"
+      />
+
+      <div className="editor-container">
+        <h2 className="title">에디터 추천 데이트코스</h2>
+
+        {/* 제목 */}
+        <div className="formGroup">
+          <label className="label">제목</label>
+          <input
+            type="text"
+            ref={titleRef}
+            placeholder="제목을 입력하세요"
+            className="input"
+          />
+        </div>
+
+        {/* 썸네일 */}
+        <div className="formGroup">
+          <label className="label">썸네일(400x244px)</label>
+          <div className="file-attach-container">
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+            <div className="file-attach-buttons">
+              <button
+                type="button"
+                className="attach-button"
+                onClick={handlePcButtonClick}
+              >
+                내 PC
+              </button>
+            </div>
+
+            <div className="drop-zone" ref={dropZoneRef}>
+              {thumbnailName ? (
+                <div className="file-item">
+                  <span className="file-name">{thumbnailName}</span>
+                  <button
+                    type="button"
+                    onClick={handleRemoveThumbnail}
+                    className="remove-button"
+                  >
+                    X
+                  </button>
+                </div>
+              ) : (
+                <p>썸네일용 파일을 마우스로 끌어오세요 (400x244px)</p>
+              )}
+            </div>
+
+            {thumbnailUrl && (
+              <div style={{ marginTop: 10 }}>
+                <img
+                  src={thumbnailUrl}
+                  alt="썸네일 미리보기"
+                  style={{ maxWidth: 240, borderRadius: 8 }}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* 해쉬태그 */}
+        <div className="formGroup">
+          <label className="label">해쉬태그</label>
+          <input
+            type="text"
+            placeholder="해시태그 입력"
+            className="input"
+            value={tagInput}
+            onChange={(e) => setTagInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === ",") {
+                e.preventDefault();
+                const newTag = tagInput.trim().replace(/,$/, "");
+                if (newTag && !tags.includes(newTag)) {
+                  setTags([...tags, newTag]);
+                }
+                setTagInput("");
+              }
+            }}
+          />
+        </div>
+        <div className="tag-container">
+          {tags.map((tag, idx) => (
+            <div key={idx} className="tag-item">
+              #{tag}
+              <button
+                type="button"
+                className="tag-remove-btn"
+                onClick={() => setTags(tags.filter((t) => t !== tag))}
+              >
+                ❌
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {/* 내용 */}
+        <div className="formGroup">
+          <label className="label">내용</label>
+          <Editor
+            initialValue=""
+            previewStyle="vertical"
+            height="460px"
+            initialEditType="wysiwyg"
+            useCommandShortcut={true}
+            toolbarItems={[
+              [
+                "heading",
+                "bold",
+                "italic",
+                "strike",
+                "code",
+                "quote",
+                "ul",
+                "ol",
+                "task",
+                "table",
+                "image",
+                "codeblock",
+                "scrollSync",
+              ],
+            ]}
+            ref={editorRef}
+            hooks={{
+              addImageBlobHook: async (blob, callback) => {
+                try {
+                  const fileUrl = await uploadImageToS3(blob);
+                  callback(fileUrl, blob.name);
+                  setContentImgUrl(fileUrl); // 단일 저장
+                } catch (err) {
+                  console.error("이미지 업로드 실패:", err);
+                  alert("이미지 업로드 실패");
+                }
+              },
+            }}
+          />
+        </div>
+
+        {/* 본문 이미지 미리보기 */}
+        {contentImgUrl && (
+          <div className="formGroup">
+            <label className="label">본문 이미지</label>
+            <div style={{ textAlign: "center" }}>
+              <img
+                src={contentImgUrl}
+                alt="content"
+                style={{
+                  width: 200,
+                  height: 140,
+                  objectFit: "cover",
+                  borderRadius: 6,
+                  display: "block",
+                  margin: "0 auto",
+                }}
+              />
+              <button
+                type="button"
+                className="btn btnMini"
+                style={{ marginTop: 6 }}
+                onClick={() => setContentImgUrl("")}
+              >
+                제거
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* 버튼 */}
+        <div className="buttonGroup">
+          <button onClick={handleClickCreateButton} className="btn btnCreate">
+            등록
+          </button>
+          <button onClick={handleClickCancelButton} className="btn btnCancel">
+            취소
+          </button>
+        </div>
+      </div>
+    </Layout>
+  );
+}

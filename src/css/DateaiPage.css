@@ -1,0 +1,111 @@
+/* DateCourse.css */
+.date-course-page {
+  background-color: hsl(210, 40%, 98%);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+/* 메인 헤더 */
+.main-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.main-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: hsl(215, 25%, 27%);
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: hsl(0, 0%, 40%);
+  margin: 0;
+}
+
+/* 뒤로가기 버튼 */
+.back-button-container {
+  margin-bottom: 24px;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: white;
+  border: 1px solid hsl(201, 30%, 91%);
+  border-radius: 8px;
+  color: hsl(215, 25%, 27%);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background: hsl(210, 40%, 96%);
+  border-color: hsl(16, 100%, 60%);
+}
+
+.back-button .icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* 하단 안내 텍스트 */
+.footer-info {
+  text-align: center;
+  margin-top: 32px;
+  color: hsl(0, 0%, 45%);
+}
+
+.main-info {
+  font-size: 1.125rem;
+  margin-bottom: 8px;
+}
+
+.sub-info {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.loading {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 500;
+  color: hsl(215, 25%, 27%); /* 제목 계열 색상 */
+  margin-top: 120px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+/* 로딩중 부드럽게 색이 번쩍이는 애니메이션 */
+@keyframes pulse {
+  0% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.4;
+  }
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1.25rem;
+  }
+
+  .container {
+    padding: 24px 16px;
+  }
+}
